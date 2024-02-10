@@ -1,0 +1,78 @@
+.bar{
+}
+.workspaces{
+    padding-right: 300px;
+}
+
+.W0 , .W01, .W02, .W03, .W04, .W05, .W06, .W07, .W08, .W09,.W011, .W022, .W033, .W044, .W055, .W066, .W077, .W088, .W099,{
+  margin: 0px 0px 0px 0px;
+}
+
+// Unoccupied
+.W0 {
+	color: #606060;
+}
+
+// Occupied 
+.W01, .W02, .W03, .W04, .W05, .W06, .W07, .W08, .W09 {
+	color:#959595;
+    font-weight: bold;
+}
+
+
+// Focused 
+.W011, .W022, .W033, .W044, .W055, .W066, .W077, .W088, .W099{
+	color: #ffffff;
+	font-weight:bold;
+}
+
+
+.bar_right{
+    //padding left
+    padding-left: 130px;
+}
+.disk{
+    //font size
+    font-size: 12px;
+    //ring color lime green
+    color: #32CD32;
+}
+.cpu{
+    //font size
+    font-size: 12px;
+    //color dracula purple
+    color: #BD93F9;
+}
+.mem{
+    //font size
+    font-size: 12px;
+    //color dracula yellow
+    color: #F1FA8C;
+}
+
+.net{
+    //color dracula blue
+    color: #8BE9FD;
+}
+
+.time{
+    //color dracula orange
+    color: #FFB86C;
+    background-color: inherit;
+}
+
+.idle{
+
+}
+
+.idle_btn_on{
+    //color dracula pink
+    color: #FF79C6;
+    background-color: inherit;
+}
+
+.idle_btn_off{
+    //color dracula red
+    color: #FF5555;
+    background-color: inherit;
+}
