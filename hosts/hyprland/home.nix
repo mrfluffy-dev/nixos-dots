@@ -113,6 +113,7 @@
     ".config/foot".source = ../../universal/dots/foot;
     ".config/kitty".source = ../../universal/dots/kitty;
     ".config/zsh".source = ../../universal/dots/zsh;
+    ".config/nvim".source = ../../universal/dots/nvim;
     "Pictures/Wallpapers".source = ../../universal/wallpapers;
     ".local/share/icons/oreo_purple_cursors".source = ../../universal/cursors/oreo_purple_cursors;
 
