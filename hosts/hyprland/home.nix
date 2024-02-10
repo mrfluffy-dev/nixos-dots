@@ -34,6 +34,9 @@
   };
 
 
+  programs.virt-manager.enable = true;
+
+
   home.packages = with pkgs; [
 
     # # Adds the 'hello' command to your environment. It prints a friendly
