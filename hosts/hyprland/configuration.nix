@@ -130,6 +130,7 @@
     ZDOTDIR = "$HOME/.config/zsh";
   };
 
+  programs.virt-manager.enable = true;
   programs.zsh.enable = true;
   programs.corectrl.enable = true;
   programs.steam = {
