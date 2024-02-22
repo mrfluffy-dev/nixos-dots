@@ -15,8 +15,8 @@ export XDG_DOWNLOAD_DIR="$HOME/Downloads"
 export FZF_DEFAULT_COMMAND="rg ~ --files --hidden"
 export FZF_DEFAULT_OPTS='--height 30% --reverse'
 export FZF_CTRL_R_OPTS='--sort'
+export MANROFFOPT="-c"
 export MANPAGER="sh -c 'col -bx | bat -l man -p'"
-export TERMINAL="alacritty"
 export LIBVIRT_DEFAULT_URI="qemu:///system"
 export LD_LIBRARY_PATH=/usr/local/lib:$HOME/.nix-profile/lib:$LD_LIBRARY_PATH
 
@@ -48,6 +48,7 @@ alias kami="~/Documents/Rust/kami/target/release/kami"
 alias calc="cpc"
 alias pdf="mupdf"
 alias emacs="emacs"
+alias river="dbus-update-activation-environment --systemd WAYLAND_DISPLAY XDG_CURRENT_DESKTOP=river && river"
 #home clean up
 export EDITOR="emacs"
 export CARGO_HOME="$XDG_DATA_HOME"/cargo

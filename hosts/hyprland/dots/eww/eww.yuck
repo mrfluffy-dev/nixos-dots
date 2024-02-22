@@ -10,9 +10,6 @@
   :windowtype "dock"
 (bar))
 
-
-
-
 (defwindow calendar
   :monitor 0
   :exclusive false

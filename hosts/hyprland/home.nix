@@ -1,6 +1,21 @@
-{ config, pkgs, ... }:
-
+{ config, pkgs, inputs, ... }:
+let
+in
 {
+  imports = [
+    inputs.nix-colors.homeManagerModules.default
+    inputs.stylix.homeManagerModules.stylix
+    ./dots/hypr/hyprland.nix
+    ./dots/hypr/hyprpaper.nix
+    ./dots/eww/ewwScss.nix
+    ../../universal/dots/foot/foot.nix
+    ./stylix.nix
+    ../../universal/homePkgs.nix
+  ];
+
+  # you can go look here for a list of color schemes https://github.com/tinted-theming/schemes
+  colorScheme = inputs.nix-colors.colorSchemes.dracula;
+
   # Home Manager needs a bit of information about you and the paths it should
   # manage.
   home.username = "mrfluffy";
@@ -17,13 +32,12 @@
 
   # The home.packages option allows you to install Nix packages into your
   # environment.
-  nixpkgs.config.allowUnfree = true;
   gtk = {
     enable = true;
-    theme = {
-      name = "Dracula";
-      package = pkgs.dracula-theme;
-    };
+    #theme = {
+    #  name = "Dracula";
+    #  package = pkgs.dracula-theme;
+    #};
     iconTheme = {
       name = "Dracula";
       package = pkgs.dracula-icon-theme;
@@ -32,8 +46,6 @@
       name = "oreo_purple_cursors";
     };
   };
-
-
 
 
   home.packages = with pkgs; [
@@ -54,44 +66,7 @@
     # (pkgs.writeShellScriptBin "my-hello" ''
     #   echo "Hello, ${config.home.username}!"
     # '')
-      zsh
-      firefox
-      btop
-      libreoffice-fresh
-      eww-wayland
-      cargo
-      rustc
-      rust-analyzer
-      macchina
-      hyprpaper
-      obs-studio
-      xwaylandvideobridge
-      blueman
-      duf
-      grim
-      slurp
-      swappy
-      discord
-      heroic
-      gamemode
-      gamescope
-      goverlay
-      rm-improved
-      nodejs_20
-      playerctl
-      pamixer
-      minecraft
-      openai-whisper
-      libreoffice
-      blender-hip
-      zathura
-      imv
-      libsixel
-      prismlauncher-qt5
-      godot_4
-      wf-recorder
-      jellyfin-media-player
-      pcmanfm
+    zed
   ];
 
 
@@ -109,10 +84,11 @@
     #   org.gradle.console=verbose
     #   org.gradle.daemon.idletimeout=3600000
     # '';
-    ".config/hypr".source = ./dots/hypr;
-    ".config/eww".source = ./dots/eww;
+    #".config/hypr".source = ./dots/hypr;
+    ".config/eww/eww.yuck".source = ./dots/eww/eww.yuck;
+    ".config/eww/scripts".source = ./dots/eww/scripts;
     ".config/doom".source = ../../universal/dots/doom;
-    ".config/foot".source = ../../universal/dots/foot;
+    #".config/foot".source = ../../universal/dots/foot;
     ".config/kitty".source = ../../universal/dots/kitty;
     ".config/zsh".source = ../../universal/dots/zsh;
     ".config/nvim".source = ../../universal/dots/nvim;

@@ -58,6 +58,8 @@
     ];
   };
 
+
+
   # Enable the X11 windowing system.
   # services.xserver.enable = true;
 
@@ -65,8 +67,8 @@
   # services.xserver.displayManager.gdm.enable = true;
   # services.xserver.desktopManager.gnome.enable = true;
   programs.hyprland = {
-	enable = true;
-        xwayland.enable = true;
+	  enable = true;
+    xwayland.enable = true;
   };
   xdg.portal.enable = true;
   services.gnome.gnome-keyring.enable = true;
@@ -102,9 +104,9 @@
   };
   hardware.bluetooth.enable = true; # enables support for Bluetooth
   hardware.bluetooth.powerOnBoot = true; # powers up the default Bluetooth controller on boot
-  hardware.pulseaudio = {
-    package = pkgs.pulseaudioFull;
-  };
+ # hardware.pulseaudio = {
+ #   package = pkgs.pulseaudioFull;
+ # };
   hardware.bluetooth.settings = {
     General = {
       Enable = "Source,Sink,Media,Socket";
@@ -121,7 +123,7 @@
     alsa.support32Bit = true;
     pulse.enable = true;
     # If you want to use JACK applications, uncomment this
-    #jack.enable = true;
+    jack.enable = true;
   };
   # Enable touchpad support (enabled default in most desktopManager).
   # services.xserver.libinput.enable = true;
@@ -145,7 +147,7 @@
   users.users.mrfluffy = {
     isNormalUser = true;
     shell = pkgs.zsh;
-    extraGroups = [ "wheel""networkmanager""video""render""docker" ]; # Enable ‘sudo’ for the user.
+    extraGroups = [ "wheel""networkmanager""video""render""docker""libvirt" ]; # Enable ‘sudo’ for the user.
     packages = with pkgs; [
 
     ];
@@ -193,7 +195,6 @@
     eza
     wget
     foot
-    rofi
     spaceship-prompt
     git
     bitwarden
@@ -201,7 +202,6 @@
     xclip
     fd
     fzf
-    vscode
     zotero
     jdk11
     hunspell
@@ -209,12 +209,10 @@
     pavucontrol
     zoxide
     xcp
-    stow
     polkit_gnome
     unzip
     rocmPackages.rccl
     ffmpeg 
-    mpv
     libva-utils
   ];
 
@@ -243,6 +241,7 @@
 	enable = true;
 	storageDriver = "btrfs";
   };
+  virtualisation.libvirtd.enable = true;
   # Enable the OpenSSH daemon.
   # services.openssh.enable = true;
 
