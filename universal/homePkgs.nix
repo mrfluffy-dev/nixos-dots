@@ -3,6 +3,12 @@
 {
 
   nixpkgs.config.allowUnfree = true;
+  nixpkgs.config.permittedInsecurePackages = [
+    "freeimage-unstable-2021-11-01"
+  ];
+  programs.vscode = {
+    enable = true;
+  };
    home.packages = with pkgs; [
 
    # # Adds the 'hello' command to your environment. It prints a friendly
@@ -64,5 +70,7 @@
      vesktop
      mpv
      rofi
+     xdg-user-dirs
+     xarchiver
   ];
 }

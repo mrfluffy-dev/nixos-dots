@@ -34,7 +34,9 @@
   };
 
 
-
+              nixpkgs.config.permittedInsecurePackages = [
+                "freeimage-unstable-2021-11-01"
+              ];
 
   home.packages = with pkgs; [
 
@@ -94,7 +96,6 @@
       pcmanfm
       hyprpicker
       wlr-randr
-      qtile
   ];
 
 

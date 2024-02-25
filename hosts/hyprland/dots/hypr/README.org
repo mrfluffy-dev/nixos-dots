@@ -13,18 +13,7 @@
 #+end_src
 *** envs
 #+begin_src conf :noweb-ref envs
-env = SDL_VIDEODRIVER,wayland
-env = _JAVA_AWT_WM_NONREPARENTING,1
-env = QT_QPA_PLATFORM,wayland
-env = XDG_CURRENT_DESKTOP,hyprland
-env = XDG_SESSION_DESKTOP,hyprland
-env = MOZ_ENABLE_WAYLAND,1
-env = LIBVA_DRIVER_NAME,amdgpu
-env = QT_QPA_PLATFORMTHEME,qt6ct
-env = WLR_DRM_NO_ATOMIC,1
-env = VDPAU_DRIVER, radeonsi
-env = LIBVA_DRIVER_NAME, radeonsi
-env = OLLAMA_HOST, 0.0.0.0
+# vars go here trust me bro
 #+end_src
 
 #+begin_src conf :noweb yes :tangle hyprland.conf
@@ -47,7 +36,7 @@ exec-once=ollama serve
 # exec-once=/usr/lib/polkit-gnome/polkit-gnome-authentication-agent-1  # Arch way
 exec-once=/nix/store/$(ls -la /nix/store | grep 'polkit-gnome' | grep '^d' | awk '$0=$NF' | head -n 1)/libexec/polkit-gnome-authentication-agent-1
 exec-once=autoadb scrcpy -s '{}'
-exec-once=hyprctl setcursor oreo_purple_cursors 16
+exec-once=hyprctl setcursor oreo_spark_pink_cursors 16
 exec-once=fcitx5 -d
 #+end_src
 

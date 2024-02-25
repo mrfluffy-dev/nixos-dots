@@ -1,9 +1,12 @@
 { pkgs, lib, config, ... }:
-let inherit (config.colorScheme) palette;
+let
+  inherit (config.colorScheme) palette;
+  oreo = pkgs.callPackage ../../universal/personalPKGS/oreo.nix {};
 in {
   stylix = {
     autoEnable = false;
     targets.gtk.enable = true;
+    targets.vscode.enable = true;
     polarity = "dark";
     image = ../../universal/wallpapers/001.jpg;
     base16Scheme = {
@@ -47,6 +50,13 @@ in {
         popups = 14;
         terminal = 16;
       };
+    };
+    cursor = {
+      package = oreo.override{
+        colors = ["oreo_spark_pink_cursors"];
+      };
+      name = "oreo_spark_pink_cursors";
+      size = 32;
     };
   };
 }

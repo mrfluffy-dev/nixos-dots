@@ -6,7 +6,7 @@ source ~/.zsh/zsh-autosuggestions/zsh-autosuggestions.zsh
 ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE="fg=#64677a,bold,underline"
 bindkey -v
 source ~/.zsh/spaceship/spaceship.zsh
-export PATH=$HOME/.local/bin/genymotion:$HOME/bin:/usr/local/bin:$HOME/.config/emacs/bin:$HOME/.local/bin:$HOME/.cargo/bin:$HOME/.cabal/bin:$HOME/.local/share/cargo/bin:/usr/local/go/bin:/home/mrfluffy/.local/share/go/bin:$PATH
+export PATH=$HOME/.config/emacs/bin:$PATH
 export XDG_CONFIG_HOME="$HOME/.config"
 export XDG_DATA_HOME="$HOME/.local/share"
 export XDG_STATE_HOME="$HOME/.local/state"

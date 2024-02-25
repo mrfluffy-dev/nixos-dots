@@ -1,8 +1,8 @@
 { config, pkgs, ... }:
 let
-  catppuccin-icon-theme = pkgs.callPackage ./catppuccin-icon-theme.nix {};
-  ani-cli = pkgs.callPackage ./ani-cli.nix {};
-  fsorter = pkgs.callPackage ./fsorter.nix {};
+  catppuccin-icon-theme = pkgs.callPackage ../../universal/personalPKGS/catppuccin-icon-theme.nix {};
+  ani-cli = pkgs.callPackage ../../universal/personalPKGS/ani-cli.nix {};
+  fsorter = pkgs.callPackage ../../universal/personalPKGS/fsorter.nix {};
 in
 {
   # Home Manager needs a bit of information about you and the paths it should

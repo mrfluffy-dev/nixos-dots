@@ -42,10 +42,11 @@ in
       name = "Dracula";
       package = pkgs.dracula-icon-theme;
     };
-    cursorTheme = {
-      name = "oreo_purple_cursors";
-    };
+    #cursorTheme = {
+    #  name = "oreo_purple_cursors";
+    #};
   };
+
 
 
   home.packages = with pkgs; [
@@ -93,7 +94,7 @@ in
     ".config/zsh".source = ../../universal/dots/zsh;
     ".config/nvim".source = ../../universal/dots/nvim;
     "Pictures/Wallpapers".source = ../../universal/wallpapers;
-    ".local/share/icons/oreo_purple_cursors".source = ../../universal/cursors/oreo_purple_cursors;
+    #".local/share/icons/oreo_purple_cursors".source = ../../universal/cursors/oreo_purple_cursors;
 
   };
 
