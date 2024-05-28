@@ -1,10 +1,10 @@
 { config, lib, pkgs, ... }:
 
 {
-   # Enable CUPS to print documents.
+  # Enable CUPS to print documents.
   services.printing.enable = true;
 
-   services.gnome.gnome-keyring.enable = true;
+  services.gnome.gnome-keyring.enable = true;
   # Configure keymap in X11
   # services.xserver.xkb.layout = "us";
   # services.xserver.xkb.options = "eurosign:e,caps:escape";
@@ -22,32 +22,35 @@
     # If you want to use JACK applications, uncomment this
     jack.enable = true;
   };
+  services.blueman.enable = true;
+
   # Enable touchpad support (enabled default in most desktopManager).
   # services.xserver.libinput.enable = true;
 
   # List services that you want to enable:
-  systemd.tmpfiles.rules = [
-    "L+    /opt/rocm/hip   -    -    -     -    ${pkgs.rocmPackages.clr}"
-  ];
+  systemd.tmpfiles.rules =
+    [ "L+    /opt/rocm/hip   -    -    -     -    ${pkgs.rocmPackages.clr}" ];
   services.emacs = {
     enable = true;
-    package = pkgs.emacs; # replace with emacs-gtk, or a version provided by the community overlay if desired.
+    package =
+      pkgs.emacs; # replace with emacs-gtk, or a version provided by the community overlay if desired.
   };
 
   services.ollama = {
     enable = true;
     listenAddress = "0.0.0.0:11434";
-    package = (pkgs.ollama.override {  enableRocm = true; });
+    acceleration = "rocm";
   };
   services.gvfs.enable = true;
   services.resolved.enable = true;
 
-  virtualisation.docker={
-	enable = true;
-	storageDriver = "btrfs";
-  };
   virtualisation.libvirtd.enable = true;
   # Enable the OpenSSH daemon.
-  # services.openssh.enable = true;
+  services.openssh.enable = true;
+
+  #udev rules
+  #services.udev.extraRules = ''
+  # KERNEL=="hidraw*", KERNELS=="*054C:0CE6*", MODE="0660", TAG+="uaccess"
+  #'';
 
 }

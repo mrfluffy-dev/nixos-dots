@@ -9,19 +9,18 @@
 riverctl spawn 'export XDG_CURRENT_DESKTOP=river'
 riverctl spawn 'systemctl --user restart xdg-desktop-portal'
 riverctl spawn 'dbus-update-activation-environment --systemd WAYLAND_DISPLAY XDG_CURRENT_DESKTOP'
-riverctl spawn "$HOME/.azotebg"
+riverctl spawn 'swaybg -o HDMI-A-2 -i $HOME/Pictures/Wallpapers/138.png -o DP-1 -i $HOME/Pictures/Wallpapers/133.png'
 #riverctl spawn '/home/mrfluffy/.config/script/mic-gain-fix.sh'
 riverctl spawn 'waybar &'
-riverctl spawn '/usr/lib/polkit-gnome/polkit-gnome-authentication-agent-1'
+riverctl spawn '(hypridle &) && loginctl unlock-session'
+riverctl spawn '/nix/store/$(ls -la /nix/store | grep "polkit-gnome" | grep "^d" | awk ""$0=$NF" | head -n 1)/libexec/polkit-gnome-authentication-agent-1'
 riverctl spawn '/home/mrfluffy/.config/script/waylock.sh'
 riverctl spawn 'fcitx5 -d'
 riverctl spawn 'foot -s'
 riverctl focus-follows-cursor normal
-riverctl set-cursor-warp on-output-change
-riverctl xcursor-theme oreo_purple_cursors
+riverctl set-cursor-warp on-focus-change
+riverctl xcursor-theme oreo_spark_pink_cursors
 riverctl spawn 'wlr-randr --output DP-1 --mode 2560x1440@144 --pos 1920,0 --output HDMI-A-2 --mode 1920x1080@60 --pos 0,0'
-riverctl spawn 'swaybg -i $HOME/Pictures/Wallpapers/083.png'
-riverctl spawn '/nix/store/$(ls -la /nix/store | grep 'polkit-gnome' | grep '^d' | awk '$0=$NF' | head -n 1)/libexec/polkit-gnome-authentication-agent-1'
 # This is the example configuration file for river.
 #
 # If you wish to edit this, you will probably want to copy it to
@@ -36,7 +35,7 @@ riverctl spawn '/nix/store/$(ls -la /nix/store | grep 'polkit-gnome' | grep '^d'
 riverctl map normal Mod1 Return spawn footclient
 
 # Mod4+D open wofi
-riverctl map normal Mod1 D spawn "rofi -no-lazy-greb -show drun -icon-theme 'Papirus' -show-icons"
+riverctl map normal Mod1 D spawn "anyrun"
 
 #Mod4+b open browser
 riverctl map normal Mod1 B spawn firefox
@@ -170,9 +169,12 @@ done
 
 # Set background and border color
 riverctl background-color 0x002b36
-riverctl border-color-focused 0xD225FF
-riverctl border-color-unfocused 0xfab46a
-riverctl border-width 6
+riverctl border-color-focused 0x8218c4
+riverctl border-color-unfocused 0xff282a36
+riverctl border-width 3
+
+#set ssd for apps
+riverctl rule-add ssd
 
 # Set keyboard repeat rate
 riverctl set-repeat 50 300

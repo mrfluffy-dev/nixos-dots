@@ -1,9 +1,14 @@
 { config, pkgs, inputs, ... }:
 let
+  #hyprlock = pkgs.callPackage ../../universal/personalPKGS/hyprlock.nix {};
+  #hypridle = pkgs.callPackage ../../universal/personalPKGS/hypridle.nix {};
 in {
   imports = [
     inputs.nix-colors.homeManagerModules.default
     inputs.stylix.homeManagerModules.stylix
+    ./dots/hypr/hyprland.nix
+    ./dots/hypr/hyprpaper.nix
+    ./dots/eww/ewwScss.nix
     ../../universal/dots/foot/foot.nix
     ./stylix.nix
     ../../universal/homePkgs.nix
@@ -13,8 +18,8 @@ in {
   colorScheme = inputs.nix-colors.colorSchemes.dracula;
   # Home Manager needs a bit of information about you and the paths it should
   # manage.
-  home.username = "mrfluffy";
-  home.homeDirectory = "/home/mrfluffy";
+  home.username = "work";
+  home.homeDirectory = "/home/work";
 
   # This value determines the Home Manager release that your configuration is
   # compatible with. This helps avoid breakage when a new Home Manager release
@@ -42,27 +47,26 @@ in {
     #};
   };
 
-  home.packages = with pkgs; [
-    swaybg
-    lswt
+  home.packages = with pkgs;
+    [
+      tenv
+      # # Adds the 'hello' command to your environment. It prints a friendly
+      # # "Hello, world!" when run.
+      # pkgs.hello
 
-    # # Adds the 'hello' command to your environment. It prints a friendly
-    # # "Hello, world!" when run.
-    # pkgs.hello
+      # # It is sometimes useful to fine-tune packages, for example, by applying
+      # # overrides. You can do that directly here, just don't forget the
+      # # parentheses. Maybe you want to install Nerd Fonts with a limited number of
+      # # fonts?
+      # (pkgs.nerdfonts.override { fonts = [ "FantasqueSansMono" ]; })
 
-    # # It is sometimes useful to fine-tune packages, for example, by applying
-    # # overrides. You can do that directly here, just don't forget the
-    # # parentheses. Maybe you want to install Nerd Fonts with a limited number of
-    # # fonts?
-    # (pkgs.nerdfonts.override { fonts = [ "FantasqueSansMono" ]; })
-
-    # # You can also create simple shell scripts directly inside your
-    # # configuration. For example, this adds a command 'my-hello' to your
-    # # environment:
-    # (pkgs.writeShellScriptBin "my-hello" ''
-    #   echo "Hello, ${config.home.username}!"
-    # '')
-  ];
+      # # You can also create simple shell scripts directly inside your
+      # # configuration. For example, this adds a command 'my-hello' to your
+      # # environment:
+      # (pkgs.writeShellScriptBin "my-hello" ''
+      #   echo "Hello, ${config.home.username}!"
+      # '')
+    ];
 
   # Home Manager is pretty good at managing dotfiles. The primary way to manage
   # plain files is through 'home.file'.
@@ -78,15 +82,12 @@ in {
     #   org.gradle.daemon.idletimeout=3600000
     # '';
     #".config/hypr".source = ./dots/hypr;
-    #".config/eww/eww.yuck".source = ./dots/eww/eww.yuck;
-    #".config/eww/scripts".source = ./dots/eww/scripts;
+    ".config/eww/eww.yuck".source = ./dots/eww/eww.yuck;
+    ".config/eww/scripts".source = ./dots/eww/scripts;
     ".config/waybar".source = ./dots/waybar;
     ".config/doom".source = ../../universal/dots/doom;
-    ".config/river".source = ./dots/river;
-    ".config/hypr/hyprlock.conf".source =
-      ../../universal/dots/hypr/hyprlock.conf;
-    ".config/hypr/hypridle.conf".source =
-      ../../universal/dots/hypr/hypridle.conf;
+    ".config/hypr/hyprlock.conf".source = ./dots/hypr/hyprlock.conf;
+    ".config/hypr/hypridle.conf".source = ./dots/hypr/hypridle.conf;
     ".config/kitty".source = ../../universal/dots/kitty;
     ".config/zsh".source = ../../universal/dots/zsh;
     ".config/nvim".source = ../../universal/dots/nvim;
@@ -115,8 +116,8 @@ in {
     SDL_VIDEODRIVER = "wayland";
     _JAVA_AWT_WM_NONREPARENTING = 1;
     QT_QPA_PLATFORM = "wayland";
-    XDG_CURRENT_DESKTOP = "river";
-    XDG_SESSION_DESKTOP = "river";
+    XDG_CURRENT_DESKTOP = "hyprland";
+    XDG_SESSION_DESKTOP = "hyprland";
     MOZ_ENABLE_WAYLAND = 1;
     QT_QPA_PLATFORMTHEME = "qt6ct";
     WLR_DRM_NO_ATOMIC = 1;

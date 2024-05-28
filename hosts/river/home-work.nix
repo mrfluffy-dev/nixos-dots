@@ -1,5 +1,7 @@
 { config, pkgs, inputs, ... }:
 let
+  #hyprlock = pkgs.callPackage ../../universal/personalPKGS/hyprlock.nix {};
+  #hypridle = pkgs.callPackage ../../universal/personalPKGS/hypridle.nix {};
 in {
   imports = [
     inputs.nix-colors.homeManagerModules.default
@@ -13,8 +15,8 @@ in {
   colorScheme = inputs.nix-colors.colorSchemes.dracula;
   # Home Manager needs a bit of information about you and the paths it should
   # manage.
-  home.username = "mrfluffy";
-  home.homeDirectory = "/home/mrfluffy";
+  home.username = "work";
+  home.homeDirectory = "/home/work";
 
   # This value determines the Home Manager release that your configuration is
   # compatible with. This helps avoid breakage when a new Home Manager release
@@ -43,9 +45,9 @@ in {
   };
 
   home.packages = with pkgs; [
+    tenv
     swaybg
     lswt
-
     # # Adds the 'hello' command to your environment. It prints a friendly
     # # "Hello, world!" when run.
     # pkgs.hello

@@ -1,19 +1,13 @@
-{ config, lib, pkgs, ... }:
-
-{
-  nixpkgs.config = {
-    allowUnfree = true;
-  };
+{ config, lib, pkgs, pkgs-stable, ... }: {
+  nixpkgs.config = { allowUnfree = true; };
 
   nixpkgs.overlays = [
     (self: super: {
 
-      mpv = super.wrapMpv (
-	super.mpv.unwrapped.override { sixelSupport = true;
-      })
-       {
-	scripts = [ self.mpvScripts.mpris ];
-       };
+      mpv =
+        super.wrapMpv (super.mpv.unwrapped.override { sixelSupport = true; }) {
+          scripts = [ self.mpvScripts.mpris ];
+        };
     })
   ];
   # Some programs need SUID wrappers, can be configured further or are
@@ -27,10 +21,19 @@
   programs.zsh.enable = true;
   programs.corectrl.enable = true;
   programs.steam = {
-  enable = true;
-    remotePlay.openFirewall = true; # Open ports in the firewall for Steam Remote Play
-    dedicatedServer.openFirewall = true; # Open ports in the firewall for Source Dedicated Server
+    enable = true;
+    remotePlay.openFirewall =
+      true; # Open ports in the firewall for Steam Remote Play
+    dedicatedServer.openFirewall =
+      true; # Open ports in the firewall for Source Dedicated Server
   };
+  programs.droidcam.enable = true;
+  # enable dynamic bin executables
+  programs.nix-ld.enable = true;
+  programs.nix-ld.libraries = with pkgs;
+    [
+      # add libraries here
+    ];
 
   # List packages installed in system profile. To search, run:
   # $ nix search wget
@@ -62,6 +65,9 @@
     rocmPackages.rccl
     ffmpeg
     libva-utils
+    nixfmt
+    nil
+    #blender-hip
   ];
 
 }

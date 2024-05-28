@@ -5,18 +5,17 @@
 { config, lib, pkgs, inputs, ... }:
 
 {
-  imports =
-    [ # Include the results of the hardware scan.
-      ../../hardware-configuration.nix
-      ../../universal/nixOSPkgs.nix
-      ../../universal/hardware.nix
-      ../../universal/boot.nix
-      ../../universal/network.nix
-      ../../universal/services.nix
-      ../../universal/fonts.nix
-      ../../universal/inputMethods.nix
-      inputs.home-manager.nixosModules.home-manager
-    ];
+  imports = [ # Include the results of the hardware scan.
+    ../../hardware-configuration.nix
+    ../../universal/nixOSPkgs.nix
+    ../../universal/hardware.nix
+    ../../universal/boot.nix
+    ../../universal/network.nix
+    ../../universal/services.nix
+    ../../universal/fonts.nix
+    ../../universal/inputMethods.nix
+    inputs.home-manager.nixosModules.home-manager
+  ];
 
   environment.variables = {
     # VAAPI and VDPAU config for accelerated video.
@@ -38,33 +37,65 @@
   # };
 
   programs.hyprland = {
-	  enable = true;
+    enable = true;
     xwayland.enable = true;
+    #package = inputs.hyprland.packages."${pkgs.system}".hyprland;
+    package = pkgs.hyprland;
   };
 
-  xdg.portal.enable = true;
-  security.rtkit.enable = true;
-  environment.sessionVariables = {
-    ZDOTDIR = "$HOME/.config/zsh";
+  xdg.portal = {
+    enable = true;
+    wlr.enable = true;
+    extraPortals = [ pkgs.xdg-desktop-portal-gtk ];
   };
+  security.rtkit.enable = true;
+  environment.sessionVariables = { ZDOTDIR = "$HOME/.config/zsh"; };
 
   # Define a user account. Don't forget to set a password with ‘passwd’.
   users.users.mrfluffy = {
     isNormalUser = true;
     shell = pkgs.zsh;
-    extraGroups = [ "wheel""networkmanager""video""render""docker""libvirt" ]; # Enable ‘sudo’ for the user.
-    packages = with pkgs; [
+    extraGroups = [
+      "wheel"
+      "networkmanager"
+      "video"
+      "render"
+      "docker"
+      "libvirt"
+    ]; # Enable ‘sudo’ for the user.
+    packages = with pkgs;
+      [
 
-    ];
+      ];
+  };
+  # Define a user account. Don't forget to set a password with ‘passwd’.
+  users.users.work = {
+    isNormalUser = true;
+    shell = pkgs.zsh;
+    extraGroups = [
+      "wheel"
+      "networkmanager"
+      "video"
+      "render"
+      "docker"
+      "libvirt"
+    ]; # Enable ‘sudo’ for the user.
+    packages = with pkgs;
+      [
+
+      ];
   };
 
   home-manager = {
     # also pass inputs to home-manager modules
-    extraSpecialArgs = {inherit inputs;};
+    extraSpecialArgs = { inherit inputs; };
     users = {
       "mrfluffy" = import ./home.nix;
+      "work" = import ./home-work.nix;
     };
   };
+
+  security.pam.services.swaylock = { };
 
   # Copy the NixOS configuration file and link it from the resulting system
   # (/run/current-system/configuration.nix). This is useful in case you

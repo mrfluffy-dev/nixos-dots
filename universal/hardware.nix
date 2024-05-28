@@ -32,13 +32,17 @@
   hardware.bluetooth.settings = {
     General = {
       Enable = "Source,Sink,Media,Socket";
+      #Experimental = true;
     };
   };
   hardware.opentabletdriver.enable = true;
   hardware.opentabletdriver.daemon.enable = true;
   # Enable sound.
   # sound.enable = true;
-  # hardware.pulseaudio.enable = true;
+  #hardware.pulseaudio = {
+  #  enable = true;
+  #  package = pkgs.pulseaudioFull;
+  #};
 
 
 }

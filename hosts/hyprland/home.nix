@@ -1,7 +1,8 @@
 { config, pkgs, inputs, ... }:
 let
-in
-{
+  #hyprlock = pkgs.callPackage ../../universal/personalPKGS/hyprlock.nix {};
+  #hypridle = pkgs.callPackage ../../universal/personalPKGS/hypridle.nix {};
+in {
   imports = [
     inputs.nix-colors.homeManagerModules.default
     inputs.stylix.homeManagerModules.stylix
@@ -15,7 +16,6 @@ in
 
   # you can go look here for a list of color schemes https://github.com/tinted-theming/schemes
   colorScheme = inputs.nix-colors.colorSchemes.dracula;
-
   # Home Manager needs a bit of information about you and the paths it should
   # manage.
   home.username = "mrfluffy";
@@ -47,30 +47,26 @@ in
     #};
   };
 
+  home.packages = with pkgs;
+    [
 
+      # # Adds the 'hello' command to your environment. It prints a friendly
+      # # "Hello, world!" when run.
+      # pkgs.hello
 
-  home.packages = with pkgs; [
+      # # It is sometimes useful to fine-tune packages, for example, by applying
+      # # overrides. You can do that directly here, just don't forget the
+      # # parentheses. Maybe you want to install Nerd Fonts with a limited number of
+      # # fonts?
+      # (pkgs.nerdfonts.override { fonts = [ "FantasqueSansMono" ]; })
 
-    # # Adds the 'hello' command to your environment. It prints a friendly
-    # # "Hello, world!" when run.
-    # pkgs.hello
-
-    # # It is sometimes useful to fine-tune packages, for example, by applying
-    # # overrides. You can do that directly here, just don't forget the
-    # # parentheses. Maybe you want to install Nerd Fonts with a limited number of
-    # # fonts?
-    # (pkgs.nerdfonts.override { fonts = [ "FantasqueSansMono" ]; })
-
-    # # You can also create simple shell scripts directly inside your
-    # # configuration. For example, this adds a command 'my-hello' to your
-    # # environment:
-    # (pkgs.writeShellScriptBin "my-hello" ''
-    #   echo "Hello, ${config.home.username}!"
-    # '')
-    zed
-  ];
-
-
+      # # You can also create simple shell scripts directly inside your
+      # # configuration. For example, this adds a command 'my-hello' to your
+      # # environment:
+      # (pkgs.writeShellScriptBin "my-hello" ''
+      #   echo "Hello, ${config.home.username}!"
+      # '')
+    ];
 
   # Home Manager is pretty good at managing dotfiles. The primary way to manage
   # plain files is through 'home.file'.
@@ -88,8 +84,10 @@ in
     #".config/hypr".source = ./dots/hypr;
     ".config/eww/eww.yuck".source = ./dots/eww/eww.yuck;
     ".config/eww/scripts".source = ./dots/eww/scripts;
+    ".config/waybar".source = ./dots/waybar;
     ".config/doom".source = ../../universal/dots/doom;
-    #".config/foot".source = ../../universal/dots/foot;
+    ".config/hypr/hyprlock.conf".source = ./dots/hypr/hyprlock.conf;
+    ".config/hypr/hypridle.conf".source = ./dots/hypr/hypridle.conf;
     ".config/kitty".source = ../../universal/dots/kitty;
     ".config/zsh".source = ../../universal/dots/zsh;
     ".config/nvim".source = ../../universal/dots/nvim;
@@ -127,8 +125,6 @@ in
     LIBVA_DRIVER_NAME = "radeonsi";
     OLLAMA_HOST = "0.0.0.0";
   };
-
-  
 
   # Let Home Manager install and manage itself.
   programs.home-manager.enable = true;

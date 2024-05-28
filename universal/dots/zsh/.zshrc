@@ -74,9 +74,10 @@ export ZDOTDIR="$HOME"/.config/zsh
 #alias mv="mvg -g"
 alias cp="xcp"
 macchina
-[ -f ~/.zsh/.fzf.zsh ] && source ~/.zsh/.fzf.zsh
-export PATH=$PATH:/home/mrfluffy/.spicetify
+#[ -f ~/.zsh/.fzf.zsh ] && source ~/.zsh/.fzf.zsh
+export PATH=$PATH:$HOME/.spicetify
 eval "$(zoxide init zsh)"
+eval "$(atuin init zsh)"
 
 #[ -f "/home/mrfluffy/.ghcup/env" ] && source "/home/mrfluffy/.ghcup/env" # ghcup-env
 # send all output to void
@@ -84,4 +85,4 @@ eval "$(zoxide init zsh)"
 
 #[ -f "/home/mrfluffy/.ghcup/env" ] && source "/home/mrfluffy/.ghcup/env" # ghcup-env
 
-[ -f "/home/mrfluffy/.ghcup/env" ] && source "/home/mrfluffy/.ghcup/env" # ghcup-env
+[ -f "$HOME/.ghcup/env" ] && source "$HOME/.ghcup/env" # ghcup-env
