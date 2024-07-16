@@ -1,41 +1,43 @@
-{ config, lib, pkgs, inputs, ... }:
+{
+  config,
+  lib,
+  pkgs,
+  inputs,
+  ...
+}:
 let
-  #hyprlock = pkgs.callPackage ../../universal/personalPKGS/hyprlock.nix {};
-  #hypridle = pkgs.callPackage ../../universal/personalPKGS/hypridle.nix {};
-in {
+in
+#hyprlock = pkgs.callPackage ../../universal/personalPKGS/hyprlock.nix {};
+#hypridle = pkgs.callPackage ../../universal/personalPKGS/hypridle.nix {};
+{
   imports = [ inputs.anyrun.homeManagerModules.default ];
 
   nixpkgs.config.allowUnfree = true;
-  nixpkgs.config.permittedInsecurePackages =
-    [ "freeimage-unstable-2021-11-01" ];
-  programs.vscode = { enable = true; };
+  nixpkgs.config.permittedInsecurePackages = [ "freeimage-unstable-2021-11-01" ];
+  programs.vscode = {
+    enable = true;
+  };
   programs.anyrun = {
     enable = true;
     config = {
       plugins = [
         # An array of all the plugins you want, which either can be paths to the .so files, or their packages
-        "${
-          inputs.anyrun.packages.${pkgs.system}.anyrun-with-all-plugins
-        }/lib/libapplications.so"
-        "${
-          inputs.anyrun.packages.${pkgs.system}.anyrun-with-all-plugins
-        }/lib/libdictionary.so"
-        "${
-          inputs.anyrun.packages.${pkgs.system}.anyrun-with-all-plugins
-        }/lib/libsymbols.so"
-        "${
-          inputs.anyrun.packages.${pkgs.system}.anyrun-with-all-plugins
-        }/lib/librink.so"
-        "${
-          inputs.anyrun.packages.${pkgs.system}.anyrun-with-all-plugins
-        }/lib/libtranslate.so"
-        "${
-          inputs.anyrun.packages.${pkgs.system}.anyrun-with-all-plugins
-        }/lib/libwebsearch.so"
+        "${inputs.anyrun.packages.${pkgs.system}.anyrun-with-all-plugins}/lib/libapplications.so"
+        "${inputs.anyrun.packages.${pkgs.system}.anyrun-with-all-plugins}/lib/libdictionary.so"
+        "${inputs.anyrun.packages.${pkgs.system}.anyrun-with-all-plugins}/lib/libsymbols.so"
+        "${inputs.anyrun.packages.${pkgs.system}.anyrun-with-all-plugins}/lib/librink.so"
+        "${inputs.anyrun.packages.${pkgs.system}.anyrun-with-all-plugins}/lib/libtranslate.so"
+        "${inputs.anyrun.packages.${pkgs.system}.anyrun-with-all-plugins}/lib/libwebsearch.so"
       ];
-      x = { fraction = 0.5; };
-      y = { fraction = 0.3; };
-      width = { fraction = 0.3; };
+      x = {
+        fraction = 0.5;
+      };
+      y = {
+        fraction = 0.3;
+      };
+      width = {
+        fraction = 0.3;
+      };
       hideIcons = false;
       ignoreExclusiveZones = false;
       layer = "overlay";
@@ -169,5 +171,6 @@ in {
     brave
     slack
     zed-editor
+    dualsensectl
   ];
 }

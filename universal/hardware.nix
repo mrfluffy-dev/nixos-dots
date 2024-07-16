@@ -1,34 +1,37 @@
-{ config, lib, pkgs, ... }:
+{
+  config,
+  lib,
+  pkgs,
+  ...
+}:
 
 {
   # hardware stuff
-  hardware.opengl = {
+  hardware.graphics = {
     enable = true;
-    driSupport = true;
-    driSupport32Bit = true;
-
+    enable32Bit = true;
     extraPackages = with pkgs; [
-     rocmPackages.rocm-runtime
-     rocmPackages.clr.icd #following for GPU AI acceleration
-     rocmPackages.rocm-smi
-     rocmPackages.clr
-     rocmPackages.hipblas
-     rocmPackages.rocblas
-     rocmPackages.rocsolver
-     rocmPackages.rocm-comgr
-     rocmPackages.rocsparse
-     rocm-opencl-icd
-     rocm-opencl-runtime
-     libva
-     vaapiVdpau
-     libvdpau-va-gl
+      rocmPackages.rocm-runtime
+      rocmPackages.clr.icd # following for GPU AI acceleration
+      rocmPackages.rocm-smi
+      rocmPackages.clr
+      rocmPackages.hipblas
+      rocmPackages.rocblas
+      rocmPackages.rocsolver
+      rocmPackages.rocm-comgr
+      rocmPackages.rocsparse
+      rocm-opencl-icd
+      rocm-opencl-runtime
+      libva
+      vaapiVdpau
+      libvdpau-va-gl
     ];
   };
   hardware.bluetooth.enable = true; # enables support for Bluetooth
   hardware.bluetooth.powerOnBoot = true; # powers up the default Bluetooth controller on boot
- # hardware.pulseaudio = {
- #   package = pkgs.pulseaudioFull;
- # };
+  # hardware.pulseaudio = {
+  #   package = pkgs.pulseaudioFull;
+  # };
   hardware.bluetooth.settings = {
     General = {
       Enable = "Source,Sink,Media,Socket";
@@ -43,6 +46,5 @@
   #  enable = true;
   #  package = pkgs.pulseaudioFull;
   #};
-
 
 }

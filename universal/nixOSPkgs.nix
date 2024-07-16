@@ -65,7 +65,7 @@
     rocmPackages.rccl
     ffmpeg
     libva-utils
-    nixfmt
+    nixfmt-rfc-style
     nil
     #blender-hip
   ];

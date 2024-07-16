@@ -11,9 +11,11 @@
 
     stylix.url = "github:danth/stylix";
     nix-colors.url = "github:Misterio77/nix-colors";
-    hyprland.url = "github:/hyprwm/Hyprland/?ref=7230fe53cf3cabc9be8821784fb79507fee4c9e9";
+    hyprland.url =
+      "github:/hyprwm/Hyprland/?ref=7230fe53cf3cabc9be8821784fb79507fee4c9e9";
     anyrun.url = "github:Kirottu/anyrun";
     anyrun.inputs.nixpkgs.follows = "nixpkgs";
+    dvd-zig.url = "github:mrfluffy-dev/dvd-zig";
   };
 
   outputs = { self, nixpkgs, nixpkgs-stable, anyrun, ... }@inputs:
