@@ -172,5 +172,6 @@ in
     slack
     zed-editor
     dualsensectl
+    davinci-resolve
   ];
 }

@@ -11,14 +11,20 @@
 
     stylix.url = "github:danth/stylix";
     nix-colors.url = "github:Misterio77/nix-colors";
-    hyprland.url =
-      "github:/hyprwm/Hyprland/?ref=7230fe53cf3cabc9be8821784fb79507fee4c9e9";
+    hyprland.url = "github:/hyprwm/Hyprland/?ref=9a09eac79b85c846e3a865a9078a3f8ff65a9259";
     anyrun.url = "github:Kirottu/anyrun";
     anyrun.inputs.nixpkgs.follows = "nixpkgs";
     dvd-zig.url = "github:mrfluffy-dev/dvd-zig";
   };
 
-  outputs = { self, nixpkgs, nixpkgs-stable, anyrun, ... }@inputs:
+  outputs =
+    {
+      self,
+      nixpkgs,
+      nixpkgs-stable,
+      anyrun,
+      ...
+    }@inputs:
     let
       system = "x86_64-linux";
       pkgs = nixpkgs.legacyPackages.${system};
@@ -29,7 +35,8 @@
           allowUnfreePredicate = (_: true);
         };
       };
-    in {
+    in
+    {
 
       nixosConfigurations = {
         hyprland = nixpkgs.lib.nixosSystem {
@@ -43,14 +50,18 @@
           ];
         };
         river = nixpkgs.lib.nixosSystem {
-          specialArgs = { inherit inputs; };
+          specialArgs = {
+            inherit inputs;
+          };
           modules = [
             ./hosts/river/configuration.nix
             inputs.home-manager.nixosModules.default
           ];
         };
         qtile = nixpkgs.lib.nixosSystem {
-          specialArgs = { inherit inputs; };
+          specialArgs = {
+            inherit inputs;
+          };
           modules = [
             ./hosts/qtile/configuration.nix
             inputs.home-manager.nixosModules.default
