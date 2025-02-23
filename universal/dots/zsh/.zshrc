@@ -79,6 +79,15 @@ export PATH=$PATH:$HOME/.spicetify
 eval "$(zoxide init zsh)"
 eval "$(atuin init zsh)"
 
+nixdev() {
+  if [[ -z "$1" ]]; then
+    echo "Usage: nixdev <language>"
+    return 1
+  fi
+  nix flake init --template "https://flakehub.com/f/the-nix-way/dev-templates/*#$1"
+}
+
+
 #[ -f "/home/mrfluffy/.ghcup/env" ] && source "/home/mrfluffy/.ghcup/env" # ghcup-env
 # send all output to void
 #ln -s /home/mrfluffy/.nix-profile/share/applications/* ~/.local/share/applications/ 2> /dev/null

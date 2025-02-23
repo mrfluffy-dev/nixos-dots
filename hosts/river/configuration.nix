@@ -65,6 +65,7 @@
   users.users.mrfluffy = {
     isNormalUser = true;
     shell = pkgs.zsh;
+    createHome = true;
     extraGroups = [
       "wheel"
       "networkmanager"
@@ -77,10 +78,11 @@
 
     ];
   };
-  # Define a user account. Don't forget to set a password with ‘passwd’.
+
   users.users.work = {
     isNormalUser = true;
     shell = pkgs.zsh;
+    createHome = true;
     extraGroups = [
       "wheel"
       "networkmanager"
@@ -101,6 +103,7 @@
     };
     users = {
       "mrfluffy" = import ./home.nix;
+
       "work" = import ./home-work.nix;
     };
   };

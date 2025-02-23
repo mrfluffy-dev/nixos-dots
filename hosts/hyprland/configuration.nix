@@ -2,10 +2,17 @@
 # your system. Help is available in the configuration.nix(5) man page, on
 # https://search.nixos.org/options and in the NixOS manual (`nixos-help`).
 
-{ config, lib, pkgs, inputs, ... }:
+{
+  config,
+  lib,
+  pkgs,
+  inputs,
+  ...
+}:
 
 {
-  imports = [ # Include the results of the hardware scan.
+  imports = [
+    # Include the results of the hardware scan.
     ../../hardware-configuration.nix
     ../../universal/nixOSPkgs.nix
     ../../universal/hardware.nix
@@ -23,7 +30,10 @@
     "VDPAU_DRIVER" = "radeonsi";
     "LIBVA_DRIVER_NAME" = "radeonsi";
   };
-  nix.settings.experimental-features = [ "nix-command" "flakes" ];
+  nix.settings.experimental-features = [
+    "nix-command"
+    "flakes"
+  ];
 
   # Set your time zone.
   time.timeZone = "Europe/Dublin";
@@ -49,7 +59,9 @@
     extraPortals = [ pkgs.xdg-desktop-portal-gtk ];
   };
   security.rtkit.enable = true;
-  environment.sessionVariables = { ZDOTDIR = "$HOME/.config/zsh"; };
+  environment.sessionVariables = {
+    ZDOTDIR = "$HOME/.config/zsh";
+  };
 
   # Define a user account. Don't forget to set a password with ‘passwd’.
   users.users.mrfluffy = {
@@ -63,27 +75,9 @@
       "docker"
       "libvirt"
     ]; # Enable ‘sudo’ for the user.
-    packages = with pkgs;
-      [
+    packages = with pkgs; [
 
-      ];
-  };
-  # Define a user account. Don't forget to set a password with ‘passwd’.
-  users.users.work = {
-    isNormalUser = true;
-    shell = pkgs.zsh;
-    extraGroups = [
-      "wheel"
-      "networkmanager"
-      "video"
-      "render"
-      "docker"
-      "libvirt"
-    ]; # Enable ‘sudo’ for the user.
-    packages = with pkgs;
-      [
-
-      ];
+    ];
   };
 
   home-manager = {
@@ -91,7 +85,6 @@
     extraSpecialArgs = { inherit inputs; };
     users = {
       "mrfluffy" = import ./home.nix;
-      "work" = import ./home-work.nix;
     };
   };
 

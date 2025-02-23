@@ -1,14 +1,19 @@
-{ config, pkgs, inputs, ... }:
+{
+  config,
+  pkgs,
+  inputs,
+  ...
+}:
 let
-  #hyprlock = pkgs.callPackage ../../universal/personalPKGS/hyprlock.nix {};
-  #hypridle = pkgs.callPackage ../../universal/personalPKGS/hypridle.nix {};
-in {
+in
+{
   imports = [
     inputs.nix-colors.homeManagerModules.default
     inputs.stylix.homeManagerModules.stylix
     ../../universal/dots/foot/foot.nix
     ./stylix.nix
     ../../universal/homePkgs.nix
+
   ];
 
   # you can go look here for a list of color schemes https://github.com/tinted-theming/schemes
@@ -44,11 +49,15 @@ in {
     #};
   };
 
+
   home.packages = with pkgs; [
-    tenv
     swaybg
     lswt
     wlr-randr
+    inputs.dvd-zig.packages."${pkgs.system}".dvd-zig
+    brave
+    swaynotificationcenter
+
     # # Adds the 'hello' command to your environment. It prints a friendly
     # # "Hello, world!" when run.
     # pkgs.hello
@@ -86,10 +95,8 @@ in {
     ".config/waybar".source = ./dots/waybar;
     ".config/doom".source = ../../universal/dots/doom;
     ".config/river".source = ./dots/river;
-    ".config/hypr/hyprlock.conf".source =
-      ../../universal/dots/hypr/hyprlock.conf;
-    ".config/hypr/hypridle.conf".source =
-      ../../universal/dots/hypr/hypridle.conf;
+    ".config/hypr/hyprlock.conf".source = ../../universal/dots/hypr/hyprlock.conf;
+    ".config/hypr/hypridle.conf".source = ../../universal/dots/hypr/hypridle.conf;
     ".config/kitty".source = ../../universal/dots/kitty;
     ".config/zsh".source = ../../universal/dots/zsh;
     ".config/nvim".source = ../../universal/dots/nvim;

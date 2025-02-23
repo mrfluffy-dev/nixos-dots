@@ -76,6 +76,13 @@ in
   #   enable = true;
   #   enableSSHSupport = true;
   # };
+  programs.direnv = {
+    enable = true;
+    enableZshIntegration = true;
+    nix-direnv.enable = true;
+    silent = true;
+
+  };
   programs.virt-manager.enable = true;
   programs.zsh.enable = true;
   programs.corectrl.enable = true;
@@ -89,6 +96,7 @@ in
   programs.nix-ld.enable = true;
   programs.nix-ld.libraries = with pkgs; [
     # add libraries here
+    libGL
   ];
 
   # List packages installed in system profile. To search, run:

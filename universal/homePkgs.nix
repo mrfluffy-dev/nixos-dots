@@ -47,7 +47,8 @@ in
       maxEntries = null;
     };
     extraCss = ''
-      .some_class {
+      .some_class 
+      enable = true;{
         background: red;
       }
     '';
@@ -157,7 +158,7 @@ in
     hyprlock
     mangohud
     gamemode
-    vesktop
+    discord
     mpv
     rofi
     xdg-user-dirs
@@ -173,5 +174,8 @@ in
     zed-editor
     dualsensectl
     davinci-resolve
+    mangayomi
+    inputs.way-inhibitor.packages.${pkgs.system}.default
+    inputs.zen-browser.packages.${pkgs.system}.twilight
   ];
 }

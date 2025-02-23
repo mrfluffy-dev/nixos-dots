@@ -6,6 +6,13 @@
 #
 #eval $(/usr/bin/gnome-keyring-daemon --start --components=pkcs11,secrets,ssh)
 #export SSH_AUTH_SOCK
+browser="zen-twilight"
+file_manager="pcmanfm"
+terminal="footclient"
+drunner="anyrun"
+editor="emacs"
+
+
 riverctl spawn 'export XDG_CURRENT_DESKTOP=river'
 riverctl spawn 'systemctl --user restart xdg-desktop-portal'
 riverctl spawn 'dbus-update-activation-environment --systemd WAYLAND_DISPLAY XDG_CURRENT_DESKTOP'
@@ -17,6 +24,7 @@ riverctl spawn '/nix/store/$(ls -la /nix/store | grep "polkit-gnome" | grep "^d"
 riverctl spawn '/home/mrfluffy/.config/script/waylock.sh'
 riverctl spawn 'fcitx5 -d'
 riverctl spawn 'foot -s'
+riverctl spawn '[ -n "$(whereis swaync | awk '{print $2}')" ] && swaync'
 riverctl focus-follows-cursor normal
 riverctl set-cursor-warp on-focus-change
 riverctl xcursor-theme oreo_spark_pink_cursors
@@ -30,21 +38,23 @@ riverctl spawn 'wlr-randr --output DP-1 --mode 2560x1440@144 --pos 1920,0 --outp
 # documentation.
 
 # Note: the "Mod4" modifier is also known as Logo, GUI, Windows, Mod4, etc.
+#
+riverctl map normal Mod1+Shift+Control L spawn way-inhibitor
 
 # Mod4+Shift+Return to start an instance of foot (https://codeberg.org/dnkl/foot)
-riverctl map normal Mod1 Return spawn footclient
+riverctl map normal Mod1 Return spawn $terminal
 
 # Mod4+D open wofi
-riverctl map normal Mod1 D spawn "anyrun"
+riverctl map normal Mod1 D spawn $drunner
 
 #Mod4+b open browser
-riverctl map normal Mod1 B spawn firefox
+riverctl map normal Mod1 B spawn $browser
 
 #Mod1+F open file manager
-riverctl map normal Mod1 F spawn pcmanfm
+riverctl map normal Mod1 F spawn $file_manager
 
 #mod1+e open emacs
-riverctl map normal Mod1 E spawn emacs
+riverctl map normal Mod1 E spawn $editor
 
 # Mod4+Q to close the focused view
 riverctl map normal Mod1 Q close
@@ -182,7 +192,7 @@ riverctl set-repeat 50 300
 # Make certain views start floating
 riverctl float-filter-add app-id float
 riverctl float-filter-add title "popup title with spaces"
-
+riverctl rule-add -title "Idle Inhibitor" float 
 # Set app-ids and titles of views which should use client side decorations
 riverctl csd-filter-add app-id "gedit"
 

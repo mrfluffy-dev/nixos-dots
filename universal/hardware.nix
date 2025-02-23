@@ -20,8 +20,6 @@
       rocmPackages.rocsolver
       rocmPackages.rocm-comgr
       rocmPackages.rocsparse
-      rocm-opencl-icd
-      rocm-opencl-runtime
       libva
       vaapiVdpau
       libvdpau-va-gl
