@@ -46,7 +46,7 @@
 (setq scroll-step 1) ;; keyboard scroll one line at a time
 (setq auto-window-vscroll nil)
 
-(set-fontset-font "fontset-default" nil (font-spec :size 17 :name "Meterial Icons"))
+(set-fontset-font "fontset-default" nil (font-spec :size 17 :name "ZedMono Nerd Font"))
 
 (setq doom-font (font-spec :family "Illusion Z" :size 17)
       doom-variable-pitch-font (font-spec :family "Illusion Z" :size 17)
@@ -197,7 +197,7 @@
   ;; setup key bindings
   (setopt ellama-keymap-prefix "C-c e")
   ;; language you want ellama to translate to
-  (setopt ellama-language "German")
+  (setopt ellama-language "English")
   ;; could be llm-openai for example
   (require 'llm-ollama)
   (setopt ellama-provider
