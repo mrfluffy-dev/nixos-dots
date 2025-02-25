@@ -49,13 +49,15 @@
 ;; ...Or *all* packages (NOT RECOMMENDED; will likely break things)
                                         ;(unpin! t)
 (package! catppuccin-theme)
-(package! elcord)
+;;(package! elcord)
 (package! fill-column-indicator)
 (package! rainbow-mode)
 (package! poly-org)
 (package! ein)
 (package! copilot
   :recipe (:host github :repo "zerolfx/copilot.el" :files ("*.el" "dist")))
+;;(package! codeium
+;;  :recipe (:host github :repo "Exafunction/codeium.el" :files ("*.el")))
 
 (package! ellama)
 (package! highlight-indent-guides)
@@ -70,5 +72,7 @@
 (package! mips-mode :pin "98795cdc81979821ac35d9f94ce354cd99780c67")
 (package! riscv-mode :pin "8e335b9c93de93ed8dd063d702b0f5ad48eef6d7")
 (package! x86-lookup :pin "1573d61cc4457737b94624598a891c837fb52c16")
+(package! package-lint :pin "21edc6d0d0eadd2d0a537f422fb9b7b8a3ae6991")
+
 
 ;;(package! jupyter)

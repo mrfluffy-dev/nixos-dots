@@ -125,7 +125,6 @@ in
     firefox
     btop
     libreoffice-fresh
-    waybar
     rustup
     rustc
     macchina
@@ -155,7 +154,6 @@ in
     jellyfin-media-player
     pcmanfm
     hyprpicker
-    hyprlock
     mangohud
     gamemode
     discord
@@ -164,7 +162,6 @@ in
     xdg-user-dirs
     xarchiver
     atuin
-    hypridle
     blender-hip
     wineWowPackages.stable
     gdb

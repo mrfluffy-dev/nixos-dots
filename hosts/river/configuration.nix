@@ -9,7 +9,9 @@
   inputs,
   ...
 }:
-
+let
+  oreo = pkgs.callPackage ../../universal/personalPKGS/oreo.nix { };
+in
 {
   imports = [
     # Include the results of the hardware scan.
@@ -21,14 +23,19 @@
     ../../universal/services.nix
     ../../universal/fonts.nix
     ../../universal/inputMethods.nix
+    #./stylixsys.nix
+    #inputs.stylix.nixosModules.stylix
     inputs.home-manager.nixosModules.home-manager
   ];
 
+  environment.pathsToLink = [ "/share/zsh" ];
   environment.variables = {
     # VAAPI and VDPAU config for accelerated video.
     # See https://wiki.archlinux.org/index.php/Hardware_video_acceleration
-    "VDPAU_DRIVER" = "radeonsi";
-    "LIBVA_DRIVER_NAME" = "radeonsi";
+    VDPAU_DRIVER = "radeonsi";
+    LIBVA_DRIVER_NAME = "radeonsi";
+    XDG_CURRENT_DESKTOP = "river";
+    #QT_QPA_PLATFORMTHEME = "qt6ct";
   };
   nix.settings.experimental-features = [
     "nix-command"
@@ -47,15 +54,28 @@
   # };
   #
   programs.river.enable = true;
-
-  xdg.portal = {
+  services.xserver = {
     enable = true;
-    wlr.enable = true;
-    extraPortals = [
-      pkgs.xdg-desktop-portal-gtk
-      pkgs.xdg-desktop-portal-wlr
-    ];
+    displayManager.lightdm = {
+      enable = true;
+      greeters.gtk = {
+        enable = true;
+        theme.package = pkgs.amarena-theme;
+        theme.name = "amarena";
+        cursorTheme.package = oreo.override { colors = [ "oreo_spark_pink_cursors" ]; };
+        cursorTheme.name = "oreo_spark_pink_cursors";
+        extraConfig = "background=${../../universal/wallpapers/138.png}";
+      };
+    };
   };
+  #xdg.portal = {
+  #  enable = true;
+  #  wlr.enable = true;
+  #  extraPortals = [
+  #    pkgs.xdg-desktop-portal-gtk
+  #    pkgs.xdg-desktop-portal-wlr
+  #  ];
+  #};
   security.rtkit.enable = true;
   environment.sessionVariables = {
     ZDOTDIR = "$HOME/.config/zsh";

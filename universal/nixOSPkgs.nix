@@ -132,6 +132,8 @@ in
     libva-utils
     nixfmt-rfc-style
     nil
+    kdePackages.qt6ct
+    ripgrep
     #blender-hip
   ];
 

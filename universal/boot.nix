@@ -1,12 +1,34 @@
-{ config, lib, pkgs, ... }:
+{
+  config,
+  lib,
+  pkgs,
+  ...
+}:
 
 {
   # Use the systemd-boot EFI boot loader.
-  boot.loader.systemd-boot.enable = true;
-  boot.loader.efi.canTouchEfiVariables = true;
-  boot.initrd.kernelModules = [ "amdgpu" "kvm" ];
-  boot.kernelPackages = pkgs.linuxPackages_latest;
-  boot.kernelParams =
-    [ "video=DP-1:2560x1440@144" "video=HDMI-A-2:1920x1080@60" "ipv6e=1" ];
-  boot.plymouth.enable = true;
+  boot = {
+    loader = {
+      systemd-boot = {
+        enable = true;
+      };
+      efi.canTouchEfiVariables = true;
+    };
+    initrd.kernelModules = [
+      "amdgpu"
+      "kvm"
+    ];
+    kernelPackages = pkgs.linuxPackages_latest;
+    kernelParams = [
+      "video=2560x1440x32"
+      "ipv6e=1"
+    ];
+    plymouth = {
+      enable = true;
+      themePackages = [
+        pkgs.plymouth-matrix-theme
+      ];
+      theme = "matrix";
+    };
+  };
 }

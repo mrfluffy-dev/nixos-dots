@@ -25,7 +25,10 @@
 ;; There are two ways to load a theme. Both assume the theme is installed and
 ;; available. You can either set `doom-theme' or manually load a theme with the
 ;; `load-theme' function. This is the default:
-(setq doom-theme 'doom-dracula)
+(add-to-list 'load-path "~/.config/doom/themes")
+(setq doom-theme 'doom-hardcore)
+
+
 
 ;; If you use `org' and don't want your org files in the default location below,
 ;; change `org-directory'. It must be set before org loads!
@@ -156,34 +159,34 @@
 
 
 ;;discord rich presence
-(require 'elcord)
-(add-hook 'doom-switch-buffer-hook
-          (lambda ()
-            (if (string= (buffer-name) "*doom*")
-                (elcord-mode -1)
-              (elcord-mode 1))))
-
-(defun elcord--disable-elcord-if-no-frames (f)
-  (declare (ignore f))
-  (when (let ((frames (delete f (visible-frame-list))))
-          (or (null frames)
-              (and (null (cdr frames))
-                   (eq (car frames) terminal-frame))))
-    (elcord-mode -1)
-    (add-hook 'after-make-frame-functions 'elcord--enable-on-frame-created)))
-
-(defun elcord--enable-on-frame-created (f)
-  (declare (ignore f))
-  (elcord-mode +1))
-
-(defun my/elcord-mode-hook ()
-  (if elcord-mode
-      (add-hook 'delete-frame-functions 'elcord--disable-elcord-if-no-frames)
-    (remove-hook 'delete-frame-functions 'elcord--disable-elcord-if-no-frames)))
-
-(add-hook 'elcord-mode-hook 'my/elcord-mode-hook)
-
-(setq elcord-idle-message "Out doing your mom")
+;;(require 'elcord)
+;;(add-hook 'doom-switch-buffer-hook
+;;          (lambda ()
+;;            (if (string= (buffer-name) "*doom*")
+;;                (elcord-mode -1)
+;;              (elcord-mode 1))))
+;;
+;;(defun elcord--disable-elcord-if-no-frames (f)
+;;  (declare (ignore f))
+;;  (when (let ((frames (delete f (visible-frame-list))))
+;;          (or (null frames)
+;;              (and (null (cdr frames))
+;;                   (eq (car frames) terminal-frame))))
+;;    (elcord-mode -1)
+;;    (add-hook 'after-make-frame-functions 'elcord--enable-on-frame-created)))
+;;
+;;(defun elcord--enable-on-frame-created (f)
+;;  (declare (ignore f))
+;;  (elcord-mode +1))
+;;
+;;(defun my/elcord-mode-hook ()
+;;  (if elcord-mode
+;;      (add-hook 'delete-frame-functions 'elcord--disable-elcord-if-no-frames)
+;;    (remove-hook 'delete-frame-functions 'elcord--disable-elcord-if-no-frames)))
+;;
+;;(add-hook 'elcord-mode-hook 'my/elcord-mode-hook)
+;;
+;;(setq elcord-idle-message "Out doing your mom")
 
 
 ;; add my_stuff.el here and load it

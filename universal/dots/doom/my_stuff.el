@@ -65,11 +65,11 @@ open a dired buffer in the directory of the image file."
             (open-image-with-imv)))
 
 
-(add-hook 'doom-switch-buffer-hook
-          (lambda ()
-            (if (string= (buffer-name) "*doom*")
-                (elcord-mode -1)
-              (elcord-mode 1))))
+;;(add-hook 'doom-switch-buffer-hook
+;;          (lambda ()
+;;            (if (string= (buffer-name) "*doom*")
+;;                (elcord-mode -1)
+;;              (elcord-mode 1))))
 
 ;; search forwards for link and copy the link under point to the clipboard withouth external dependencies
 (defun elfeed-copy-image ()
@@ -77,13 +77,13 @@ open a dired buffer in the directory of the image file."
   (interactive)
   (or (search-forward "link" nil t)
       (search-backward "link" nil t))
-        (let ((url (get-text-property (point) 'shr-url)))
-        (if url
-                (progn
-                (message (concat "Copying image URL to clipboard: " url))
-                (kill-new url)
-                (message "Copied image URL to clipboard."))
-        (message "No image under point."))))
+  (let ((url (get-text-property (point) 'shr-url)))
+    (if url
+        (progn
+          (message (concat "Copying image URL to clipboard: " url))
+          (kill-new url)
+          (message "Copied image URL to clipboard."))
+      (message "No image under point."))))
 ;;bind the function to a key spc i c
 (map! :leader
       :desc "Copy image URL to clipboard" "i c" #'elfeed-copy-image)

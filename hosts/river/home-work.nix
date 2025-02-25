@@ -10,15 +10,20 @@ in
   imports = [
     inputs.nix-colors.homeManagerModules.default
     inputs.stylix.homeManagerModules.stylix
-    ../../universal/dots/foot/foot.nix
+    ./sessionVars.nix
+    ../../universal/dots/foot/foottest.nix
+    ../../universal/dots/waybar/waybar.nix
+    ../../universal/dots/hypr/hypr.nix
+    ../../universal/dots/zsh/zsh.nix
     ./stylix.nix
     ../../universal/homePkgs.nix
     ../../universal/xdg.nix
-
+    ../../universal/dots/river/river.nix
   ];
 
   # you can go look here for a list of color schemes https://github.com/tinted-theming/schemes
-  colorScheme = inputs.nix-colors.colorSchemes.dracula;
+  colorScheme = inputs.nix-colors.colorSchemes.hardcore;
+  stylix.base16Scheme.base00 = "141414";
   # Home Manager needs a bit of information about you and the paths it should
   # manage.
   home.username = "work";
@@ -37,108 +42,10 @@ in
   # environment.
   gtk = {
     enable = true;
-    #theme = {
-    #  name = "Dracula";
-    #  package = pkgs.dracula-theme;
-    #};
     iconTheme = {
       name = "Dracula";
       package = pkgs.dracula-icon-theme;
     };
-    #cursorTheme = {
-    #  name = "oreo_purple_cursors";
-    #};
-  };
-  xdg = {
-    enable = true;
-    portal = {
-      enable = true;
-      config.common.default = [
-        "river"
-        "gtk"
-      ];
-      xdgOpenUsePortal = true;
-      extraPortals = with pkgs; [
-        xdg-desktop-portal-wlr
-        xdg-desktop-portal-gtk
-      ];
-    };
-    mime.enable = true;
-    mimeApps = {
-      enable = true;
-      defaultApplications =
-        let
-          browser = [ "zen_twilight.desktop" ];
-          fileManager = [ "pcmanfm.desktop" ];
-          editor = [ "emacs.desktop" ];
-          player = [ "mpv.desktop" ];
-          viewer = [ "imv-dir.desktop" ];
-          reader = [ "org.pwmt.zathura.desktop" ];
-        in
-        {
-          "application/pdf" = reader;
-          "application/epub" = reader;
-
-          "text/html" = browser;
-          "text/xml" = browser;
-          "text/plain" = editor;
-          "application/x-wine-extension-ini" = editor;
-
-          "application/json" = browser;
-          "application/xml" = browser;
-          "application/xhtml+xml" = browser;
-          "application/xhtml_xml" = browser;
-          "application/rdf+xml" = browser;
-          "application/rss+xml" = browser;
-          "application/x-extension-htm" = browser;
-          "application/x-extension-html" = browser;
-          "application/x-extension-shtml" = browser;
-          "application/x-extension-xht" = browser;
-          "application/x-extension-xhtml" = browser;
-
-          "x-scheme-handler/about" = browser;
-          "x-scheme-handler/ftp" = browser;
-          "x-scheme-handler/http" = browser;
-          "x-scheme-handler/https" = browser;
-
-          "inode/directory" = fileManager;
-          "application/zip" = fileManager;
-
-          "audio/mpeg" = player;
-          "audio/aac" = player;
-          "audio/flac" = player;
-          "audio/wav" = player;
-          "video/mp4" = player;
-          "video/vnd.mpegurl" = player;
-          "video/x-matroska" = player;
-          "application/x-mpegURL" = player;
-
-          "image/gif" = viewer;
-          "image/jpeg" = viewer;
-          "image/png" = viewer;
-          "image/webp" = viewer;
-        };
-    };
-
-    userDirs = {
-      enable = true;
-      createDirectories = true;
-      download = "${config.home.homeDirectory}/Downloads";
-      documents = "${config.home.homeDirectory}/Documents";
-      desktop = "${config.home.homeDirectory}/Desktop";
-      videos = "${config.home.homeDirectory}/Videos";
-      pictures = "${config.home.homeDirectory}/Pictures";
-      music = "${config.home.homeDirectory}/Music";
-      templates = "${config.home.homeDirectory}/.local/share/templates";
-      publicShare = "${config.home.homeDirectory}/.local/share/public";
-    };
-
-    configFile."electron-flags.conf".text = ''
-      --enable-features=WaylandWindowDecorations
-      --enable-features=UseOzonePlatform
-      --ozone-platform-hint=wayland
-    '';
-
   };
 
   home.packages = with pkgs; [
@@ -183,13 +90,11 @@ in
     #".config/hypr".source = ./dots/hypr;
     #".config/eww/eww.yuck".source = ./dots/eww/eww.yuck;
     #".config/eww/scripts".source = ./dots/eww/scripts;
-    ".config/waybar".source = ./dots/waybar;
+    ".config/nixpkgs/config.nix".text = ''
+      { allowUnfree = true; }
+    '';
     ".config/doom".source = ../../universal/dots/doom;
-    ".config/river".source = ./dots/river;
-    ".config/hypr/hyprlock.conf".source = ../../universal/dots/hypr/hyprlock.conf;
-    ".config/hypr/hypridle.conf".source = ../../universal/dots/hypr/hypridle.conf;
     ".config/kitty".source = ../../universal/dots/kitty;
-    ".config/zsh".source = ../../universal/dots/zsh;
     ".config/nvim".source = ../../universal/dots/nvim;
     "Pictures/Wallpapers".source = ../../universal/wallpapers;
     #".local/share/icons/oreo_purple_cursors".source = ../../universal/cursors/oreo_purple_cursors;
@@ -211,20 +116,6 @@ in
   #
   #  /etc/profiles/per-user/mrfluffy/etc/profile.d/hm-session-vars.sh
   #
-  home.sessionVariables = {
-    # EDITOR = "emacs";
-    SDL_VIDEODRIVER = "wayland";
-    _JAVA_AWT_WM_NONREPARENTING = 1;
-    QT_QPA_PLATFORM = "wayland";
-    XDG_CURRENT_DESKTOP = "river";
-    XDG_SESSION_DESKTOP = "river";
-    MOZ_ENABLE_WAYLAND = 1;
-    QT_QPA_PLATFORMTHEME = "qt6ct";
-    WLR_DRM_NO_ATOMIC = 1;
-    VDPAU_DRIVER = "radeonsi";
-    LIBVA_DRIVER_NAME = "radeonsi";
-    OLLAMA_HOST = "0.0.0.0";
-  };
 
   # Let Home Manager install and manage itself.
   programs.home-manager.enable = true;

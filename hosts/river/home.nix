@@ -2,6 +2,7 @@
   config,
   pkgs,
   inputs,
+  lib,
   ...
 }:
 let
@@ -10,14 +11,20 @@ in
   imports = [
     inputs.nix-colors.homeManagerModules.default
     inputs.stylix.homeManagerModules.stylix
-    ../../universal/dots/foot/foot.nix
+    ./sessionVars.nix
+    ../../universal/dots/foot/foottest.nix
+    ../../universal/dots/waybar/waybar.nix
+    ../../universal/dots/hypr/hypr.nix
+    ../../universal/dots/zsh/zsh.nix
     ./stylix.nix
     ../../universal/homePkgs.nix
     ../../universal/xdg.nix
+    ../../universal/dots/river/river.nix
   ];
 
   # you can go look here for a list of color schemes https://github.com/tinted-theming/schemes
-  colorScheme = inputs.nix-colors.colorSchemes.dracula;
+  colorScheme = inputs.nix-colors.colorSchemes.hardcore;
+  stylix.base16Scheme.base00 = "141414";
   # Home Manager needs a bit of information about you and the paths it should
   # manage.
   home.username = "mrfluffy";
@@ -36,17 +43,10 @@ in
   # environment.
   gtk = {
     enable = true;
-    #theme = {
-    #  name = "Dracula";
-    #  package = pkgs.dracula-theme;
-    #};
     iconTheme = {
       name = "Dracula";
       package = pkgs.dracula-icon-theme;
     };
-    #cursorTheme = {
-    #  name = "oreo_purple_cursors";
-    #};
   };
 
   home.packages = with pkgs; [
@@ -90,19 +90,10 @@ in
     ".config/nixpkgs/config.nix".text = ''
       { allowUnfree = true; }
     '';
-    #".config/hypr".source = ./dots/hypr;
-    #".config/eww/eww.yuck".source = ./dots/eww/eww.yuck;
-    #".config/eww/scripts".source = ./dots/eww/scripts;
-    ".config/waybar".source = ./dots/waybar;
     ".config/doom".source = ../../universal/dots/doom;
-    ".config/river".source = ./dots/river;
-    ".config/hypr/hyprlock.conf".source = ../../universal/dots/hypr/hyprlock.conf;
-    ".config/hypr/hypridle.conf".source = ../../universal/dots/hypr/hypridle.conf;
     ".config/kitty".source = ../../universal/dots/kitty;
-    ".config/zsh".source = ../../universal/dots/zsh;
     ".config/nvim".source = ../../universal/dots/nvim;
     "Pictures/Wallpapers".source = ../../universal/wallpapers;
-    #".local/share/icons/oreo_purple_cursors".source = ../../universal/cursors/oreo_purple_cursors;
 
   };
 
@@ -121,20 +112,6 @@ in
   #
   #  /etc/profiles/per-user/mrfluffy/etc/profile.d/hm-session-vars.sh
   #
-  home.sessionVariables = {
-    # EDITOR = "emacs";
-    SDL_VIDEODRIVER = "wayland";
-    _JAVA_AWT_WM_NONREPARENTING = 1;
-    QT_QPA_PLATFORM = "wayland";
-    XDG_CURRENT_DESKTOP = "river";
-    XDG_SESSION_DESKTOP = "river";
-    MOZ_ENABLE_WAYLAND = 1;
-    QT_QPA_PLATFORMTHEME = "qt6ct";
-    WLR_DRM_NO_ATOMIC = 1;
-    VDPAU_DRIVER = "radeonsi";
-    LIBVA_DRIVER_NAME = "radeonsi";
-    OLLAMA_HOST = "0.0.0.0";
-  };
 
   # Let Home Manager install and manage itself.
   programs.home-manager.enable = true;
