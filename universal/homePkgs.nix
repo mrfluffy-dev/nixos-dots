@@ -156,7 +156,7 @@ in
     hyprpicker
     mangohud
     gamemode
-    discord
+    #discord
     mpv
     rofi
     xdg-user-dirs

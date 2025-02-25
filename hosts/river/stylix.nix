@@ -18,6 +18,7 @@ in
     targets.foot.enable = true;
     targets.river.enable = true;
     targets.waybar.enable = true;
+    targets.nixcord.enable = true;
     polarity = "dark";
     image = ../../universal/wallpapers/001.jpg;
     base16Scheme = {

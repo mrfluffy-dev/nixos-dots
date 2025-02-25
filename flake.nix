@@ -18,6 +18,7 @@
     dvd-zig.url = "github:mrfluffy-dev/dvd-zig";
     way-inhibitor.url = "git+https://git.mrfluffy.xyz/mrfluffy/way-inhibitor.git";
     zen-browser.url = "github:0xc000022070/zen-browser-flake";
+    nixcord.url = "github:kaylorben/nixcord";
   };
 
   outputs =
