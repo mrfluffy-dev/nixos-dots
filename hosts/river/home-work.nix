@@ -10,11 +10,13 @@ in
   imports = [
     inputs.nix-colors.homeManagerModules.default
     inputs.stylix.homeManagerModules.stylix
+    inputs.nixcord.homeManagerModules.nixcord
     ./sessionVars.nix
     ../../universal/dots/foot/foottest.nix
     ../../universal/dots/waybar/waybar.nix
     ../../universal/dots/hypr/hypr.nix
     ../../universal/dots/zsh/zsh.nix
+    ../../universal/dots/nixcord/nixcord.nix
     ./stylix.nix
     ../../universal/homePkgs.nix
     ../../universal/xdg.nix
