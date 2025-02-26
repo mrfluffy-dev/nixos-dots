@@ -169,7 +169,7 @@
   systemd.tmpfiles.rules = [ "L+    /opt/rocm/hip   -    -    -     -    ${pkgs.rocmPackages.clr}" ];
   services.emacs = {
     enable = true;
-    package = pkgs.emacs29-pgtk; # replace with emacs-gtk, or a version provided by the community overlay if desired.
+    package = pkgs.emacs30-pgtk; # replace with emacs-gtk, or a version provided by the community overlay if desired.
   };
 
   services.ollama = {

@@ -130,7 +130,7 @@ in
     macchina
     hyprpaper
     obs-studio
-    xwaylandvideobridge
+    #xwaylandvideobridge
     duf
     grim
     slurp
