@@ -37,10 +37,16 @@ in
     XDG_CURRENT_DESKTOP = "river";
     #QT_QPA_PLATFORMTHEME = "qt6ct";
   };
-  nix.settings.experimental-features = [
-    "nix-command"
-    "flakes"
-  ];
+  nix = {
+    settings = {
+      experimental-features = [
+        "nix-command"
+        "flakes"
+      ];
+      build-dir = "/var/tmp";
+      auto-optimise-store = true;
+    };
+  };
 
   # Set your time zone.
   time.timeZone = "Europe/Dublin";
@@ -127,6 +133,12 @@ in
       "work" = import ./home-work.nix;
     };
   };
+
+  virtualisation.docker = {
+    enable = true;
+    storageDriver = "btrfs";
+  };
+  virtualisation.libvirtd.enable = true;
 
   security.pam.services.swaylock = { };
 

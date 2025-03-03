@@ -7,7 +7,6 @@
       url = "github:nix-community/home-manager";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-
     stylix.url = "github:danth/stylix";
     nix-colors.url = "github:Misterio77/nix-colors";
     hyprland.url = "github:/hyprwm/Hyprland/?ref=04ac46c54357278fc68f0a95d26347ea0db99496";
@@ -30,7 +29,7 @@
     }@inputs:
     let
       system = "x86_64-linux";
-      pkgs = nixpkgs.legacyPackages.${system};
+      #pkgs = nixpkgs.legacyPackages.${system};
       pkgs-stable = import nixpkgs-stable {
         system = "${system}";
         config = {
@@ -40,7 +39,6 @@
       };
     in
     {
-
       nixosConfigurations = {
         hyprland = nixpkgs.lib.nixosSystem {
           specialArgs = {

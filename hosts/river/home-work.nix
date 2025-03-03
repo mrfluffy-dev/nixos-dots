@@ -24,8 +24,8 @@ in
   ];
 
   # you can go look here for a list of color schemes https://github.com/tinted-theming/schemes
-  colorScheme = inputs.nix-colors.colorSchemes.hardcore;
-  stylix.base16Scheme.base00 = "141414";
+  colorScheme = inputs.nix-colors.colorSchemes.dracula;
+  #stylix.base16Scheme.base00 = "141414";
   # Home Manager needs a bit of information about you and the paths it should
   # manage.
   home.username = "work";
