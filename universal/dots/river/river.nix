@@ -190,6 +190,13 @@
           riverctl map $mode None XF86MonBrightnessDown spawn 'light -U 5'
       done
 
+      #make a raw mode
+      riverctl declare-mode raw
+      riverctl map normal Mod1 r spawn 'riverctl enter-mode raw'
+      riverctl map raw Mod1 r spawn 'riverctl enter-mode normal'
+
+
+
       # Set background and border color
       #riverctl background-color 0x002b36
       #riverctl border-color-focused 0x8218c4
