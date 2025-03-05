@@ -2,26 +2,41 @@
   config,
   pkgs,
   inputs,
+  lib,
   ...
 }:
 let
 in
-#hyprlock = pkgs.callPackage ../../universal/personalPKGS/hyprlock.nix {};
-#hypridle = pkgs.callPackage ../../universal/personalPKGS/hypridle.nix {};
 {
   imports = [
     inputs.nix-colors.homeManagerModules.default
     inputs.stylix.homeManagerModules.stylix
-    #./dots/hypr/hyprland.nix
-    ./dots/hypr/hyprpaper.nix
-    ./dots/eww/ewwScss.nix
-    ../../universal/dots/foot/foot.nix
+    inputs.nixcord.homeManagerModules.nixcord
+    ./sessionVars.nix
+    ../../universal/dots/foot/foottest.nix
+    ../../universal/dots/waybar/waybar.nix
+    ../../universal/dots/hypr/hypr.nix
+    ../../universal/dots/zsh/zsh.nix
+    ../../universal/dots/nixcord/nixcord.nix
     ./stylix.nix
     ../../universal/homePkgs.nix
+    ../../universal/xdg.nix
+    ../../universal/dots/hypr/hyprland.nix
   ];
 
   # you can go look here for a list of color schemes https://github.com/tinted-theming/schemes
-  colorScheme = inputs.nix-colors.colorSchemes.dracula;
+  colorScheme = inputs.nix-colors.colorSchemes.hardcore;
+  stylix.base16Scheme.base00 = "141414";
+  programs.waybar = {
+    settings = {
+      mainBar = {
+        modules-left = [
+          "hyprland/workspaces"
+          "custom/media"
+        ];
+      };
+    };
+  };
   # Home Manager needs a bit of information about you and the paths it should
   # manage.
   home.username = "mrfluffy";
@@ -40,20 +55,17 @@ in
   # environment.
   gtk = {
     enable = true;
-    #theme = {
-    #  name = "Dracula";
-    #  package = pkgs.dracula-theme;
-    #};
     iconTheme = {
       name = "Dracula";
       package = pkgs.dracula-icon-theme;
     };
-    #cursorTheme = {
-    #  name = "oreo_purple_cursors";
-    #};
   };
 
   home.packages = with pkgs; [
+    #swaybg
+    #lswt
+    #wlr-randr
+    inputs.dvd-zig.packages."${pkgs.system}".dvd-zig
 
     # # Adds the 'hello' command to your environment. It prints a friendly
     # # "Hello, world!" when run.
@@ -86,18 +98,14 @@ in
     #   org.gradle.console=verbose
     #   org.gradle.daemon.idletimeout=3600000
     # '';
-    ".config/hypr/hyprland.conf".source = ./dots/hypr/hyprland.conf;
-    ".config/eww/eww.yuck".source = ./dots/eww/eww.yuck;
-    ".config/eww/scripts".source = ./dots/eww/scripts;
-    ".config/waybar".source = ./dots/waybar;
+    #
+    ".config/nixpkgs/config.nix".text = ''
+      { allowUnfree = true; }
+    '';
     ".config/doom".source = ../../universal/dots/doom;
-    ".config/hypr/hyprlock.conf".source = ./dots/hypr/hyprlock.conf;
-    ".config/hypr/hypridle.conf".source = ./dots/hypr/hypridle.conf;
     ".config/kitty".source = ../../universal/dots/kitty;
-    ".config/zsh".source = ../../universal/dots/zsh;
     ".config/nvim".source = ../../universal/dots/nvim;
     "Pictures/Wallpapers".source = ../../universal/wallpapers;
-    #".local/share/icons/oreo_purple_cursors".source = ../../universal/cursors/oreo_purple_cursors;
 
   };
 
@@ -116,20 +124,6 @@ in
   #
   #  /etc/profiles/per-user/mrfluffy/etc/profile.d/hm-session-vars.sh
   #
-  home.sessionVariables = {
-    # EDITOR = "emacs";
-    SDL_VIDEODRIVER = "wayland";
-    _JAVA_AWT_WM_NONREPARENTING = 1;
-    QT_QPA_PLATFORM = "wayland";
-    XDG_CURRENT_DESKTOP = "hyprland";
-    XDG_SESSION_DESKTOP = "hyprland";
-    MOZ_ENABLE_WAYLAND = 1;
-    QT_QPA_PLATFORMTHEME = "qt6ct";
-    WLR_DRM_NO_ATOMIC = 1;
-    VDPAU_DRIVER = "radeonsi";
-    LIBVA_DRIVER_NAME = "radeonsi";
-    OLLAMA_HOST = "0.0.0.0";
-  };
 
   # Let Home Manager install and manage itself.
   programs.home-manager.enable = true;

@@ -9,7 +9,9 @@
   inputs,
   ...
 }:
-
+let
+  oreo = pkgs.callPackage ../../universal/personalPKGS/oreo.nix { };
+in
 {
   imports = [
     # Include the results of the hardware scan.
@@ -21,19 +23,30 @@
     ../../universal/services.nix
     ../../universal/fonts.nix
     ../../universal/inputMethods.nix
+    #./stylixsys.nix
+    #inputs.stylix.nixosModules.stylix
     inputs.home-manager.nixosModules.home-manager
   ];
 
+  environment.pathsToLink = [ "/share/zsh" ];
   environment.variables = {
     # VAAPI and VDPAU config for accelerated video.
     # See https://wiki.archlinux.org/index.php/Hardware_video_acceleration
-    "VDPAU_DRIVER" = "radeonsi";
-    "LIBVA_DRIVER_NAME" = "radeonsi";
+    VDPAU_DRIVER = "radeonsi";
+    LIBVA_DRIVER_NAME = "radeonsi";
+    #XDG_CURRENT_DESKTOP = "hyprland";
+    #QT_QPA_PLATFORMTHEME = "qt6ct";
   };
-  nix.settings.experimental-features = [
-    "nix-command"
-    "flakes"
-  ];
+  nix = {
+    settings = {
+      experimental-features = [
+        "nix-command"
+        "flakes"
+      ];
+      build-dir = "/var/tmp";
+      auto-optimise-store = true;
+    };
+  };
 
   # Set your time zone.
   time.timeZone = "Europe/Dublin";
@@ -45,19 +58,30 @@
   #   keyMap = "us";
   #   useXkbConfig = true; # use xkb.options in tty.
   # };
-
-  programs.hyprland = {
+  #
+  programs.hyprland.enable = true;
+  services.xserver = {
     enable = true;
-    xwayland.enable = true;
-    #package = inputs.hyprland.packages."${pkgs.system}".hyprland;
-    package = pkgs.hyprland;
+    displayManager.lightdm = {
+      enable = true;
+      greeters.gtk = {
+        enable = true;
+        theme.package = pkgs.amarena-theme;
+        theme.name = "amarena";
+        cursorTheme.package = oreo.override { colors = [ "oreo_spark_pink_cursors" ]; };
+        cursorTheme.name = "oreo_spark_pink_cursors";
+        extraConfig = "background=${../../universal/wallpapers/138.png}";
+      };
+    };
   };
-
-  xdg.portal = {
-    enable = true;
-    wlr.enable = true;
-    extraPortals = [ pkgs.xdg-desktop-portal-gtk ];
-  };
+  #xdg.portal = {
+  #  enable = true;
+  #  wlr.enable = true;
+  #  extraPortals = [
+  #    pkgs.xdg-desktop-portal-gtk
+  #    pkgs.xdg-desktop-portal-wlr
+  #  ];
+  #};
   security.rtkit.enable = true;
   environment.sessionVariables = {
     ZDOTDIR = "$HOME/.config/zsh";
@@ -67,6 +91,24 @@
   users.users.mrfluffy = {
     isNormalUser = true;
     shell = pkgs.zsh;
+    createHome = true;
+    extraGroups = [
+      "wheel"
+      "networkmanager"
+      "video"
+      "render"
+      "docker"
+      "libvirt"
+    ]; # Enable ‘sudo’ for the user.
+    packages = with pkgs; [
+
+    ];
+  };
+
+  users.users.work = {
+    isNormalUser = true;
+    shell = pkgs.zsh;
+    createHome = true;
     extraGroups = [
       "wheel"
       "networkmanager"
@@ -82,11 +124,21 @@
 
   home-manager = {
     # also pass inputs to home-manager modules
-    extraSpecialArgs = { inherit inputs; };
+    extraSpecialArgs = {
+      inherit inputs;
+    };
     users = {
       "mrfluffy" = import ./home.nix;
+
+      #"work" = import ./home-work.nix;
     };
   };
+
+  virtualisation.docker = {
+    enable = true;
+    storageDriver = "btrfs";
+  };
+  virtualisation.libvirtd.enable = true;
 
   security.pam.services.swaylock = { };
 

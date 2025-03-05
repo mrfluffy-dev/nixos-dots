@@ -1,31 +1,43 @@
-{ pkgs, lib, config, ... }:
+{
+  pkgs,
+  lib,
+  config,
+  ...
+}:
 let
   inherit (config.colorScheme) palette;
-  oreo = pkgs.callPackage ../../universal/personalPKGS/oreo.nix {};
-in {
+  oreo = pkgs.callPackage ../../universal/personalPKGS/oreo.nix { };
+in
+{
   stylix = {
+    enable = true;
     autoEnable = false;
     targets.gtk.enable = true;
     targets.vscode.enable = true;
+    targets.gitui.enable = true;
+    targets.foot.enable = true;
+    targets.hyprland.enable = true;
+    targets.waybar.enable = true;
+    targets.nixcord.enable = true;
     polarity = "dark";
     image = ../../universal/wallpapers/001.jpg;
     base16Scheme = {
-      base00 = "${config.colorScheme.colors.base00}";
-      base01 = "${config.colorScheme.colors.base01}";
-      base02 = "${config.colorScheme.colors.base02}";
-      base03 = "${config.colorScheme.colors.base03}";
-      base04 = "${config.colorScheme.colors.base04}";
-      base05 = "${config.colorScheme.colors.base05}";
-      base06 = "${config.colorScheme.colors.base06}";
-      base07 = "${config.colorScheme.colors.base07}";
-      base08 = "${config.colorScheme.colors.base08}";
-      base09 = "${config.colorScheme.colors.base09}";
-      base0A = "${config.colorScheme.colors.base0A}";
-      base0B = "${config.colorScheme.colors.base0B}";
-      base0C = "${config.colorScheme.colors.base0C}";
-      base0D = "${config.colorScheme.colors.base0D}";
-      base0E = "${config.colorScheme.colors.base0E}";
-      base0F = "${config.colorScheme.colors.base0F}";
+      base00 = "${palette.base00}";
+      base01 = "${palette.base01}";
+      base02 = "${palette.base02}";
+      base03 = "${palette.base03}";
+      base04 = "${palette.base04}";
+      base05 = "${palette.base05}";
+      base06 = "${palette.base06}";
+      base07 = "${palette.base07}";
+      base08 = "${palette.base08}";
+      base09 = "${palette.base09}";
+      base0A = "${palette.base0A}";
+      base0B = "${palette.base0B}";
+      base0C = "${palette.base0C}";
+      base0D = "${palette.base0D}";
+      base0E = "${palette.base0E}";
+      base0F = "${palette.base0F}";
     };
     fonts = {
       serif = {
@@ -52,9 +64,7 @@ in {
       };
     };
     cursor = {
-      package = oreo.override{
-        colors = ["oreo_spark_pink_cursors"];
-      };
+      package = oreo.override { colors = [ "oreo_spark_pink_cursors" ]; };
       name = "oreo_spark_pink_cursors";
       size = 32;
     };

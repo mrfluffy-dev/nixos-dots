@@ -74,8 +74,18 @@
             "8" = "八";
             "9" = "九";
           };
-          persistent-workspaces = {
-            "*" = 9; # 5 workspaces by default on every monitor
+          "persistent-workspaces" = {
+            "*" = [
+              1
+              2
+              3
+              4
+              5
+              6
+              7
+              8
+              9
+            ];
           };
           active-only = false;
           sort-by-name = true;

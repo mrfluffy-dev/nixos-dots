@@ -95,6 +95,7 @@
       --enable-features=UseOzonePlatform
       --ozone-platform-hint=wayland
     '';
+    #configFile."hypr/hyprland.conf".onChange = "hyprctl reload";
 
   };
 }
