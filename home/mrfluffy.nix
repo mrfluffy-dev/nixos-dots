@@ -11,7 +11,7 @@ in
 {
   imports = [
     inputs.nix-colors.homeManagerModules.default
-    inputs.stylix.homeManagerModules.stylix
+    inputs.stylix.homeModules.stylix
     inputs.nixcord.homeModules.nixcord
     #inputs.niri.homeModules.niri
     ./sessionVars.nix

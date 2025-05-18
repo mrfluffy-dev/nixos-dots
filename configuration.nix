@@ -43,7 +43,7 @@ in
   };
 
   # Set your time zone.
-  time.timeZone = "Europe/Dublin";
+  #time.timeZone = "Europe/Dublin";
   #programs.river.enable = true;
   #programs.niri.enable = true;
   #programs.niri.package = pkgs.niri-stable;

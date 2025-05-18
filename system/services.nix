@@ -23,7 +23,9 @@
   # Enable the GNOME Desktop Environment.
   # services.xserver.displayManager.gdm.enable = true;
   # services.xserver.desktopManager.gnome.enable = true;
+  #
 
+  services.automatic-timezoned.enable = true;
   services.pipewire = lib.mkMerge [
     (lib.mkIf (systemName == "laptop") {
       enable = true;
