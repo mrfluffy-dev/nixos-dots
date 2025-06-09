@@ -97,8 +97,11 @@ in
     libGL
   ];
 
+
   #backlight tool
   programs.light.enable = true;
+
+  programs.nm-applet.enable = true;
 
   # List packages installed in system profile. To search, run:
   # $ nix search wget

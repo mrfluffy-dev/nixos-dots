@@ -25,6 +25,7 @@
   # services.xserver.desktopManager.gnome.enable = true;
   #
 
+  services.flatpak.enable = true;
   services.automatic-timezoned.enable = true;
   services.pipewire = lib.mkMerge [
     (lib.mkIf (systemName == "laptop") {
@@ -214,6 +215,10 @@
     HibernateDelaySec=120min
     SuspendState=mem
   '';
+  services.libreswan = {
+    enable = true;
+  };
+
   #udev rules
   #services.udev.extraRules = ''
   # KERNEL=="hidraw*", KERNELS=="*054C:0CE6*", MODE="0660", TAG+="uaccess"
