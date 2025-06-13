@@ -21,7 +21,7 @@ in
     targets.waybar.enable = true;
     targets.nixcord.enable = true;
     polarity = "dark";
-    image = ../assets/wallpapers/001.jpg;
+    image = ../assets/Wallpapers/001.jpg;
     base16Scheme = {
       base00 = "${palette.base00}";
       base01 = "${palette.base01}";
