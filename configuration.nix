@@ -50,6 +50,7 @@ in
   #nixpkgs.overlays = [ inputs.niri.overlays.niri ];
   #programs.hyprland.enable = true;
   programs.river.enable = window_manager == "river" || window_manager == "all";
+  qt.enable = true;
 
   nixpkgs.overlays = [ inputs.niri.overlays.niri ];
   programs.niri = {

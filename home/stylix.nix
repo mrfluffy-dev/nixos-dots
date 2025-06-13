@@ -13,6 +13,7 @@ in
     enable = true;
     autoEnable = false;
     targets.gtk.enable = true;
+    targets.qt.enable = true;
     targets.vscode.enable = true;
     targets.gitui.enable = true;
     targets.foot.enable = true;

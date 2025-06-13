@@ -52,6 +52,7 @@
       riverctl spawn 'fcitx5 -d'
       riverctl spawn 'foot -s'
       riverctl spawn '[ -n "$(whereis swaync | awk '{print $2}')" ] && swaync'
+      riverctl spawn 'nm-applet'
       riverctl focus-follows-cursor normal
       riverctl set-cursor-warp on-focus-change
       #riverctl xcursor-theme oreo_spark_pink_cursors

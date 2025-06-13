@@ -172,13 +172,17 @@ in
     zed-editor
     dualsensectl
     mangayomi
-    #inputs.way-inhibitor.packages.${pkgs.system}.default
-    inputs.zen-browser.packages.${pkgs.system}.twilight
     element-desktop
     scrcpy
     fuse
     fuse-emulator
     fuse3
     alacritty
+    networkmanagerapplet
+    #inputs.way-inhibitor.packages.${pkgs.system}.default
+    inputs.zen-browser.packages.${pkgs.system}.twilight
+    inputs.quickshell.packages.${pkgs.system}.default
+    inputs.qs-qml.packages.${pkgs.system}.tree-sitter-qmljs
+    inputs.qs-qml.packages.${pkgs.system}.qml-ts-mode
   ];
 }

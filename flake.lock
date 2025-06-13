@@ -600,6 +600,46 @@
         "type": "github"
       }
     },
+    "qs-qml": {
+      "inputs": {
+        "nixpkgs": [
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1730724501,
+        "narHash": "sha256-zvNdomPM86fUf0iAwJV1RQC8yAqDCKbCDJKIs4iIPy0=",
+        "ref": "refs/heads/master",
+        "rev": "8f897ffb4a1575252c536c63db8be72f22b6a494",
+        "revCount": 1,
+        "type": "git",
+        "url": "https://git.outfoxxed.me/outfoxxed/nix-qml-support"
+      },
+      "original": {
+        "type": "git",
+        "url": "https://git.outfoxxed.me/outfoxxed/nix-qml-support"
+      }
+    },
+    "quickshell": {
+      "inputs": {
+        "nixpkgs": [
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1749772873,
+        "narHash": "sha256-ZsFQIs3ZpUud1QmR1TyhAW0LGbjHzCkA79YCLBbJ12A=",
+        "ref": "refs/heads/master",
+        "rev": "517143adf97fb0df7e9a7584061deecdffb19faf",
+        "revCount": 576,
+        "type": "git",
+        "url": "https://git.outfoxxed.me/outfoxxed/quickshell"
+      },
+      "original": {
+        "type": "git",
+        "url": "https://git.outfoxxed.me/outfoxxed/quickshell"
+      }
+    },
     "root": {
       "inputs": {
         "anyrun": "anyrun",
@@ -608,6 +648,8 @@
         "nix-colors": "nix-colors",
         "nixcord": "nixcord",
         "nixpkgs": "nixpkgs_3",
+        "qs-qml": "qs-qml",
+        "quickshell": "quickshell",
         "stylix": "stylix",
         "zen-browser": "zen-browser"
       }
