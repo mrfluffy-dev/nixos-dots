@@ -37,7 +37,7 @@
     let
       system = "x86_64-linux";
       #Avalable options are ["niri" "river" "hyprland" "all"]
-      window_manager = "river";
+      window_manager = "hyprland";
     in
     {
       nixosConfigurations = {

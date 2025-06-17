@@ -51,6 +51,8 @@ in
   #programs.hyprland.enable = true;
   programs.river.enable = window_manager == "river" || window_manager == "all";
   qt.enable = true;
+  #qt.style = "gtk2";
+  qt.platformTheme = "qt5ct";
 
   nixpkgs.overlays = [ inputs.niri.overlays.niri ];
   programs.niri = {

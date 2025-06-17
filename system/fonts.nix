@@ -15,5 +15,6 @@
     source-han-sans
     nerd-fonts.zed-mono
     nerd-fonts.symbols-only
+    material-symbols
   ];
 }

@@ -10,6 +10,10 @@ in
 #hyprlock = pkgs.callPackage ../../universal/personalPKGS/hyprlock.nix {};
 #hypridle = pkgs.callPackage ../../universal/personalPKGS/hypridle.nix {};
 {
+
+  qt.enable = true;
+  #qt.style = "gtk2";
+  #qt.platformTheme = "qt5ct";
   #imports = [ inputs.anyrun.homeManagerModules.default ];
 
   nixpkgs.config.allowUnfree = true;
@@ -184,5 +188,12 @@ in
     inputs.quickshell.packages.${pkgs.system}.default
     inputs.qs-qml.packages.${pkgs.system}.tree-sitter-qmljs
     inputs.qs-qml.packages.${pkgs.system}.qml-ts-mode
+    lxqt.pcmanfm-qt
+    protonup-qt
+    ddcutil
+    brightnessctl
+    app2unit
+    cava
+    lm_sensors
   ];
 }

@@ -23,27 +23,6 @@ in
           pkgs.hyprlandPlugins.hyprsplit
         ];
         settings = {
-          # Autostart necessary processes (like notifications daemons, status bars, etc.)
-          # Or execute your favorite apps at launch like this:
-          exec-once =
-            [
-              "waybar"
-              "${pkgs.polkit_gnome}/libexec/polkit-gnome-authentication-agent-1"
-              "fcitx5 -d"
-              "foot -s"
-            ]
-            ++ lib.optional (systemName == "laptop") "swaybg -o eDP-1 -i ${../assets/Wallpapers/138.png}"
-            ++
-              lib.optional (systemName == "pc")
-                "swaybg -o HDMI-A-1 -i ${../assets/Wallpapers/138.png} -o DP-1 -i ${../assets/Wallpapers/138.png}";
-
-          #plugins
-          plugin = {
-            hyprsplit = {
-              num_workspaces = 9;
-              persistent_workspaces = true;
-            };
-          };
 
           # See https://wiki.hyprland.org/Configuring/Monitors/
           monitor = lib.mkMerge [
@@ -53,6 +32,27 @@ in
               "DP-1,2560x1440@144,1920x0,1"
             ])
           ];
+          # Autostart necessary processes (like notifications daemons, status bars, etc.)
+          # Or execute your favorite apps at launch like this:
+          exec-once = [
+            #"waybar"
+            "quickshell"
+            "${pkgs.polkit_gnome}/libexec/polkit-gnome-authentication-agent-1"
+            "fcitx5 -d"
+            "foot -s"
+          ];
+          #++ lib.optional (systemName == "laptop") "swaybg -o eDP-1 -i ${../assets/Wallpapers/138.png}"
+          #++
+          #  lib.optional (systemName == "pc")
+          #    "swaybg -o HDMI-A-1 -i ${../assets/Wallpapers/138.png} -o DP-1 -i ${../assets/Wallpapers/138.png}";
+
+          #plugins
+          plugin = {
+            hyprsplit = {
+              num_workspaces = 9;
+              persistent_workspaces = true;
+            };
+          };
 
           env = [
             "XCURSOR_SIZE, 24"
@@ -192,7 +192,7 @@ in
             "${mod}, V, togglefloating,"
             "${mod}, D, exec, ${runner}"
             "${mod}, E, exec, ${editor}"
-            "SUPER_SHIFT, S, exec, grim -g \"$(slurp)\" - | swappy -f -"
+            ",Print, exec, grim -g \"$(slurp)\" - | swappy -f -"
             "${mod}, P, pseudo, " # dwindle
             "${mod}, J, togglesplit," # dwindle
             #focus with mainMod + arrow keys

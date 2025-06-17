@@ -13,6 +13,7 @@ in
     enable = true;
     autoEnable = false;
     targets.gtk.enable = true;
+    targets.kde.enable = true;
     targets.qt.enable = true;
     targets.vscode.enable = true;
     targets.gitui.enable = true;
@@ -21,6 +22,12 @@ in
     targets.hyprland.enable = true;
     targets.waybar.enable = true;
     targets.nixcord.enable = true;
+    iconTheme = {
+      enable = true;
+      package = lib.mkForce pkgs.dracula-icon-theme;
+      light = "Dracula";
+      dark = "Dracula";
+    };
     polarity = "dark";
     image = ../assets/Wallpapers/001.jpg;
     base16Scheme = {

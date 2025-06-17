@@ -26,6 +26,7 @@ in
     ../dots/river.nix
     ../dots/niri.nix
     ../dots/hyprland.nix
+    ../dots/hyprpaper.nix
   ];
 
   # you can go look here for a list of color schemes https://github.com/tinted-theming/schemes
@@ -47,20 +48,20 @@ in
 
   # The home.packages option allows you to install Nix packages into your
   # environment.
-  gtk = {
-    enable = true;
-    iconTheme = {
-      name = "Dracula";
-      package = pkgs.dracula-icon-theme;
-    };
-  };
+  #gtk = {
+  #  enable = true;
+  #  iconTheme = {
+  #    name = "Dracula";
+  #    #  package = pkgs.dracula-icon-theme;
+  #  };
+  #};
 
   home.packages = with pkgs; [
     swaybg
     lswt
     wlr-randr
     brave
-    swaynotificationcenter
+    #swaynotificationcenter
     #inputs.ladybird.packages."${pkgs.system}".ladybird
 
     # # Adds the 'hello' command to your environment. It prints a friendly
@@ -99,6 +100,7 @@ in
       { allowUnfree = true; }
     '';
     ".config/doom".source = ../dots/doom;
+    ".config/quickshell".source = ../dots/quickshell;
     #".config/kitty".source = ../../universal/dots/kitty;
     #".config/nvim".source = ../../universal/dots/nvim;
     "Pictures/Wallpapers".source = ../assets/Wallpapers;
