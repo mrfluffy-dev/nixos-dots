@@ -49,7 +49,7 @@ in
           #plugins
           plugin = {
             hyprsplit = {
-              num_workspaces = 9;
+              num_workspaces = 10;
               persistent_workspaces = true;
             };
           };
