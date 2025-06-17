@@ -68,17 +68,29 @@ in
       variant = "";
     };
     enable = true;
-    displayManager.lightdm = {
-      enable = true;
-      greeters.gtk = {
-        enable = true;
-        theme.package = pkgs.amarena-theme;
-        theme.name = "amarena";
-        cursorTheme.package = oreo.override { colors = [ "oreo_spark_pink_cursors" ]; };
-        cursorTheme.name = "oreo_spark_pink_cursors";
-        extraConfig = "background=${./assets/Wallpapers/138.png}";
-      };
-    };
+    #displayManager.lightdm = {
+    #  enable = true;
+    #  greeters.gtk = {
+    #    enable = true;
+    #    theme.package = pkgs.amarena-theme;
+    #    theme.name = "amarena";
+    #    cursorTheme.package = oreo.override { colors = [ "oreo_spark_pink_cursors" ]; };
+    #    cursorTheme.name = "oreo_spark_pink_cursors";
+    #    extraConfig = "background=${./assets/Wallpapers/138.png}";
+    #  };
+    #};
+  };
+
+  services.displayManager.ly = {
+    enable = true;
+    #greeters.gtk = {
+    #  enable = true;
+    #  theme.package = pkgs.amarena-theme;
+    #  theme.name = "amarena";
+    #  cursorTheme.package = oreo.override { colors = [ "oreo_spark_pink_cursors" ]; };
+    #  cursorTheme.name = "oreo_spark_pink_cursors";
+    #  extraConfig = "background=${./assets/Wallpapers/138.png}";
+    #};
   };
 
   security.rtkit.enable = true;
