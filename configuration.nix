@@ -80,17 +80,15 @@ in
     #  };
     #};
   };
-
-  services.displayManager.ly = {
+  services.greetd = {
     enable = true;
-    #greeters.gtk = {
-    #  enable = true;
-    #  theme.package = pkgs.amarena-theme;
-    #  theme.name = "amarena";
-    #  cursorTheme.package = oreo.override { colors = [ "oreo_spark_pink_cursors" ]; };
-    #  cursorTheme.name = "oreo_spark_pink_cursors";
-    #  extraConfig = "background=${./assets/Wallpapers/138.png}";
-    #};
+    restart = true;
+    settings = {
+      default_session = {
+        command = "${lib.getExe pkgs.greetd.tuigreet} --window-padding 1 --time --time-format '%R - %F' --remember --remember-session --asterisks";
+        user = "greeter";
+      };
+    };
   };
 
   security.rtkit.enable = true;
