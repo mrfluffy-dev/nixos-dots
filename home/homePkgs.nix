@@ -11,6 +11,8 @@ in
 #hypridle = pkgs.callPackage ../../universal/personalPKGS/hypridle.nix {};
 {
 
+  programs.gitui.enable = true;
+
   qt.enable = true;
   #qt.style = "gtk2";
   #qt.platformTheme = "qt5ct";
@@ -167,7 +169,7 @@ in
     xdg-user-dirs
     xarchiver
     atuin
-    blender
+    blender-hip
     wineWowPackages.stable
     gdb
     alsa-utils
