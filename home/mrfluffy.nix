@@ -22,11 +22,13 @@ in
     ../dots/hyprlock.nix
     ./stylix.nix
     ./homePkgs.nix
+    ./services.nix
     ../dots/xdg.nix
     ../dots/river.nix
     ../dots/niri.nix
     ../dots/hyprland.nix
     ../dots/hyprpaper.nix
+
   ];
 
   # you can go look here for a list of color schemes https://github.com/tinted-theming/schemes

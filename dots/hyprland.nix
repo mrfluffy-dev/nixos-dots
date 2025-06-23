@@ -36,7 +36,7 @@ in
           # Or execute your favorite apps at launch like this:
           exec-once = [
             #"waybar"
-            "quickshell"
+            #"quickshell"
             "${pkgs.polkit_gnome}/libexec/polkit-gnome-authentication-agent-1"
             "fcitx5 -d"
             "foot -s"
