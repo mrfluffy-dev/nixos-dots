@@ -16,7 +16,7 @@ in
     targets.kde.enable = true;
     targets.qt.enable = true;
     targets.vscode.enable = true;
-    targets.gitui.enable = true;
+    targets.lazygit.enable = true;
     targets.foot.enable = true;
     targets.river.enable = true;
     targets.hyprland.enable = true;

@@ -11,7 +11,7 @@ in
 #hypridle = pkgs.callPackage ../../universal/personalPKGS/hypridle.nix {};
 {
 
-  programs.gitui.enable = true;
+  programs.lazygit.enable = true;
 
   qt.enable = true;
   #qt.style = "gtk2";
