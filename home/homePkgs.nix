@@ -197,5 +197,6 @@ in
     app2unit
     cava
     lm_sensors
+    thunderbird
   ];
 }

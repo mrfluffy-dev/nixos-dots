@@ -40,7 +40,7 @@ in
             "${pkgs.polkit_gnome}/libexec/polkit-gnome-authentication-agent-1"
             "fcitx5 -d"
             "foot -s"
-          ];
+          ] ++ lib.optional (config.home.username == "work") "thunderbird";
           #++ lib.optional (systemName == "laptop") "swaybg -o eDP-1 -i ${../assets/Wallpapers/138.png}"
           #++
           #  lib.optional (systemName == "pc")
@@ -194,12 +194,15 @@ in
             "${mod}, E, exec, ${editor}"
             ",Print, exec, grim -g \"$(slurp)\" - | swappy -f -"
             "${mod}, P, pseudo, " # dwindle
-            "${mod}, J, togglesplit," # dwindle
             #focus with mainMod + arrow keys
-            "${mod}, left, movefocus, l"
-            "${mod}, right, movefocus, r"
-            "${mod}, up, movefocus, u"
-            "${mod}, down, movefocus, d"
+            "${mod}, H, movefocus, l"
+            "${mod}, L, movefocus, r"
+            "${mod}, K, movefocus, u"
+            "${mod}, J, movefocus, d"
+            "${mod} SHIFT, H, movewindow, l"
+            "${mod} SHIFT, L, movewindow, r"
+            "${mod} SHIFT, K, movewindow, u"
+            "${mod} SHIFT, J, movewindow, d"
 
             # Switch workspaces with Mod + [0-9]
             "${mod}, 1, split:workspace, 1 "
@@ -224,8 +227,8 @@ in
             "${mod} SHIFT, 9, split:movetoworkspacesilent, 9 "
             "${mod} SHIFT, 0, split:movetoworkspacesilent, 10"
             # Example special workspace (scratchpad)
-            "${mod}, S, togglespecialworkspace, magic"
-            "${mod} SHIFT, S, movetoworkspace, special:magic"
+            "${mod}, SLASH, togglespecialworkspace, magic"
+            "${mod} SHIFT, SLASH, movetoworkspace, special:magic"
             # Scroll through existing workspaces with mainMod + scroll
             "${mod}, mouse_down, workspace, e+1"
             "${mod}, mouse_up, workspace, e-1"
@@ -264,6 +267,7 @@ in
             "suppressevent maximize, class:.*"
             # Fix some dragging issues with XWayland
             "nofocus,class:^$,title:^$,xwayland:1,floating:1,fullscreen:0,pinned:0"
+            "workspace special:magic silent, class:thunderbird"
           ];
 
         };
