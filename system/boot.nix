@@ -25,7 +25,7 @@
       ])
     ];
 
-    kernelPackages = pkgs.linuxPackages_latest;
+    kernelPackages = pkgs.linuxPackages_zen;
     kernelParams = lib.mkMerge [
       (lib.mkIf (systemName == "laptop") [
         "ipv6e=1"
