@@ -12,6 +12,8 @@ in
   stylix = {
     enable = true;
     autoEnable = false;
+    targets.font-packages.enable = true;
+    targets.fontconfig.enable = true;
     targets.gtk.enable = true;
     targets.kde.enable = true;
     targets.qt.enable = true;
@@ -58,8 +60,8 @@ in
         name = "Open Sans";
       };
       monospace = {
-        package = pkgs.iosevka-comfy.comfy;
-        name = "Iosevka Comfy";
+        package = pkgs.dejavu_fonts;
+        name = "DejaVu Sans Mono";
       };
       emoji = {
         package = pkgs.noto-fonts-emoji;
