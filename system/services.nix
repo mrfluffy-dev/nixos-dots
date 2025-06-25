@@ -7,6 +7,8 @@
 }:
 
 {
+
+  services.xserver.windowManager.fvwm2.gestures = true;
   # Enable CUPS to print documents.
   services.printing.enable = true;
 

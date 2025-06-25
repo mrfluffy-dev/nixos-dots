@@ -116,6 +116,7 @@ in
       "render"
       "docker"
       "libvirt"
+      "input"
     ]; # Enable ‘sudo’ for the user.
     packages = with pkgs; [
 
@@ -132,6 +133,7 @@ in
       "render"
       "docker"
       "libvirt"
+      "input"
     ]; # Enable ‘sudo’ for the user.
     packages = with pkgs; [
 

@@ -198,5 +198,9 @@ in
     cava
     lm_sensors
     thunderbird
+    wmctrl
+    xdotool
+    libinput-gestures
+    touchegg
   ];
 }
