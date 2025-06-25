@@ -289,6 +289,9 @@
           {
             command = [ "xwayland-satellite" ];
           }
+          {
+            command = [ "foot -s" ];
+          }
         ];
         # Uncomment this line to ask the clients to omit their client-side decorations if possible.
         # If the client will specifically ask for CSD, the request will be honored.
@@ -329,9 +332,9 @@
         };
         binds = with config.lib.niri.actions; {
           # App launchers
-          "Mod+T".action = spawn "alacritty";
-          "Mod+D".action = spawn "fuzzel";
-          "Super+Alt+L".action = spawn "swaylock";
+          "Alt+Return".action = spawn "footclient";
+          "Alt+D".action = spawn "anyrun";
+          "Super+Alt+L".action = spawn "${lib.getExe pkgs.hyprlock}";
 
           # Audio control
           "XF86AudioRaiseVolume".action = spawn "wpctl" "set-volume" "@DEFAULT_AUDIO_SINK@" "0.1+";
@@ -344,102 +347,102 @@
           "XF86MonBrightnessDown".action = spawn "brightnessctl" "--class=backlight" "set" "10%-";
 
           # Overview and quitting
-          "Mod+O".action = toggle-overview;
-          "Mod+Q".action = close-window;
-          "Mod+Shift+E".action = quit;
-          "Mod+Ctrl+Shift+E".action = quit { skip-confirmation = true; };
+          "Alt+O".action = toggle-overview;
+          "Alt+Q".action = close-window;
+          "Alt+Shift+E".action = quit;
+          "Alt+Ctrl+Shift+E".action = quit { skip-confirmation = true; };
 
           # Navigation
-          "Mod+H".action = focus-column-left;
-          "Mod+J".action = focus-window-down;
-          "Mod+K".action = focus-window-up;
-          "Mod+L".action = focus-column-right;
+          "Alt+H".action = focus-column-left;
+          "Alt+J".action = focus-window-down;
+          "Alt+K".action = focus-window-up;
+          "Alt+L".action = focus-column-right;
 
-          "Mod+Ctrl+H".action = move-column-left;
-          "Mod+Ctrl+J".action = move-window-down;
-          "Mod+Ctrl+K".action = move-window-up;
-          "Mod+Ctrl+L".action = move-column-right;
+          "Alt+Ctrl+H".action = move-column-left;
+          "Alt+Ctrl+J".action = move-window-down;
+          "Alt+Ctrl+K".action = move-window-up;
+          "Alt+Ctrl+L".action = move-column-right;
 
-          "Mod+Shift+H".action = focus-monitor-left;
-          "Mod+Shift+J".action = focus-monitor-down;
-          "Mod+Shift+K".action = focus-monitor-up;
-          "Mod+Shift+L".action = focus-monitor-right;
+          "Alt+Shift+H".action = focus-monitor-left;
+          "Alt+Shift+J".action = focus-monitor-down;
+          "Alt+Shift+K".action = focus-monitor-up;
+          "Alt+Shift+L".action = focus-monitor-right;
 
-          "Mod+Shift+Ctrl+H".action = move-column-to-monitor-left;
-          "Mod+Shift+Ctrl+J".action = move-column-to-monitor-down;
-          "Mod+Shift+Ctrl+K".action = move-column-to-monitor-up;
-          "Mod+Shift+Ctrl+L".action = move-column-to-monitor-right;
+          "Alt+Shift+Ctrl+H".action = move-column-to-monitor-left;
+          "Alt+Shift+Ctrl+J".action = move-column-to-monitor-down;
+          "Alt+Shift+Ctrl+K".action = move-column-to-monitor-up;
+          "Alt+Shift+Ctrl+L".action = move-column-to-monitor-right;
 
-          "Mod+U".action = focus-workspace-down;
-          "Mod+I".action = focus-workspace-up;
-          "Mod+Ctrl+U".action = move-column-to-workspace-down;
-          "Mod+Ctrl+I".action = move-column-to-workspace-up;
-          "Mod+Shift+U".action = move-workspace-down;
-          "Mod+Shift+I".action = move-workspace-up;
+          "Alt+U".action = focus-workspace-down;
+          "Alt+I".action = focus-workspace-up;
+          "Alt+Ctrl+U".action = move-column-to-workspace-down;
+          "Alt+Ctrl+I".action = move-column-to-workspace-up;
+          "Alt+Shift+U".action = move-workspace-down;
+          "Alt+Shift+I".action = move-workspace-up;
 
           # Scroll bindings
-          "Mod+WheelScrollDown".action = focus-workspace-down;
-          "Mod+WheelScrollUp".action = focus-workspace-up;
-          "Mod+Ctrl+WheelScrollDown".action = move-column-to-workspace-down;
-          "Mod+Ctrl+WheelScrollUp".action = move-column-to-workspace-up;
+          "Alt+WheelScrollDown".action = focus-workspace-down;
+          "Alt+WheelScrollUp".action = focus-workspace-up;
+          "Alt+Ctrl+WheelScrollDown".action = move-column-to-workspace-down;
+          "Alt+Ctrl+WheelScrollUp".action = move-column-to-workspace-up;
 
-          "Mod+WheelScrollLeft".action = focus-column-left;
-          "Mod+WheelScrollRight".action = focus-column-right;
-          "Mod+Ctrl+WheelScrollLeft".action = move-column-left;
-          "Mod+Ctrl+WheelScrollRight".action = move-column-right;
+          "Alt+WheelScrollLeft".action = focus-column-left;
+          "Alt+WheelScrollRight".action = focus-column-right;
+          "Alt+Ctrl+WheelScrollLeft".action = move-column-left;
+          "Alt+Ctrl+WheelScrollRight".action = move-column-right;
 
-          "Mod+Shift+WheelScrollUp".action = focus-column-left;
-          "Mod+Shift+WheelScrollDown".action = focus-column-right;
-          "Mod+Ctrl+Shift+WheelScrollUp".action = move-column-left;
-          "Mod+Ctrl+Shift+WheelScrollDown".action = move-column-right;
+          "Alt+Shift+WheelScrollUp".action = focus-column-left;
+          "Alt+Shift+WheelScrollDown".action = focus-column-right;
+          "Alt+Ctrl+Shift+WheelScrollUp".action = move-column-left;
+          "Alt+Ctrl+Shift+WheelScrollDown".action = move-column-right;
 
           # Workspace numbers (1–9)
-          "Mod+1".action = focus-workspace 1;
-          "Mod+2".action = focus-workspace 2;
-          "Mod+3".action = focus-workspace 3;
-          "Mod+4".action = focus-workspace 4;
-          "Mod+5".action = focus-workspace 5;
-          "Mod+6".action = focus-workspace 6;
-          "Mod+7".action = focus-workspace 7;
-          "Mod+8".action = focus-workspace 8;
-          "Mod+9".action = focus-workspace 9;
+          "Alt+1".action = focus-workspace 1;
+          "Alt+2".action = focus-workspace 2;
+          "Alt+3".action = focus-workspace 3;
+          "Alt+4".action = focus-workspace 4;
+          "Alt+5".action = focus-workspace 5;
+          "Alt+6".action = focus-workspace 6;
+          "Alt+7".action = focus-workspace 7;
+          "Alt+8".action = focus-workspace 8;
+          "Alt+9".action = focus-workspace 9;
 
-          "Mod+Ctrl+1".action = move-column-to-workspace 1;
-          "Mod+Ctrl+2".action = move-column-to-workspace 2;
-          "Mod+Ctrl+3".action = move-column-to-workspace 3;
-          "Mod+Ctrl+4".action = move-column-to-workspace 4;
-          "Mod+Ctrl+5".action = move-column-to-workspace 5;
-          "Mod+Ctrl+6".action = move-column-to-workspace 6;
-          "Mod+Ctrl+7".action = move-column-to-workspace 7;
-          "Mod+Ctrl+8".action = move-column-to-workspace 8;
-          "Mod+Ctrl+9".action = move-column-to-workspace 9;
+          "Alt+Ctrl+1".action = move-column-to-index 1;
+          "Alt+Ctrl+2".action = move-column-to-index 2;
+          "Alt+Ctrl+3".action = move-column-to-index 3;
+          "Alt+Ctrl+4".action = move-column-to-index 4;
+          "Alt+Ctrl+5".action = move-column-to-index 5;
+          "Alt+Ctrl+6".action = move-column-to-index 6;
+          "Alt+Ctrl+7".action = move-column-to-index 7;
+          "Alt+Ctrl+8".action = move-column-to-index 8;
+          "Alt+Ctrl+9".action = move-column-to-index 9;
 
           # Window & column management
-          "Mod+Comma".action = consume-window-into-column;
-          "Mod+Period".action = expel-window-from-column;
-          "Mod+BracketLeft".action = consume-or-expel-window-left;
-          "Mod+BracketRight".action = consume-or-expel-window-right;
+          "Alt+Comma".action = consume-window-into-column;
+          "Alt+Period".action = expel-window-from-column;
+          "Alt+BracketLeft".action = consume-or-expel-window-left;
+          "Alt+BracketRight".action = consume-or-expel-window-right;
 
-          "Mod+F".action = maximize-column;
-          "Mod+Shift+F".action = fullscreen-window;
-          "Mod+Ctrl+F".action = expand-column-to-available-width;
+          "Alt+F".action = maximize-column;
+          "Alt+Shift+F".action = fullscreen-window;
+          "Alt+Ctrl+F".action = expand-column-to-available-width;
 
-          "Mod+C".action = center-column;
-          "Mod+Ctrl+C".action = center-visible-columns;
+          "Alt+C".action = center-column;
+          "Alt+Ctrl+C".action = center-visible-columns;
 
-          "Mod+Minus".action = set-column-width "-10%";
-          "Mod+Plus".action = set-column-width "+10%";
-          "Mod+Shift+Minus".action = set-window-height "-10%";
-          "Mod+Shift+Plus".action = set-window-height "+10%";
+          "Alt+Minus".action = set-column-width "-10%";
+          "Alt+Plus".action = set-column-width "+10%";
+          "Alt+Shift+Minus".action = set-window-height "-10%";
+          "Alt+Shift+Plus".action = set-window-height "+10%";
 
-          "Mod+R".action = switch-preset-column-width;
-          "Mod+Shift+R".action = switch-preset-window-height;
-          "Mod+Ctrl+R".action = reset-window-height;
+          "Alt+R".action = switch-preset-column-width;
+          "Alt+Shift+R".action = switch-preset-window-height;
+          "Alt+Ctrl+R".action = reset-window-height;
 
-          "Mod+V".action = toggle-window-floating;
-          "Mod+Shift+V".action = switch-focus-between-floating-and-tiling;
+          "Alt+V".action = toggle-window-floating;
+          "Alt+Shift+V".action = switch-focus-between-floating-and-tiling;
 
-          "Mod+W".action = toggle-column-tabbed-display;
+          "Alt+W".action = toggle-column-tabbed-display;
 
           # Screenshots
           "Print".action = screenshot { show-pointer = false; };
@@ -449,8 +452,8 @@
           "Alt+Print".action = screenshot-window;
 
           # Other
-          "Mod+Escape".action = toggle-keyboard-shortcuts-inhibit;
-          "Mod+Shift+P".action = power-off-monitors;
+          "Alt+Escape".action = toggle-keyboard-shortcuts-inhibit;
+          "Alt+Shift+P".action = power-off-monitors;
         };
       };
     };
