@@ -21,6 +21,7 @@ in
         enable = window_manager == "hyprland" || window_manager == "all";
         plugins = [
           pkgs.hyprlandPlugins.hyprsplit
+          pkgs.hyprlandPlugins.hyprscrolling
         ];
         settings = {
 
@@ -51,6 +52,17 @@ in
             hyprsplit = {
               num_workspaces = 10;
               persistent_workspaces = true;
+            };
+            hyprscrolling = {
+              fullscreen_on_one_column = false;
+              column_width = 0.7;
+              explicit_column_widths = [
+                0.333
+                0.5
+                0.667
+                1.0
+              ];
+              focus_fit_method = 0;
             };
           };
 
@@ -171,9 +183,10 @@ in
             };
           };
           # https://wiki.hyprland.org/Configuring/Variables/#gestures
-          gestures = {
-            workspace_swipe = true;
-          };
+          #gestures = {
+          #  workspace_swipe = true;
+          #  workspace_swipe_cancel_ratio = 0.15;
+          #};
 
           # Example per-device config
           # See https://wiki.hyprland.org/Configuring/Keywords/#per-device-input-configs for more
@@ -195,12 +208,14 @@ in
             ",Print, exec, grim -g \"$(slurp)\" - | swappy -f -"
             "${mod}, P, pseudo, " # dwindle
             #focus with mainMod + arrow keys
-            "${mod}, H, movefocus, l"
-            "${mod}, L, movefocus, r"
+            #"${mod}, H, movefocus, l"
+            #"${mod}, L, movefocus, r"
             "${mod}, K, movefocus, u"
             "${mod}, J, movefocus, d"
             "${mod} SHIFT, H, movewindow, l"
+            "${mod}, h, layoutmsg, move -col"
             "${mod} SHIFT, L, movewindow, r"
+            "${mod}, L, layoutmsg, move +col"
             "${mod} SHIFT, K, movewindow, u"
             "${mod} SHIFT, J, movewindow, d"
 
