@@ -198,6 +198,8 @@ in
     cava
     lm_sensors
     thunderbird
+    libnotify
+    localsend
     wmctrl
     xdotool
     libinput-gestures

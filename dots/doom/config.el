@@ -216,32 +216,32 @@
 
 ;;ollama stuff
 ;;
-(use-package ellama
-    :init
-    ;; setup key bindings
-    (setopt ellama-keymap-prefix "C-c e")
-    ;; language you want ellama to translate to
-    (setopt ellama-language "English")
-    ;; could be llm-openai for example
-    (require 'llm-ollama)
-    (setopt ellama-provider
-	(make-llm-ollama
-	    ;; this model should be pulled to use it
-	    ;; value should be the same as you print in terminal during pull
-	    :chat-model "codellama:13b"
-	    :embedding-model "codellama:13b"))
-    )
-(use-package qml-ts-mode
-    :after lsp-mode
-    :config
-    (add-to-list 'lsp-language-id-configuration '(qml-ts-mode . "qml-ts"))
-    (lsp-register-client
-        (make-lsp-client :new-connection (lsp-stdio-connection '("qmlls", "-E"))
-            :activation-fn (lsp-activate-on "qml-ts")
-            :server-id 'qmlls))
-    (add-hook 'qml-ts-mode-hook (lambda ()
-                                    (setq-local electric-indent-chars '(?\n ?\( ?\) ?{ ?} ?\[ ?\] ?\; ?,))
-                                    (lsp-deferred))))
+;;(use-package ellama
+;;    :init
+;;    ;; setup key bindings
+;;    (setopt ellama-keymap-prefix "C-c e")
+;;    ;; language you want ellama to translate to
+;;    (setopt ellama-language "English")
+;;    ;; could be llm-openai for example
+;;    (require 'llm-ollama)
+;;    (setopt ellama-provider
+;;	(make-llm-ollama
+;;	    ;; this model should be pulled to use it
+;;	    ;; value should be the same as you print in terminal during pull
+;;	    :chat-model "codellama:13b"
+;;	    :embedding-model "codellama:13b"))
+;;    )
+;;(use-package qml-ts-mode
+;;    :after lsp-mode
+;;    :config
+;;    (add-to-list 'lsp-language-id-configuration '(qml-ts-mode . "qml-ts"))
+;;    (lsp-register-client
+;;        (make-lsp-client :new-connection (lsp-stdio-connection '("qmlls", "-E"))
+;;            :activation-fn (lsp-activate-on "qml-ts")
+;;            :server-id 'qmlls))
+;;    (add-hook 'qml-ts-mode-hook (lambda ()
+;;                                    (setq-local electric-indent-chars '(?\n ?\( ?\) ?{ ?} ?\[ ?\] ?\; ?,))
+;;                                    (lsp-deferred))))
 
 
 ;; custom functions

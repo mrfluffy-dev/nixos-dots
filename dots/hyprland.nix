@@ -35,13 +35,18 @@ in
           ];
           # Autostart necessary processes (like notifications daemons, status bars, etc.)
           # Or execute your favorite apps at launch like this:
-          exec-once = [
-            #"waybar"
-            #"quickshell"
-            "${pkgs.polkit_gnome}/libexec/polkit-gnome-authentication-agent-1"
-            "fcitx5 -d"
-            "foot -s"
-          ] ++ lib.optional (config.home.username == "work") "thunderbird";
+          exec-once =
+            [
+              #"waybar"
+              #"quickshell"
+              "${pkgs.polkit_gnome}/libexec/polkit-gnome-authentication-agent-1"
+              "fcitx5 -d"
+              "foot -s"
+            ]
+            ++ lib.optionals (config.home.username == "work") [
+              "thunderbird"
+              "sleep 10 && emacsclient -c --frame-parameters='((name . \"work\"))' $HOME/Documents/work/README.org"
+            ];
           #++ lib.optional (systemName == "laptop") "swaybg -o eDP-1 -i ${../assets/Wallpapers/138.png}"
           #++
           #  lib.optional (systemName == "pc")
@@ -283,6 +288,7 @@ in
             # Fix some dragging issues with XWayland
             "nofocus,class:^$,title:^$,xwayland:1,floating:1,fullscreen:0,pinned:0"
             "workspace special:magic silent, class:thunderbird"
+            "workspace special:magic silent, class:emacs, title:work"
           ];
 
         };

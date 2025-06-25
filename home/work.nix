@@ -22,6 +22,7 @@ in
     ../dots/hyprlock.nix
     ./stylix.nix
     ./homePkgs.nix
+    ./services.nix
     ../dots/xdg.nix
     ../dots/river.nix
     ../dots/niri.nix

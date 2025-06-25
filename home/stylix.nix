@@ -59,9 +59,13 @@ in
         package = pkgs.open-sans;
         name = "Open Sans";
       };
+      #monospace = {
+      #  package = pkgs.dejavu_fonts;
+      #  name = "DejaVu Sans Mono";
+      #};
       monospace = {
-        package = pkgs.dejavu_fonts;
-        name = "DejaVu Sans Mono";
+        package = pkgs.iosevka-comfy.comfy;
+        name = "Iosevka Comfy";
       };
       emoji = {
         package = pkgs.noto-fonts-emoji;
