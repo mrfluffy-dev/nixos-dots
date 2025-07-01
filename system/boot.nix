@@ -25,7 +25,9 @@
       ])
     ];
 
-    kernelPackages = pkgs.linuxPackages_zen;
+    kernelPackages = pkgs.linuxPackages_latest;
+    kernelModules = [ "v4l2loopback" ];
+    extraModulePackages = [ pkgs.linuxPackages_latest.v4l2loopback ];
     kernelParams = lib.mkMerge [
       (lib.mkIf (systemName == "laptop") [
         "ipv6e=1"
@@ -36,6 +38,9 @@
         "ipv6e=1"
       ])
     ];
+    extraModprobeConfig = ''
+      options v4l2loopback devices=2 video_nr=1,0 card_label="OBS Cam","phone cam" exclusive_caps=1,1
+    '';
 
     plymouth = {
       enable = true;

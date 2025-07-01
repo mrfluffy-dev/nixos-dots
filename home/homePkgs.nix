@@ -10,7 +10,7 @@ in
 #hyprlock = pkgs.callPackage ../../universal/personalPKGS/hyprlock.nix {};
 #hypridle = pkgs.callPackage ../../universal/personalPKGS/hypridle.nix {};
 {
-
+  programs.nix-index.enable = true;
   programs.lazygit.enable = true;
 
   qt.enable = true;
@@ -108,6 +108,15 @@ in
   };
   services.kdeconnect.enable = true;
 
+  #  programs.obs-studio = {
+  #    enable = true;
+  #    plugins = with pkgs.obs-studio-plugins; [
+  #      wlrobs
+  #      obs-backgroundremoval
+  #      obs-pipewire-audio-capture
+  #    ];
+  #  };
+
   home.packages = with pkgs; [
 
     # # Adds the 'hello' command to your environment. It prints a friendly
@@ -136,7 +145,6 @@ in
     rustc
     macchina
     hyprpaper
-    obs-studio
     #xwaylandvideobridge
     duf
     grim
@@ -200,9 +208,6 @@ in
     thunderbird
     libnotify
     localsend
-    wmctrl
-    xdotool
-    libinput-gestures
-    touchegg
+    android-tools
   ];
 }

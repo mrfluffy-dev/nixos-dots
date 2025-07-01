@@ -165,7 +165,7 @@
   # List services that you want to enable:
   services.emacs = {
     enable = true;
-    package = pkgs.emacs30-pgtk; # replace with emacs-gtk, or a version provided by the community overlay if desired.
+    package = pkgs.emacs-gtk; # replace with emacs-gtk, or a version provided by the community overlay if desired.
   };
   services.sunshine = lib.mkIf (systemName == "pc") {
     enable = true;

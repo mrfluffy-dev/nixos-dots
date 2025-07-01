@@ -25,6 +25,10 @@
       url = "git+https://git.outfoxxed.me/outfoxxed/nix-qml-support";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    nix-alien = {
+      url = "github:thiagokokada/nix-alien";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
   outputs =
@@ -37,7 +41,7 @@
     let
       system = "x86_64-linux";
       #Avalable options are ["niri" "river" "hyprland" "all"]
-      window_manager = "niri";
+      window_manager = "hyprland";
     in
     {
       nixosConfigurations = {

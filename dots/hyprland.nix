@@ -42,6 +42,7 @@ in
               "${pkgs.polkit_gnome}/libexec/polkit-gnome-authentication-agent-1"
               "fcitx5 -d"
               "foot -s"
+              "${pkgs.polkit_gnome}/libexec/polkit-gnome-authentication-agent-1"
             ]
             ++ lib.optionals (config.home.username == "work") [
               "thunderbird"
@@ -177,6 +178,8 @@ in
               (lib.mkIf (systemName == "laptop") "ie")
               (lib.mkIf (systemName == "pc") "us")
             ];
+            repeat_rate = 40;
+            repeat_delay = 500;
             #kb_variant =
             #kb_model =
             #kb_options =
@@ -252,6 +255,9 @@ in
             # Scroll through existing workspaces with mainMod + scroll
             "${mod}, mouse_down, workspace, e+1"
             "${mod}, mouse_up, workspace, e-1"
+            # 8BitDo keyboard big red b Button
+            "${mod} SHIFT, F1, exec, scrcpy --video-source=camera -m3000 --camera-facing=back --v4l2-sink=/dev/video1 --no-video-playback --no-audio"
+
           ];
 
           bindm = [
@@ -273,6 +279,9 @@ in
             ", XF86AudioPause, exec, playerctl play-pause"
             ", XF86AudioPlay, exec, playerctl play-pause "
             ", XF86AudioPrev, exec, playerctl previous   "
+          ];
+          binds = [
+
           ];
 
           # See https://wiki.hyprland.org/Configuring/Window-Rules/ for more

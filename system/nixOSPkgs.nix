@@ -1,6 +1,7 @@
 {
   config,
   lib,
+  inputs,
   pkgs,
   pkgs-stable,
   ...
@@ -94,9 +95,41 @@ in
   programs.nix-ld.enable = true;
   programs.nix-ld.libraries = with pkgs; [
     # add libraries here
+    alsa-lib
     libGL
+    glibc
+    glib
+    fontconfig
+    xorg.libX11
+    xorg.libXcomposite
+    xorg.libXdamage
+    xorg.libXfixes
+    xorg.libXrender
+    xorg.libXrandr
+    xorg.libXtst
+    xorg_sys_opengl
+    xorg.libXi
+    xorg.libxshmfence
+    xorg.libxkbfile
+    xorg.libxcb
+    xorg.xcbutilwm
+    xorg.xcbutilimage
+    xorg.xcbutilkeysyms
+    xorg.xcbutilrenderutil
+    xcb-util-cursor
+    libgbm
+    libxkbcommon
+    freetype
+    dbus
+    krb5
+    nss
+    zotero
+    nspr
+    gtk3
+    libappindicator-gtk3
+    mesa
+    vulkan-loader
   ];
-
 
   #backlight tool
   programs.light.enable = true;
@@ -139,5 +172,6 @@ in
     kdePackages.qt6ct
     ripgrep
     xwayland-satellite
+    inputs.nix-alien.packages.${pkgs.system}.nix-alien
   ];
 }

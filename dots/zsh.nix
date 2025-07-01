@@ -20,6 +20,7 @@
       path = "$XDG_DATA_HOME/zsh/history";
     };
     sessionVariables = {
+      LD_LIBRARY_PATH = "/run/current-system/sw/share/nix-ld/lib";
       HISTSIZE = 3000;
       SAVEHIST = 3000;
       CARGO_HOME = "$XDG_DATA_HOME/cargo";
@@ -80,4 +81,3 @@
     '';
   };
 }
-

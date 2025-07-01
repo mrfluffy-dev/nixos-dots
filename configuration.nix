@@ -92,6 +92,10 @@ in
   };
 
   security.rtkit.enable = true;
+  security.polkit = {
+    enable = true;
+    #package = pkgs.polkit_gnome;
+  };
   environment.sessionVariables = {
     ZDOTDIR = "$HOME/.config/zsh";
   };
