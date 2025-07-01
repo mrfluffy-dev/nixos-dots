@@ -172,6 +172,10 @@ in
     kdePackages.qt6ct
     ripgrep
     xwayland-satellite
+    cmake
+    gnumake
+    gcc
+    libtool
     inputs.nix-alien.packages.${pkgs.system}.nix-alien
   ];
 }
