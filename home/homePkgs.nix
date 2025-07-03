@@ -152,7 +152,6 @@ in
     swappy
     heroic
     gamemode
-    gamescope
     goverlay
     rm-improved
     nodejs_20
@@ -170,7 +169,6 @@ in
     pcmanfm
     hyprpicker
     mangohud
-    gamemode
     #discord
     mpv
     rofi
@@ -209,5 +207,7 @@ in
     libnotify
     localsend
     android-tools
+    #grayjay
+    youtube-music
   ];
 }

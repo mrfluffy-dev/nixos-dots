@@ -57,6 +57,9 @@ let
 in
 
 {
+  programs.gamescope = {
+    enable = true;
+  };
   nixpkgs.config = {
     allowUnfree = true;
   };

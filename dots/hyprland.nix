@@ -211,6 +211,7 @@ in
             "${mod}, M, exit,"
             "${mod}, F, exec, ${fileManager}"
             "${mod}, V, togglefloating,"
+	    "${mod}, T, fullscreen"
             "${mod}, D, exec, ${runner}"
             "${mod}, E, exec, ${editor}"
             ",Print, exec, grim -g \"$(slurp)\" - | swappy -f -"

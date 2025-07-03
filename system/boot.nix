@@ -25,9 +25,9 @@
       ])
     ];
 
-    kernelPackages = pkgs.linuxPackages_latest;
+    kernelPackages = pkgs.linuxPackages_zen;
     kernelModules = [ "v4l2loopback" ];
-    extraModulePackages = [ pkgs.linuxPackages_latest.v4l2loopback ];
+    extraModulePackages = [ pkgs.linuxPackages_zen.v4l2loopback ];
     kernelParams = lib.mkMerge [
       (lib.mkIf (systemName == "laptop") [
         "ipv6e=1"
