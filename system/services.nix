@@ -192,8 +192,10 @@
     port = 11434;
     host = "0.0.0.0";
     acceleration = "rocm";
+    rocmOverrideGfx = "11.0.0";
     environmentVariables = {
-      HSA_OVERRIDE_GFX_VERSION = "11.0.0";
+      #HSA_OVERRIDE_GFX_VERSION = "11.0.0";
+      #OLLAMA_KV_CACHE_TYPE = "q4";
     };
   };
 

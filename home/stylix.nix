@@ -13,7 +13,7 @@ in
     enable = true;
     autoEnable = false;
     targets.font-packages.enable = true;
-    targets.fontconfig.enable = true;
+    #targets.fontconfig.enable = true;
     targets.gtk.enable = true;
     targets.kde.enable = true;
     targets.qt.enable = true;
