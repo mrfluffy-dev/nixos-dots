@@ -59,6 +59,7 @@ in
 {
   programs.gamescope = {
     enable = true;
+
   };
   nixpkgs.config = {
     allowUnfree = true;
@@ -89,10 +90,17 @@ in
   programs.virt-manager.enable = true;
   programs.zsh.enable = true;
   programs.corectrl.enable = true;
+  programs.opengamepadui = {
+    enable = true;
+    gamescopeSession.enable = true;
+  };
   programs.steam = {
     enable = true;
     remotePlay.openFirewall = true; # Open ports in the firewall for Steam Remote Play
     dedicatedServer.openFirewall = true; # Open ports in the firewall for Source Dedicated Server
+    gamescopeSession = {
+      enable = true;
+    };
   };
   # enable dynamic bin executables
   programs.nix-ld.enable = true;
@@ -178,6 +186,7 @@ in
     gnumake
     gcc
     libtool
+    ladspaPlugins
     inputs.nix-alien.packages.${pkgs.system}.nix-alien
   ];
 }

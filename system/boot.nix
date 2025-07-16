@@ -16,6 +16,9 @@
       efi.canTouchEfiVariables = true;
     };
     initrd.kernelModules = lib.mkMerge [
+      [
+      "btusb"
+      ]
       (lib.mkIf (systemName == "laptop") [
         "kvm"
       ])
@@ -25,9 +28,11 @@
       ])
     ];
 
-    kernelPackages = pkgs.linuxPackages_zen;
+    kernelPackages = pkgs.linuxPackages_latest;
     kernelModules = [ "v4l2loopback" ];
-    extraModulePackages = [ pkgs.linuxPackages_zen.v4l2loopback ];
+    extraModulePackages = [ 
+      pkgs.linuxPackages_latest.v4l2loopback
+    ];
     kernelParams = lib.mkMerge [
       (lib.mkIf (systemName == "laptop") [
         "ipv6e=1"

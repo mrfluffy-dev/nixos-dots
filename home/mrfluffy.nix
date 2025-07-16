@@ -99,7 +99,7 @@ in
     ".config/nixpkgs/config.nix".text = ''
       { allowUnfree = true; }
     '';
-    ".config/doom".source = ../dots/doom;
+    #".config/doom".source = ../dots/doom;
     ".config/quickshell".source = ../dots/quickshell;
     #".config/kitty".source = ../../universal/dots/kitty;
     #".config/nvim".source = ../../universal/dots/nvim;

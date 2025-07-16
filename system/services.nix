@@ -40,62 +40,13 @@
       pulse.enable = true;
       jack.enable = true;
       extraConfig.pipewire = {
-        # the key "00-clock-rate" names the drop-in file
-        "00-clock-rate" = {
-          # these properties go under [context.properties] in pipewire.conf
-          context.properties = {
-            # force the graph sample rate
+        "92-low-latency" = {
+          "context.properties" = {
             "default.clock.rate" = 48000;
-            # tell PipeWire which other rates you allow it to switch to
-            "default.clock.allowed-rates" = [
-              44100
-              48000
-              96000
-            ];
-            # quantum = number of frames per period (i.e. buffer size)
-            "default.clock.min-quantum" = 32;
-            "default.clock.max-quantum" = 8192;
+            "default.clock.allowed-rates" = [ 48000 ];
           };
         };
-        "99-input-denoising" = {
-          "context.modules" = [
-            {
-              "name" = "libpipewire-module-filter-chain";
-              "args" = {
-                "node.description" = "Noise Canceling source";
-                "media.name" = "Noise Canceling source";
-                "filter.graph" = {
-                  "nodes" = [
-                    {
-                      "type" = "ladspa";
-                      "name" = "rnnoise";
-                      "plugin" = "${pkgs.rnnoise-plugin}/lib/ladspa/librnnoise_ladspa.so";
-                      "label" = "noise_suppressor_mono";
-                      "control" = {
-                        "VAD Threshold (%)" = 20.0;
-                        "VAD Grace Period (ms)" = 200;
-                        "Retroactive VAD Grace (ms)" = 0;
-                      };
-                    }
-                  ];
-                };
-
-                "capture.props" = {
-                  "node.name" = "effect_input.rnnoise";
-                  "node.passive" = true;
-                  "audio.rate" = 48000;
-                };
-                "playback.props" = {
-                  "node.name" = "effect_output.rnnoise";
-                  "media.class" = "Audio/Source";
-                  "audio.rate" = 48000;
-                };
-              };
-            }
-          ];
-        };
       };
-
     })
     (lib.mkIf (systemName == "pc") {
       enable = true;
@@ -106,49 +57,63 @@
       extraConfig.pipewire = {
         "92-low-latency" = {
           "context.properties" = {
-            "default.clock.rate" = 48000;
-            "default.clock.allowed-rates" = [ 48000 ];
+            "default.clock.rate" = 96000;
+            "default.clock.allowed-rates" = [
+              44100
+              48000
+              96000
+            ];
           };
         };
-        "99-input-denoising" = {
-          "context.modules" = [
-            {
-              "name" = "libpipewire-module-filter-chain";
-              "args" = {
-                "node.description" = "Noise Canceling source";
-                "media.name" = "Noise Canceling source";
-                "filter.graph" = {
-                  "nodes" = [
-                    {
-                      "type" = "ladspa";
-                      "name" = "rnnoise";
-                      "plugin" = "${pkgs.rnnoise-plugin}/lib/ladspa/librnnoise_ladspa.so";
-                      "label" = "noise_suppressor_mono";
-                      "control" = {
-                        "VAD Threshold (%)" = 50.0;
-                        "VAD Grace Period (ms)" = 200;
-                        "Retroactive VAD Grace (ms)" = 0;
-                      };
-                    }
-                  ];
-                };
-
-                "capture.props" = {
-                  "node.name" = "effect_input.rnnoise";
-                  "node.passive" = true;
-                  "audio.rate" = 48000;
-                };
-                "playback.props" = {
-                  "node.name" = "effect_output.rnnoise";
-                  "media.class" = "Audio/Source";
-                  "audio.rate" = 48000;
-                };
-              };
-            }
-          ];
-        };
+        #"93-mic-gain" = {
+        #  "context.modules" = [
+        #    {
+        #      name = "libpipewire-module-filter-chain";
+        #      args = {
+        #        node.description = "Mic Gain Boost";
+        #        media.name = "Mic Gain Boost";
+        #        filter.graph = {
+        #          nodes = [
+        #            {
+        #              type = "ladspa";
+        #              name = "gain";
+        #              plugin = "amp";  # LADSPA amplifier plugin
+        #              label = "amp_mono";
+        #              control = {
+        #                "Gain" = 12.0;  # Boost gain by 12 dB (adjust as needed)
+        #              };
+        #            }
+        #          ];
+        #        };
+        #        capture.props = {
+        #          "node.name" = "effect_input.mic_boost";
+        #          "audio.position" = [ "MONO" ];
+        #        };
+        #        playback.props = {
+        #          "node.name" = "effect_output.mic_boost";
+        #          "audio.position" = [ "MONO" ];
+        #        };
+        #      };
+        #    }
+        #  ];
+        #};
       };
-
+      #wireplumber.extraConfig = {
+      #  "monitor.alsa.rules" = {
+      #    rule1 = {  # Give the rule a unique name
+      #      matches = [
+      #        { "node.name" = "~alsa_input.*"; }
+      #      ];
+      #      actions = {
+      #        update-props = {
+      #          "api.alsa.soft-mixer" = true;
+      #          "api.alsa.volume" = "100%";
+      #          "api.alsa.headroom" = 0;
+      #        };
+      #      };
+      #    };
+      #  };
+      #};
     })
   ];
 
@@ -165,7 +130,7 @@
   # List services that you want to enable:
   services.emacs = {
     enable = true;
-    package = pkgs.emacs-gtk; # replace with emacs-gtk, or a version provided by the community overlay if desired.
+    package = pkgs.emacs-pgtk; # replace with emacs-gtk, or a version provided by the community overlay if desired.
   };
   services.sunshine = lib.mkIf (systemName == "pc") {
     enable = true;
