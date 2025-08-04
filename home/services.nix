@@ -29,4 +29,23 @@ in
       WantedBy = [ "graphical-session.target" ];
     };
   };
+  systemd.user.services.ulauncher = {
+    Unit = {
+      Description = "Ulauncher service";
+      Documentation = [ "https://ulauncher.io/" ];
+      After = [ "graphical-session.target" ];
+    };
+
+    Service = {
+      Type = "simple";
+      BusName = "io.ulauncher.Ulauncher";
+      Environment="GDK_BACKEND=x11";
+      ExecStart = "${lib.getExe pkgs.ulauncher} --hide-window";
+      Restart = "always";
+      RestartSec = 1;
+    };
+    Install = {
+      WantedBy = [ "graphical-session.target" ];
+    };
+  };
 }

@@ -101,7 +101,7 @@ in
       { allowUnfree = true; }
     '';
     #".config/doom".source = ../dots/doom;
-    ".config/quickshell".source = ../dots/quickshell;
+    ".config/shell".source = ../dots/quickshell;
     #".config/kitty".source = ../../universal/dots/kitty;
     #".config/nvim".source = ../../universal/dots/nvim;
     "Pictures/Wallpapers".source = ../assets/Wallpapers;

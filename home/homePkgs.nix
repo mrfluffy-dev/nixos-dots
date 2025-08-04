@@ -209,5 +209,6 @@ in
     android-tools
     #grayjay
     youtube-music
+    ulauncher
   ];
 }
