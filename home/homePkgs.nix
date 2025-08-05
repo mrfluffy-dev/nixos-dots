@@ -210,5 +210,7 @@ in
     #grayjay
     youtube-music
     ulauncher
+    inputs.caelestia.packages.${pkgs.system}.caelestia-shell
+    inputs.caelestia-cli.packages.${pkgs.system}.caelestia-cli
   ];
 }

@@ -13,6 +13,8 @@
     zen-browser.url = "github:0xc000022070/zen-browser-flake";
     nixcord.url = "github:kaylorben/nixcord";
     niri.url = "github:sodiboo/niri-flake";
+    caelestia.url = "github:caelestia-dots/shell";
+    caelestia-cli.url = "github:caelestia-dots/cli";
     quickshell = {
       # remove ?ref=v0.1.0 to track the master branch
       url = "git+https://git.outfoxxed.me/outfoxxed/quickshell";

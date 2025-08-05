@@ -4,6 +4,7 @@
   pkgs,
   window_manager,
   systemName,
+  inputs,
   ...
 }:
 let
@@ -13,6 +14,7 @@ let
   runner = "anyrun";
   browser = "zen-twilight";
   editor = "emacsclient -c";
+  caelestia-cli = inputs.caelestia-cli.packages.${pkgs.system}.caelestia-cli;
 in
 {
   wayland = {
@@ -211,10 +213,11 @@ in
             "${mod}, M, exit,"
             "${mod}, F, exec, ${fileManager}"
             "${mod}, V, togglefloating,"
-	    "${mod}, T, fullscreen"
+	          "${mod}, T, fullscreen"
             "${mod}, D, exec, ${runner}"
             "${mod}, E, exec, ${editor}"
-            ",Print, exec, grim -g \"$(slurp)\" - | swappy -f -"
+            #",Print, exec, grim -g \"$(slurp)\" - | swappy -f -"
+            ",Print, exec, ${lib.getExe caelestia-cli} screenshot -r"
             "${mod}, P, pseudo, " # dwindle
             #focus with mainMod + arrow keys
             #"${mod}, H, movefocus, l"
