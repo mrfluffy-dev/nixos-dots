@@ -8,13 +8,13 @@
   ...
 }:
 let
+  caelestia-cli = inputs.caelestia-cli.packages.${pkgs.system}.caelestia-cli;
   mod = "Alt";
   terminal = "footclient";
   fileManager = "pcmanfm";
-  runner = "anyrun";
+  runner = "${lib.getExe caelestia-cli} shell drawers toggle launcher";
   browser = "zen-twilight";
   editor = "emacsclient -c";
-  caelestia-cli = inputs.caelestia-cli.packages.${pkgs.system}.caelestia-cli;
 in
 {
   wayland = {
@@ -217,7 +217,7 @@ in
             "${mod}, D, exec, ${runner}"
             "${mod}, E, exec, ${editor}"
             #",Print, exec, grim -g \"$(slurp)\" - | swappy -f -"
-            ",Print, exec, ${lib.getExe caelestia-cli} screenshot -r"
+            ",Print, exec, ${lib.getExe caelestia-cli} screenshot -r -f"
             "${mod}, P, pseudo, " # dwindle
             #focus with mainMod + arrow keys
             #"${mod}, H, movefocus, l"

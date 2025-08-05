@@ -81,6 +81,14 @@ in
   #   enable = true;
   #   enableSSHSupport = true;
   # };
+  #
+
+  programs.nh = {
+    enable = true;
+    clean.enable = true;
+    clean.extraArgs = "--keep-since 4d --keep 3";
+    flake = "$HOME/nixos-dots/"; # sets NH_OS_FLAKE variable for you
+  };
   programs.direnv = {
     enable = true;
     enableZshIntegration = true;

@@ -47,7 +47,7 @@
     in
     {
       nixosConfigurations = {
-        laptop = nixpkgs.lib.nixosSystem {
+        mrfluffyLaptop = nixpkgs.lib.nixosSystem {
           specialArgs = {
             systemName = "laptop";
             inherit inputs window_manager;
@@ -57,7 +57,7 @@
             inputs.home-manager.nixosModules.default
           ];
         };
-        pc = nixpkgs.lib.nixosSystem {
+        mrfluffyPC = nixpkgs.lib.nixosSystem {
           specialArgs = {
             systemName = "pc";
             inherit inputs window_manager;
