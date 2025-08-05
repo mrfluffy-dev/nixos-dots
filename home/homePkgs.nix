@@ -10,6 +10,18 @@ in
 #hyprlock = pkgs.callPackage ../../universal/personalPKGS/hyprlock.nix {};
 #hypridle = pkgs.callPackage ../../universal/personalPKGS/hypridle.nix {};
 {
+  imports = [
+    inputs.zen-browser.homeModules.beta
+  ];
+  programs.zen-browser = {
+    enable = true;
+    profiles.default = {
+      id = 0;
+      name = "default";
+      isDefault = true;
+    };
+  };
+
   programs.nix-index.enable = true;
   programs.lazygit.enable = true;
 
@@ -192,7 +204,7 @@ in
     alacritty
     networkmanagerapplet
     #inputs.way-inhibitor.packages.${pkgs.system}.default
-    inputs.zen-browser.packages.${pkgs.system}.twilight
+    #inputs.zen-browser.packages.${pkgs.system}.twilight
     #inputs.quickshell.packages.${pkgs.system}.default
     inputs.qs-qml.packages.${pkgs.system}.tree-sitter-qmljs
     inputs.qs-qml.packages.${pkgs.system}.qml-ts-mode

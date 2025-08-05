@@ -10,7 +10,13 @@
     nix-colors.url = "github:Misterio77/nix-colors";
     anyrun.url = "github:Kirottu/anyrun";
     anyrun.inputs.nixpkgs.follows = "nixpkgs";
-    zen-browser.url = "github:0xc000022070/zen-browser-flake";
+    zen-browser = {
+      url = "github:0xc000022070/zen-browser-flake";
+      inputs = {
+        nixpkgs.follows = "nixpkgs";
+        home-manager.follows = "home-manager";
+      };
+    };
     nixcord.url = "github:kaylorben/nixcord";
     niri.url = "github:sodiboo/niri-flake";
     caelestia.url = "github:caelestia-dots/shell";

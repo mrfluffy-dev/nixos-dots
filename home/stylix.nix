@@ -24,6 +24,10 @@ in
     targets.hyprland.enable = true;
     targets.waybar.enable = true;
     targets.nixcord.enable = true;
+    targets.zen-browser = {
+      enable = true;
+      profileNames = [ "default" ];
+    };
     iconTheme = {
       enable = true;
       package = lib.mkForce pkgs.dracula-icon-theme;
