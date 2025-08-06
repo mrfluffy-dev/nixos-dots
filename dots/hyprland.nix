@@ -11,9 +11,9 @@ let
   caelestia-cli = inputs.caelestia-cli.packages.${pkgs.system}.caelestia-cli;
   mod = "Alt";
   terminal = "footclient";
-  fileManager = "pcmanfm";
+  fileManager = "dolphin";
   runner = "${lib.getExe caelestia-cli} shell drawers toggle launcher";
-  browser = "zen-twilight";
+  browser = "zen";
   editor = "emacsclient -c";
 in
 {

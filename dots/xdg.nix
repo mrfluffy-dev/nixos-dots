@@ -28,7 +28,7 @@
       enable = true;
       defaultApplications =
         let
-          browser = [ "zen-twilight.desktop" ];
+          browser = [ "zen-beta.desktop" ];
           fileManager = [ "pcmanfm.desktop" ];
           editor = [ "emacs.desktop" ];
           player = [ "mpv.desktop" ];

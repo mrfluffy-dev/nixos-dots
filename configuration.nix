@@ -54,6 +54,9 @@ in
   #qt.style = "gtk2";
   qt.platformTheme = "qt5ct";
 
+  xdg.menus.enable = true;
+  environment.etc."/xdg/menus/applications.menu".text = builtins.readFile "${pkgs.kdePackages.plasma-workspace}/etc/xdg/menus/plasma-applications.menu";
+
   nixpkgs.overlays = [ inputs.niri.overlays.niri ];
   programs.niri = {
     enable = window_manager == "niri" || window_manager == "all";

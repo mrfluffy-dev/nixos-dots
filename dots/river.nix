@@ -19,8 +19,8 @@
       #
       #eval $(/usr/bin/gnome-keyring-daemon --start --components=pkcs11,secrets,ssh)
       #export SSH_AUTH_SOCK
-      browser="zen-twilight"
-      file_manager="pcmanfm"
+      browser="zen"
+      file_manager="dolphin"
       terminal="footclient"
       drunner="anyrun"
       editor="emacs"

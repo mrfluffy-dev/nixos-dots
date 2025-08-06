@@ -178,7 +178,6 @@ in
     godot_4
     wf-recorder
     jellyfin-media-player
-    pcmanfm
     hyprpicker
     mangohud
     #discord
@@ -208,7 +207,6 @@ in
     #inputs.quickshell.packages.${pkgs.system}.default
     inputs.qs-qml.packages.${pkgs.system}.tree-sitter-qmljs
     inputs.qs-qml.packages.${pkgs.system}.qml-ts-mode
-    lxqt.pcmanfm-qt
     protonup-qt
     ddcutil
     brightnessctl
@@ -221,8 +219,24 @@ in
     android-tools
     #grayjay
     youtube-music
-    ulauncher
     inputs.caelestia.packages.${pkgs.system}.caelestia-shell
     inputs.caelestia-cli.packages.${pkgs.system}.caelestia-cli
+    kdePackages.dolphin
+    #kdePackages.kio
+    #kdePackages.kio-extras
+    #kdePackages.breeze-icons
+    #kdePackages.dolphin-plugins
+    #kdePackages.kdesdk-thumbnailers # new
+    #kdePackages.kdegraphics-thumbnailers # new
+    #kdePackages.kdegraphics-mobipocket # new
+    #kdePackages.kimageformats # new
+    #kdePackages.calligra # new
+    #kdePackages.qtimageformats # new
+    #kdePackages.ffmpegthumbs # new
+    #kdePackages.taglib # new
+    #kdePackages.baloo # new
+    #kdePackages.baloo-widgets # new
+    kdePackages.kde-cli-tools
+    resvg # new
   ];
 }
