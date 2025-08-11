@@ -165,6 +165,8 @@
   };
 
   services.gvfs.enable = true;
+  services.tumbler.enable = true;
+
   # services.resolved = {
   #   enable = true;
   #   dnssec = "true";

@@ -21,6 +21,13 @@ in
       isDefault = true;
     };
   };
+  programs.firefox = {
+    enable = true;
+    profiles.default = {
+      id = 0;
+      name = "default";
+      isDefault = true;
+    };  };
 
   programs.nix-index.enable = true;
   programs.lazygit.enable = true;
@@ -222,20 +229,20 @@ in
     inputs.caelestia.packages.${pkgs.system}.caelestia-shell
     inputs.caelestia-cli.packages.${pkgs.system}.caelestia-cli
     kdePackages.dolphin
-    #kdePackages.kio
-    #kdePackages.kio-extras
-    #kdePackages.breeze-icons
-    #kdePackages.dolphin-plugins
-    #kdePackages.kdesdk-thumbnailers # new
-    #kdePackages.kdegraphics-thumbnailers # new
-    #kdePackages.kdegraphics-mobipocket # new
-    #kdePackages.kimageformats # new
-    #kdePackages.calligra # new
-    #kdePackages.qtimageformats # new
-    #kdePackages.ffmpegthumbs # new
-    #kdePackages.taglib # new
-    #kdePackages.baloo # new
-    #kdePackages.baloo-widgets # new
+    kdePackages.kio
+    kdePackages.kio-extras
+    kdePackages.breeze-icons
+    kdePackages.dolphin-plugins
+    kdePackages.kdesdk-thumbnailers # new
+    kdePackages.kdegraphics-thumbnailers # new
+    kdePackages.kdegraphics-mobipocket # new
+    kdePackages.kimageformats # new
+    kdePackages.calligra # new
+    kdePackages.qtimageformats # new
+    kdePackages.ffmpegthumbs # new
+    kdePackages.taglib # new
+    kdePackages.baloo # new
+    kdePackages.baloo-widgets # new
     kdePackages.kde-cli-tools
     resvg # new
   ];

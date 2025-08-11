@@ -28,11 +28,16 @@ in
       enable = true;
       profileNames = [ "default" ];
     };
+    targets.firefox = {
+      enable = true;
+      profileNames = [ "default" ];
+    };
+
     iconTheme = {
       enable = true;
-      package = lib.mkForce pkgs.dracula-icon-theme;
-      light = "Dracula";
-      dark = "Dracula";
+      package = lib.mkForce (pkgs.reversal-icon-theme.override {allColorVariants = true;});
+      light = "Reversal-black";
+      dark = "Reversal-black-dark";
     };
     polarity = "dark";
     image = ../assets/Wallpapers/001.jpg;

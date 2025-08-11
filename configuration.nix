@@ -55,7 +55,8 @@ in
   qt.platformTheme = "qt5ct";
 
   xdg.menus.enable = true;
-  environment.etc."/xdg/menus/applications.menu".text = builtins.readFile "${pkgs.kdePackages.plasma-workspace}/etc/xdg/menus/plasma-applications.menu";
+  #shitty dolphin shit coz fuck that is why
+  #environment.etc."/xdg/menus/applications.menu".text = builtins.readFile "${pkgs.kdePackages.plasma-workspace}/etc/xdg/menus/plasma-applications.menu";
 
   nixpkgs.overlays = [ inputs.niri.overlays.niri ];
   programs.niri = {
