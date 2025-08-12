@@ -84,8 +84,6 @@ in
   #
   #
 
-
-
   programs.nh = {
     enable = true;
     clean.enable = true;
@@ -156,7 +154,10 @@ in
   #backlight tool
   programs.light.enable = true;
 
-  programs.nm-applet.enable = true;
+  programs.nm-applet = {
+    enable = true;
+    indicator = false;
+  };
 
   # List packages installed in system profile. To search, run:
   # $ nix search wget

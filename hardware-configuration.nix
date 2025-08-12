@@ -56,7 +56,7 @@
       fsType = "vfat";
     })
     (lib.mkIf (systemName == "laptop") {
-      device = "/dev/disk/by-uuid/A4F3-8038";
+      device = "/dev/disk/by-uuid/FF4B-819D";
       fsType = "vfat";
       options = [
         "fmask=0077"

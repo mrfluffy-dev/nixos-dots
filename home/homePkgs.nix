@@ -27,7 +27,8 @@ in
       id = 0;
       name = "default";
       isDefault = true;
-    };  };
+    };
+  };
 
   programs.nix-index.enable = true;
   programs.lazygit.enable = true;
@@ -215,7 +216,6 @@ in
     fuse-emulator
     fuse3
     alacritty
-    networkmanagerapplet
     #inputs.way-inhibitor.packages.${pkgs.system}.default
     #inputs.zen-browser.packages.${pkgs.system}.twilight
     #inputs.quickshell.packages.${pkgs.system}.default

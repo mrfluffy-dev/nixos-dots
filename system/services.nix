@@ -65,55 +65,7 @@
             ];
           };
         };
-        #"93-mic-gain" = {
-        #  "context.modules" = [
-        #    {
-        #      name = "libpipewire-module-filter-chain";
-        #      args = {
-        #        node.description = "Mic Gain Boost";
-        #        media.name = "Mic Gain Boost";
-        #        filter.graph = {
-        #          nodes = [
-        #            {
-        #              type = "ladspa";
-        #              name = "gain";
-        #              plugin = "amp";  # LADSPA amplifier plugin
-        #              label = "amp_mono";
-        #              control = {
-        #                "Gain" = 12.0;  # Boost gain by 12 dB (adjust as needed)
-        #              };
-        #            }
-        #          ];
-        #        };
-        #        capture.props = {
-        #          "node.name" = "effect_input.mic_boost";
-        #          "audio.position" = [ "MONO" ];
-        #        };
-        #        playback.props = {
-        #          "node.name" = "effect_output.mic_boost";
-        #          "audio.position" = [ "MONO" ];
-        #        };
-        #      };
-        #    }
-        #  ];
-        #};
       };
-      #wireplumber.extraConfig = {
-      #  "monitor.alsa.rules" = {
-      #    rule1 = {  # Give the rule a unique name
-      #      matches = [
-      #        { "node.name" = "~alsa_input.*"; }
-      #      ];
-      #      actions = {
-      #        update-props = {
-      #          "api.alsa.soft-mixer" = true;
-      #          "api.alsa.volume" = "100%";
-      #          "api.alsa.headroom" = 0;
-      #        };
-      #      };
-      #    };
-      #  };
-      #};
     })
   ];
 

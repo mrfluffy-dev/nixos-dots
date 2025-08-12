@@ -13,7 +13,7 @@ let
   terminal = "footclient";
   fileManager = "dolphin";
   runner = "${lib.getExe caelestia-cli} shell drawers toggle launcher";
-  browser = "zen";
+  browser = "zen-beta";
   editor = "emacsclient -c";
 in
 {
