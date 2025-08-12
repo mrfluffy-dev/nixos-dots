@@ -41,6 +41,13 @@ in
   nixpkgs.config.permittedInsecurePackages = [ "freeimage-unstable-2021-11-01" ];
   programs.vscode = {
     enable = true;
+    profiles = {
+      default = {
+        extensions = [
+          pkgs.vscode-extensions.platformio.platformio-vscode-ide
+        ];
+      };
+    };
   };
   programs.anyrun = {
     enable = true;
@@ -245,5 +252,8 @@ in
     kdePackages.baloo-widgets # new
     kdePackages.kde-cli-tools
     resvg # new
+    #
+    #platformio
+    platformio
   ];
 }

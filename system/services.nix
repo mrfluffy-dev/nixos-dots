@@ -190,6 +190,12 @@
     SuspendState=mem
   '';
   #udev rules
+  services.udev.packages = [
+    pkgs.platformio-core
+    pkgs.platformio
+    pkgs.openocd
+    pkgs.brave
+  ];
   #services.udev.extraRules = ''
   # KERNEL=="hidraw*", KERNELS=="*054C:0CE6*", MODE="0660", TAG+="uaccess"
   #'';

@@ -199,5 +199,6 @@ in
     libtool
     ladspaPlugins
     inputs.nix-alien.packages.${pkgs.system}.nix-alien
+    python311
   ];
 }
