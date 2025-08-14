@@ -56,7 +56,7 @@ in
 
   xdg.menus.enable = true;
   #shitty dolphin shit coz fuck that is why
-  #environment.etc."/xdg/menus/applications.menu".text = builtins.readFile "${pkgs.kdePackages.plasma-workspace}/etc/xdg/menus/plasma-applications.menu";
+  environment.etc."/xdg/menus/applications.menu".text = builtins.readFile "${pkgs.kdePackages.plasma-workspace}/etc/xdg/menus/plasma-applications.menu";
 
   nixpkgs.overlays = [ inputs.niri.overlays.niri ];
   programs.niri = {

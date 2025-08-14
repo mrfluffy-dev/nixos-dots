@@ -37,19 +37,18 @@ in
           ];
           # Autostart necessary processes (like notifications daemons, status bars, etc.)
           # Or execute your favorite apps at launch like this:
-          exec-once =
-            [
-              #"waybar"
-              #"quickshell"
-              "${pkgs.polkit_gnome}/libexec/polkit-gnome-authentication-agent-1"
-              "fcitx5 -d"
-              "foot -s"
-              "${pkgs.polkit_gnome}/libexec/polkit-gnome-authentication-agent-1"
-            ]
-            ++ lib.optionals (config.home.username == "work") [
-              "thunderbird"
-              "sleep 10 && emacsclient -c --frame-parameters='((name . \"work\"))' $HOME/Documents/work/README.org"
-            ];
+          exec-once = [
+            #"waybar"
+            #"quickshell"
+            "${pkgs.polkit_gnome}/libexec/polkit-gnome-authentication-agent-1"
+            "fcitx5 -d"
+            "foot -s"
+            "${pkgs.polkit_gnome}/libexec/polkit-gnome-authentication-agent-1"
+          ]
+          ++ lib.optionals (config.home.username == "work") [
+            "thunderbird"
+            "sleep 10 && emacsclient -c --frame-parameters='((name . \"work\"))' $HOME/Documents/work/README.org"
+          ];
           #++ lib.optional (systemName == "laptop") "swaybg -o eDP-1 -i ${../assets/Wallpapers/138.png}"
           #++
           #  lib.optional (systemName == "pc")
@@ -213,7 +212,7 @@ in
             "${mod}, M, exit,"
             "${mod}, F, exec, ${fileManager}"
             "${mod}, V, togglefloating,"
-	          "${mod}, T, fullscreen"
+            "${mod}, T, fullscreen"
             "${mod}, D, exec, ${runner}"
             "${mod}, E, exec, ${editor}"
             #",Print, exec, grim -g \"$(slurp)\" - | swappy -f -"
@@ -275,8 +274,12 @@ in
             ",XF86AudioLowerVolume, exec, pamixer -d 5"
             ",XF86AudioMute, exec, pamixer --toggle-mute"
             ",XF86AudioMicMute, exec, wpctl set-mute @DEFAULT_AUDIO_SOURCE@ toggle"
-            ",XF86MonBrightnessUp, exec, light -A 5"
-            ",XF86MonBrightnessDown, exec, light -U 5"
+            #",XF86MonBrightnessUp, exec, light -A 5"
+            #",XF86MonBrightnessDown, exec, light -U 5"
+
+            # Brightness
+            ",XF86MonBrightnessUp, global, caelestia:brightnessUp"
+            ",XF86MonBrightnessDown, global, caelestia:brightnessDown"
           ];
           bindl = [
             ", XF86AudioNext, exec, playerctl next"
