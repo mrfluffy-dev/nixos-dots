@@ -255,5 +255,6 @@ in
     #
     #platformio
     platformio
+    element-desktop
   ];
 }

@@ -15,7 +15,7 @@ in
     targets.font-packages.enable = true;
     #targets.fontconfig.enable = true;
     targets.gtk.enable = true;
-    targets.kde.enable = true;
+    #targets.kde.enable = true;
     targets.qt.enable = true;
     targets.vscode.enable = true;
     targets.lazygit.enable = true;
