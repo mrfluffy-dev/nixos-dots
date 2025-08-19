@@ -174,7 +174,8 @@ in
   nixpkgs.config.allowUnfree = true;
   security.pam.services.swaylock = { };
 
-  security.pam.services.hyprland.enableGnomeKeyring = true;
+  security.pam.services.greetd.enableGnomeKeyring = true;
+  security.pam.services.greetd.kwallet.enable = true;
 
   # List packages installed in system profile. To search, run:
   # $ nix search wget

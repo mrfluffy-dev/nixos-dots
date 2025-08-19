@@ -201,5 +201,9 @@ in
     ladspaPlugins
     inputs.nix-alien.packages.${pkgs.system}.nix-alien
     python311
+
+    kdePackages.kwallet
+    kdePackages.kwalletmanager
+    kdePackages.kwallet-pam  # For PAM integration if needed
   ];
 }

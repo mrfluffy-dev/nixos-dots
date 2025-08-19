@@ -12,7 +12,8 @@ let
   mod = "Alt";
   terminal = "footclient";
   fileManager = "dolphin";
-  runner = "${lib.getExe caelestia-cli} shell drawers toggle launcher";
+  #runner = "${lib.getExe caelestia-cli} shell drawers toggle launcher";
+  runner = "anyrun";
   browser = "zen-beta";
   editor = "emacsclient -c";
 in
@@ -43,7 +44,6 @@ in
             "${pkgs.polkit_gnome}/libexec/polkit-gnome-authentication-agent-1"
             "fcitx5 -d"
             "foot -s"
-            "${pkgs.polkit_gnome}/libexec/polkit-gnome-authentication-agent-1"
           ]
           ++ lib.optionals (config.home.username == "work") [
             "thunderbird"

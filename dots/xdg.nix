@@ -12,8 +12,9 @@
     portal = {
       enable = true;
       config.common.default = [
-        "hyprland"
+        "hyprland;kde"
         "river"
+        "kde"
         "gtk"
       ];
       xdgOpenUsePortal = true;
@@ -21,6 +22,7 @@
         xdg-desktop-portal-wlr
         xdg-desktop-portal-gtk
         xdg-desktop-portal-hyprland
+        kdePackages.xdg-desktop-portal-kde
       ];
     };
     mime.enable = true;

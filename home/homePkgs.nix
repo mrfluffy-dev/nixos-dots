@@ -210,7 +210,6 @@ in
     zed-editor
     dualsensectl
     mangayomi
-    element-desktop
     scrcpy
     fuse
     fuse-emulator
@@ -236,8 +235,8 @@ in
     inputs.caelestia.packages.${pkgs.system}.caelestia-shell
     inputs.caelestia-cli.packages.${pkgs.system}.caelestia-cli
     kdePackages.dolphin
-    #kdePackages.kio
-    #kdePackages.kio-extras
+    kdePackages.kio
+    kdePackages.kio-extras
     #kdePackages.breeze-icons
     #kdePackages.dolphin-plugins
     kdePackages.kdesdk-thumbnailers # new
