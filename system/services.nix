@@ -18,6 +18,9 @@
     enable = true;
   };
 
+  #direnv speedup
+  services.lorri.enable = true;
+
   #services.gnome.gnome-keyring.enable = true;
   # Configure keymap in X11
   # services.xserver.xkb.layout = "us";
