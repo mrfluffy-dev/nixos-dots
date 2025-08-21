@@ -44,6 +44,8 @@ in
             "${pkgs.polkit_gnome}/libexec/polkit-gnome-authentication-agent-1"
             "fcitx5 -d"
             "foot -s"
+            "systemctl --user import-environment DBUS_SESSION_BUS_ADDRESS WAYLAND_DISPLAY XDG_SESSION_TYPE XDG_CURRENT_DESKTOP XDG_SESSION_DESKTOP QT_QPA_PLATFORMTHEME GTK_THEME"
+            "dbus-update-activation-environment --systemd --all"
           ]
           ++ lib.optionals (config.home.username == "work") [
             "thunderbird"
