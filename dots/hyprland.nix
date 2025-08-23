@@ -12,8 +12,8 @@ let
   mod = "Alt";
   terminal = "footclient";
   fileManager = "dolphin";
-  #runner = "${lib.getExe caelestia-cli} shell drawers toggle launcher";
-  runner = "anyrun";
+  runner = "${lib.getExe caelestia-cli} shell drawers toggle launcher";
+  #runner = "anyrun";
   browser = "zen-beta";
   editor = "emacsclient -c";
 in
