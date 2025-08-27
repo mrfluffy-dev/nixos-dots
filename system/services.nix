@@ -92,6 +92,7 @@
     settings = {
       sunshine_name = "nixos";
       port = 47989;
+      output_name = 1;
     };
     applications = {
       apps = [
@@ -114,6 +115,10 @@
     acceleration = "rocm";
     rocmOverrideGfx = "11.0.0";
     environmentVariables = {
+      OLLAMA_DEBUG = "1";
+      OLLAMA_MMAP = "0";
+      OLLAMA_NUM_CTX="8192";
+      OLLAMA_NUM_GPU="20";
       #HSA_OVERRIDE_GFX_VERSION = "11.0.0";
       #OLLAMA_KV_CACHE_TYPE = "q4";
     };

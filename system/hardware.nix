@@ -25,6 +25,8 @@
       enable = true;
       enable32Bit = true;
       extraPackages = with pkgs; [
+        rocmPackages.rocm-core
+        rocmPackages.rocminfo
         rocmPackages.rocm-runtime
         rocmPackages.clr.icd
         rocmPackages.rocm-smi
@@ -37,6 +39,8 @@
         libva
         vaapiVdpau
         libvdpau-va-gl
+        amdvlk
+        driversi686Linux.amdvlk
       ];
     })
   ];

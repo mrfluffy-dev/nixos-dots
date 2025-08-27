@@ -48,7 +48,7 @@
     '';
 
     plymouth = {
-      enable = true;
+      enable = false;
       themePackages = [
         pkgs.plymouth-matrix-theme
       ];
