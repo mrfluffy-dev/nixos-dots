@@ -48,9 +48,12 @@
     '';
     nameservers = [
       "192.168.1.1"
-      ""
+      "2001:bb6:5022:4b00:2e0:1dff:fef8:68cb"
       ];
-    search = [ "localdomain" ];
+    search = [
+      "localdomain"
+      "local"
+    ];
 
     # # environment.etc = {
     # # "resolv.conf".text = "nameserver 192.168.1.180\noptions edns0 trust-ad\nsearch home\n";
