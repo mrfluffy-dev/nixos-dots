@@ -36,7 +36,7 @@
     dhcpcd.enable = false;
 
     # IPv6 configuration
-    # enableIPv6 = false;
+    enableIPv6 = true;
 
     # Configure network proxy if necessary
     # proxy.default = "http://user:password@proxy:port/";
@@ -46,7 +46,10 @@
     extraHosts = ''
       127.0.0.0 localhost
     '';
-    nameservers = [ "192.168.1.1" ];
+    nameservers = [
+      "192.168.1.1"
+      ""
+      ];
     search = [ "localdomain" ];
 
     # # environment.etc = {
