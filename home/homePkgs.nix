@@ -146,7 +146,7 @@ in
   #      obs-pipewire-audio-capture
   #    ];
   #  };
-
+  #
   home.packages = with pkgs; [
 
     # # Adds the 'hello' command to your environment. It prints a friendly
@@ -195,7 +195,7 @@ in
     prismlauncher
     godot_4
     wf-recorder
-    jellyfin-media-player
+    #jellyfin-media-player
     hyprpicker
     mangohud
     #discord
