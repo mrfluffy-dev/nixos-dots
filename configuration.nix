@@ -40,6 +40,7 @@ in
       build-dir = "/var/tmp";
       auto-optimise-store = true;
     };
+
   };
 
   # Set your time zone.
@@ -171,7 +172,13 @@ in
   virtualisation.libvirtd.enable = true;
 
   # Allow unfree packages
-  nixpkgs.config.allowUnfree = true;
+  nixpkgs = {
+    config = {
+      allowUnfree = true;
+      permittedInsecurePackages = [
+      ];
+    };
+  };
   security.pam.services.swaylock = { };
 
   security.pam.services.greetd.enableGnomeKeyring = true;

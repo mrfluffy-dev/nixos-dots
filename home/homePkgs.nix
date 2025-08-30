@@ -39,7 +39,10 @@ in
   #imports = [ inputs.anyrun.homeManagerModules.default ];
 
   nixpkgs.config.allowUnfree = true;
-  nixpkgs.config.permittedInsecurePackages = [ "freeimage-unstable-2021-11-01" ];
+  nixpkgs.config.permittedInsecurePackages = [
+    "freeimage-unstable-2021-11-01"
+    "qtwebengine-5.15.19"
+  ];
   programs.vscode = {
     enable = true;
     profiles = {
