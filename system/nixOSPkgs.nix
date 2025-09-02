@@ -205,5 +205,10 @@ in
     kdePackages.kwallet
     kdePackages.kwalletmanager
     kdePackages.kwallet-pam  # For PAM integration if needed
+    #
+    (pkgs.writeShellScriptBin "steam-run-url" ''
+      FIFO="/run/user/$(id --user)/steam-run-url.fifo"
+      echo "$1" > "$FIFO"
+    '')
   ];
 }

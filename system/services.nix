@@ -87,24 +87,62 @@
     enable = true;
     package = pkgs.emacs-pgtk; # replace with emacs-gtk, or a version provided by the community overlay if desired.
   };
+
+  systemd.user.services.steam-run-url-service = {
+    description = "Service to launch Steam URLs via FIFO";
+    wantedBy = [ "default.target" ];
+    serviceConfig = {
+      ExecStart = let
+        script = pkgs.writeShellScript "steam-run-url-service.sh" ''
+          #!/usr/bin/env bash
+          FIFO="/run/user/$(id --user)/steam-run-url.fifo"
+          if [ ! -p "$FIFO" ]; then
+            mkfifo "$FIFO"
+          fi
+          while true; do
+            if read line <"$FIFO"; then
+              steam_env=();
+              if [ "$XDG_SESSION_DESKTOP" = "sway" ] || [ "$XDG_SESSION_DESKTOP" = "Hyprland" ] || [ "$DESKTOP_SESSION" = "sway" ] || [ "$DESKTOP_SESSION" = "Hyprland" ]; then
+                steam_env+=("QT_QPA_PLATFORM=wayland");
+              fi
+              steam "$line"
+            fi
+          done
+        '';
+      in "${script}";
+      Restart = "always";
+    };
+    path = [ pkgs.steam ];
+  };
+
+
   services.sunshine = lib.mkIf (systemName == "pc") {
     enable = true;
     settings = {
       sunshine_name = "nixos";
       port = 47989;
-      output_name = 1;
+      output_name = 0;
     };
     applications = {
       apps = [
         {
           name = "Steam";
+          env = {
+            PATH = "$(PATH):/run/current-system/sw/bin";
+          };
           output = "steam.txt";
-          detached = [ "${pkgs.util-linux}/bin/setsid ${pkgs.steam}/bin/steam steam://open/gamepadui" ];
+          detached = [ "setsid /run/current-system/sw/bin/steam steam://open/bigpicture" ];
+          prep-cmd = [
+            {
+              "do" = "";
+              "undo" = "setsid /run/current-system/sw/bin/steam steam://close/bigpicture";
+            }
+          ];
           image-path = "steam.png";
         }
       ];
     };
-    capSysAdmin = true;
+    capSysAdmin = false;
     openFirewall = true;
   };
 
