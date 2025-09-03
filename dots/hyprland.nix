@@ -33,8 +33,8 @@ in
             (lib.mkIf (systemName == "laptop") [ "eDP-1,1920x1080@59.99700,0x0,1" ])
             (lib.mkIf (systemName == "pc") [
               "HDMI-A-2,1920x1080@60,0x0,1"
-              "DP-1,2560x1440@144,1920x0,1,bitdepth,10,cm,hdr"
-              #"HDMI-A-1,3840x2160@60,4480x0,1,bitdepth,10,cm,hdr"
+              "DP-1,2560x1440@144,1920x0,1"
+              #"DP-1,2560x1440@144,1920x0,1,bitdepth,10,cm,hdr"
             ])
           ];
           # Autostart necessary processes (like notifications daemons, status bars, etc.)
