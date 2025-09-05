@@ -258,5 +258,7 @@ in
     #platformio
     platformio
     element-desktop
+
+    upscaler
   ];
 }
