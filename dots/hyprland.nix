@@ -29,14 +29,48 @@ in
         settings = {
 
           # See https://wiki.hyprland.org/Configuring/Monitors/
-          monitor = lib.mkMerge [
-            (lib.mkIf (systemName == "laptop") [ "eDP-1,1920x1080@59.99700,0x0,1" ])
-            (lib.mkIf (systemName == "pc") [
-              "HDMI-A-2,1920x1080@60,0x0,1"
-              "DP-1,2560x1440@144,1920x0,1"
-              #"DP-1,2560x1440@144,1920x0,1,bitdepth,10,cm,hdr"
-            ])
-          ];
+          #monitor = lib.mkMerge [
+          #  (lib.mkIf (systemName == "laptop") [ "eDP-1,1920x1080@59.99700,0x0,1" ])
+          #  (lib.mkIf (systemName == "pc") [
+          #    "DP-2,2560x1440@144,0x0,1"
+          #    "DP-1,2560x1440@239.97,2569x0,1"
+          #    #"DP-1,2560x1440@144,1920x0,1,bitdepth,10,cm,hdr"
+          #  ])
+          #];
+          monitorv2 = [
+
+
+          ]
+          ++ lib.optional (systemName == "laptop"){
+              output = "eDP-1";
+              mode = "1920x1080@59.99700";
+              scale = 1;
+              position = "0x0";
+            }
+          ++ lib.optional (systemName == "pc"){
+                output = "DP-1";
+                mode = "2560x1440@239.97";
+                position = "2560x0";  # Corrected from 2569x0 for seamless alignment
+                scale = 1;
+                #supports_wide_color = 1;
+                bitdepth = 10;
+                cm = "hdr";
+                supports_hdr = 1;
+                sdr_min_luminance = 0;  # For true black on OLED
+                sdr_max_luminance = 255;  # Matches typical SDR brightness
+                min_luminance = 0;
+                max_luminance = 1000;  # HDR peak
+                max_avg_luminance = 400;  # Average frame luminance
+                sdrbrightness = 1.2;  # Slight boost to avoid washed out look
+                sdrsaturation = 1.1;
+                #transform = 2;  # Uncomment if needed
+            }
+            ++ lib.optional (systemName == "pc"){
+              output = "DP-2";
+              mode = "2560x1440@144";
+              scale = 1;
+              position = "0x0";
+            };
           # Autostart necessary processes (like notifications daemons, status bars, etc.)
           # Or execute your favorite apps at launch like this:
           exec-once = [
@@ -95,6 +129,10 @@ in
             allow_tearing = false;
             layout = "dwindle";
           };
+
+          #render = {
+          #  cm_fs_passthrough = 1;
+          #};
 
           # https://wiki.hyprland.org/Configuring/Variables/#decoration
           decoration = {

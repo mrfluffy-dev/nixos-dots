@@ -18,23 +18,26 @@
           before_sleep_cmd = "loginctl lock-session && sleep 1.5";
           ignore_dbus_inhibit = false;
         };
-        listener =
-          [
-            {
-              timeout = 600;
-              on-timeout = "loginctl lock-session";
-            }
-
-          ]
-          ++ lib.optional (systemName == "laptop") {
-            timeout = 700;
-            on-timeout = "light -S 0";
-            on-resume = "light -I";
+        listener = [
+          {
+            timeout = 600;
+            on-timeout = "loginctl lock-session";
           }
-          ++ lib.optional (systemName == "laptop") {
-            timeout = 800;
-            on-timeout = "systemctl suspend-then-hibernate";
-          };
+        ]
+        ++ lib.optional (systemName == "laptop") {
+          timeout = 700;
+          on-timeout = "hyprctl dispatch dpms off";  # Turns off all displays
+          on-resume = "hyprctl dispatch dpms on";   # Turns displays back on
+        }
+        ++ lib.optional (systemName == "laptop") {
+          timeout = 800;
+          on-timeout = "systemctl suspend-then-hibernate";
+        }
+        ++ lib.optional (systemName == "pc") {
+          timeout = 700;  # Adjust timeout as needed (in seconds)
+          on-timeout = "hyprctl dispatch dpms off";  # Turns off all displays
+          on-resume = "hyprctl dispatch dpms on";   # Turns displays back on
+        };
       };
     };
   };
