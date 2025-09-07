@@ -23,7 +23,6 @@
         "kvm"
       ])
       (lib.mkIf (systemName == "pc") [
-        "amdgpu"
         "kvm"
       ])
     ];

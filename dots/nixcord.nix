@@ -43,9 +43,6 @@
         copyFileContents = {
           enable = true;
         };
-        emoteCloner = {
-          enable = true;
-        };
         fakeNitro = {
           enable = true;
           enableEmojiBypass = true;
@@ -75,9 +72,6 @@
           enable = true;
         };
         messageLogger = {
-          enable = true;
-        };
-        nsfwGateBypass = {
           enable = true;
         };
         petpet = {

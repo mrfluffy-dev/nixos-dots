@@ -57,12 +57,12 @@ in
                 cm = "hdr";
                 supports_hdr = 1;
                 sdr_min_luminance = 0;  # For true black on OLED
-                sdr_max_luminance = 255;  # Matches typical SDR brightness
+                sdr_max_luminance = 275;  # Matches typical SDR brightness
                 min_luminance = 0;
                 max_luminance = 1000;  # HDR peak
                 max_avg_luminance = 400;  # Average frame luminance
                 sdrbrightness = 1.2;  # Slight boost to avoid washed out look
-                sdrsaturation = 1.1;
+                sdrsaturation = 1.0;
                 #transform = 2;  # Uncomment if needed
             }
             ++ lib.optional (systemName == "pc"){
@@ -130,9 +130,14 @@ in
             layout = "dwindle";
           };
 
-          #render = {
-          #  cm_fs_passthrough = 1;
-          #};
+          render = {
+            cm_enabled = true;          # turn on the CM pipeline (requires Hyprland restart)
+            cm_fs_passthrough = 2;      # passthrough only for HDR content (safer than 1)
+            cm_auto_hdr = 1;            # auto-switch monitor to HDR for fullscreen apps
+            send_content_type = true;   # helps auto HDR on some displays
+            # optional: keep your existing line
+            # cm_fs_passthrough = 1;    # <- you can replace with 2 as above
+          };
 
           # https://wiki.hyprland.org/Configuring/Variables/#decoration
           decoration = {

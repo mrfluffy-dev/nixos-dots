@@ -110,6 +110,8 @@ in
     # See https://wiki.archlinux.org/index.php/Hardware_video_acceleration
     VDPAU_DRIVER = "radeonsi";
     LIBVA_DRIVER_NAME = "radeonsi";
+    #AMD_VULKAN_ICD = "RADV";
+    #VK_ICD_FILENAMES = "/run/opengl-driver/share/vulkan/icd.d/radeon_icd.x86_64.json";
     #XDG_CURRENT_DESKTOP = "hyprland";
     #QT_QPA_PLATFORMTHEME = "qt6ct";
   };

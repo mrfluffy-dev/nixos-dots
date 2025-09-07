@@ -59,7 +59,7 @@ in
 {
   programs.gamescope = {
     enable = true;
-
+    capSysNice = true;
   };
   nixpkgs.config = {
     allowUnfree = true;
@@ -107,6 +107,7 @@ in
     enable = true;
     remotePlay.openFirewall = true; # Open ports in the firewall for Steam Remote Play
     dedicatedServer.openFirewall = true; # Open ports in the firewall for Source Dedicated Server
+    extraCompatPackages = with pkgs; [ gamescope mangohud gamemode ];
     gamescopeSession = {
       enable = true;
     };
@@ -210,5 +211,6 @@ in
       FIFO="/run/user/$(id --user)/steam-run-url.fifo"
       echo "$1" > "$FIFO"
     '')
+    libdecor
   ];
 }

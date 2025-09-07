@@ -39,8 +39,10 @@
         libva
         vaapiVdpau
         libvdpau-va-gl
-        amdvlk
-        driversi686Linux.amdvlk
+        #amdvlk
+        #driversi686Linux.amdvlk
+        #mesa
+        #driversi686Linux.mesa
       ];
     })
   ];
