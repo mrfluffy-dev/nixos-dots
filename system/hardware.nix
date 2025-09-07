@@ -6,9 +6,18 @@
   ...
 }:
 
+let
+  # Shared VA-API / VDPAU bits across both machines
+  commonVA = with pkgs; [
+    libva
+    vaapiVdpau
+    libvdpau-va-gl
+  ];
+in
 {
-  # hardware stuff
+  # ── Graphics ─────────────────────────────────────────────────────────────────
   hardware.graphics = lib.mkMerge [
+    # Laptop: Intel stack
     (lib.mkIf (systemName == "laptop") {
       enable = true;
       enable32Bit = true;
@@ -16,11 +25,10 @@
         intel-media-driver
         intel-vaapi-driver
         vpl-gpu-rt
-        libva
-        vaapiVdpau
-        libvdpau-va-gl
-      ];
+      ] ++ commonVA;
     })
+
+    # PC: AMD/ROCm stack
     (lib.mkIf (systemName == "pc") {
       enable = true;
       enable32Bit = true;
@@ -36,35 +44,34 @@
         rocmPackages.rocsolver
         rocmPackages.rocm-comgr
         rocmPackages.rocsparse
-        libva
-        vaapiVdpau
-        libvdpau-va-gl
-        #amdvlk
-        #driversi686Linux.amdvlk
-        #mesa
-        #driversi686Linux.mesa
-      ];
+        # amdvlk
+        # driversi686Linux.amdvlk
+        # mesa
+        # driversi686Linux.mesa
+      ] ++ commonVA;
     })
   ];
 
-  hardware.bluetooth.enable = true; # enables support for Bluetooth
-  hardware.bluetooth.powerOnBoot = true; # powers up the default Bluetooth controller on boot
-  # hardware.pulseaudio = {
-  #   package = pkgs.pulseaudioFull;
-  # };
-  hardware.bluetooth.settings = {
-    General = {
+  # ── Bluetooth ────────────────────────────────────────────────────────────────
+  hardware.bluetooth = {
+    enable = true;          # Enable Bluetooth support
+    powerOnBoot = true;     # Power up controller on boot
+    settings.General = {
       Enable = "Source,Sink,Media,Socket";
-      #Experimental = true;
+      # Experimental = true;
     };
   };
-  hardware.opentabletdriver.enable = true;
-  hardware.opentabletdriver.daemon.enable = true;
-  # Enable sound.
-  # sound.enable = true;
-  #hardware.pulseaudio = {
-  #  enable = true;
-  #  package = pkgs.pulseaudioFull;
-  #};
 
+  # ── Tablets ─────────────────────────────────────────────────────────────────
+  hardware.opentabletdriver = {
+    enable = true;
+    daemon.enable = true;
+  };
+
+  # ── Audio (disabled examples) ───────────────────────────────────────────────
+  # sound.enable = true;
+  # hardware.pulseaudio = {
+  #   enable = true;
+  #   package = pkgs.pulseaudioFull;
+  # };
 }

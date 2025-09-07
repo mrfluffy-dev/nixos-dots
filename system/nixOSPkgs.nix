@@ -9,7 +9,7 @@
 let
   inherit (pkgs) anime4k;
 
-  # Use writeText instead of writeLua luacheck can't cry about the long lines
+  # Use writeText instead of writeLua so linters don't complain about long lines
   autoAnime4k = pkgs.writeText "auto-anime4k-switcher.lua" ''
     local function get_nearest(x, numbers)
       local min_index = nil
@@ -26,13 +26,7 @@ let
       return numbers[min_index]
     end
 
-    -- Fast
-    -- local shader_map = {
-    --     [1080] = "${anime4k}/Anime4K_Clamp_Highlights.glsl:${anime4k}/Anime4K_Restore_CNN_M.glsl:${anime4k}/Anime4K_Upscale_CNN_x2_M.glsl:${anime4k}/Anime4K_AutoDownscalePre_x2.glsl:${anime4k}/Anime4K_AutoDownscalePre_x4.glsl:${anime4k}/Anime4K_Upscale_CNN_x2_S.glsl",
-    --     [720]  = "${anime4k}/Anime4K_Clamp_Highlights.glsl:${anime4k}/Anime4K_Restore_CNN_Soft_M.glsl:${anime4k}/Anime4K_Upscale_CNN_x2_M.glsl:${anime4k}/Anime4K_AutoDownscalePre_x2.glsl:${anime4k}/Anime4K_AutoDownscalePre_x4.glsl:${anime4k}/Anime4K_Upscale_CNN_x2_S.glsl",
-    --     [480]  = "${anime4k}/Anime4K_Clamp_Highlights.glsl:${anime4k}/Anime4K_Upscale_Denoise_CNN_x2_M.glsl:${anime4k}/Anime4K_AutoDownscalePre_x2.glsl:${anime4k}/Anime4K_AutoDownscalePre_x4.glsl:${anime4k}/Anime4K_Upscale_CNN_x2_S.glsl"
-    -- }
-    -- HQ
+    -- HQ shader map
     local shader_map = {
       [1080] = "${anime4k}/Anime4K_Clamp_Highlights.glsl:${anime4k}/Anime4K_Restore_CNN_VL.glsl:${anime4k}/Anime4K_Upscale_CNN_x2_VL.glsl:${anime4k}/Anime4K_AutoDownscalePre_x2.glsl:${anime4k}/Anime4K_AutoDownscalePre_x4.glsl:${anime4k}/Anime4K_Upscale_CNN_x2_M.glsl",
       [720]  = "${anime4k}/Anime4K_Clamp_Highlights.glsl:${anime4k}/Anime4K_Restore_CNN_Soft_VL.glsl:${anime4k}/Anime4K_Upscale_CNN_x2_VL.glsl:${anime4k}/Anime4K_AutoDownscalePre_x2.glsl:${anime4k}/Anime4K_AutoDownscalePre_x4.glsl:${anime4k}/Anime4K_Upscale_CNN_x2_M.glsl",
@@ -55,162 +49,154 @@ let
     end)
   '';
 in
-
 {
-  programs.gamescope = {
-    enable = true;
-    capSysNice = true;
-  };
-  nixpkgs.config = {
-    allowUnfree = true;
+  ############################
+  # Nixpkgs & overlays
+  ############################
+  nixpkgs = {
+    config.allowUnfree = true;
+    overlays = [
+      (self: super: {
+        mpv = super.wrapMpv (super.mpv.unwrapped.override { sixelSupport = true; }) {
+          scripts = [ self.mpvScripts.mpris ];
+        };
+      })
+    ];
   };
 
-  nixpkgs.overlays = [
-    (self: super: {
-
-      mpv = super.wrapMpv (super.mpv.unwrapped.override { sixelSupport = true; }) {
-        scripts = [ self.mpvScripts.mpris ];
-
-      };
-    })
-  ];
-  # Some programs need SUID wrappers, can be configured further or are
-  # started in user sessions.
-  # programs.mtr.enable = true;
-  # programs.gnupg.agent = {
-  #   enable = true;
-  #   enableSSHSupport = true;
-  # };
-  #
-  #
-
-  programs.nh = {
-    enable = true;
-    clean.enable = true;
-    clean.extraArgs = "--keep-since 4d --keep 3";
-    flake = "$HOME/nixos-dots/"; # sets NH_OS_FLAKE variable for you
-  };
-  programs.direnv = {
-    enable = true;
-    enableZshIntegration = true;
-    nix-direnv.enable = true;
-    silent = true;
-  };
-  programs.virt-manager.enable = true;
-  programs.zsh.enable = true;
-  programs.corectrl.enable = true;
-  programs.opengamepadui = {
-    enable = true;
-    gamescopeSession.enable = true;
-  };
-  programs.steam = {
-    enable = true;
-    remotePlay.openFirewall = true; # Open ports in the firewall for Steam Remote Play
-    dedicatedServer.openFirewall = true; # Open ports in the firewall for Source Dedicated Server
-    extraCompatPackages = with pkgs; [ gamescope mangohud gamemode ];
-    gamescopeSession = {
+  ############################
+  # Core programs
+  ############################
+  programs = {
+    gamescope = {
       enable = true;
+      capSysNice = true;
+    };
+
+    nh = {
+      enable = true;
+      clean = {
+        enable = true;
+        extraArgs = "--keep-since 4d --keep 3";
+      };
+      flake = "$HOME/nixos-dots/"; # sets NH_OS_FLAKE
+    };
+
+    direnv = {
+      enable = true;
+      enableZshIntegration = true;
+      nix-direnv.enable = true;
+      silent = true;
+    };
+
+    virt-manager.enable = true;
+    zsh.enable = true;
+    corectrl.enable = true;
+
+    opengamepadui = {
+      enable = true;
+      gamescopeSession.enable = true;
+    };
+
+    steam = {
+      enable = true;
+      remotePlay.openFirewall = true;
+      dedicatedServer.openFirewall = true;
+      extraCompatPackages = with pkgs; [ gamescope mangohud gamemode ];
+      gamescopeSession.enable = true;
+    };
+
+    # Dynamic linker for foreign binaries
+    nix-ld = {
+      enable = true;
+      libraries = with pkgs; [
+        # add libraries here if needed
+        # alsa-lib
+        # libGL
+        # glibc
+        # ...
+      ];
+    };
+
+    # Backlight tool
+    light.enable = true;
+
+    # NetworkManager applet
+    nm-applet = {
+      enable = true;
+      indicator = false;
     };
   };
-  # enable dynamic bin executables
-  programs.nix-ld.enable = true;
-  programs.nix-ld.libraries = with pkgs; [
-    # add libraries here
-    #alsa-lib
-    #libGL
-    #glibc
-    #glib
-    #fontconfig
-    #xorg.libX11
-    #xorg.libXcomposite
-    #xorg.libXdamage
-    #xorg.libXfixes
-    #xorg.libXrender
-    #xorg.libXrandr
-    #xorg.libXtst
-    #xorg_sys_opengl
-    #xorg.libXi
-    #xorg.libxshmfence
-    #xorg.libxkbfile
-    #xorg.libxcb
-    #xorg.xcbutilwm
-    #xorg.xcbutilimage
-    #xorg.xcbutilkeysyms
-    #xorg.xcbutilrenderutil
-    #xcb-util-cursor
-    #libgbm
-    #libxkbcommon
-    #freetype
-    #dbus
-    #krb5
-    #nss
-    #zotero
-    #nspr
-    #gtk3
-    #libappindicator-gtk3
-    #mesa
-    #vulkan-loader
-  ];
 
-  #backlight tool
-  programs.light.enable = true;
-
-  programs.nm-applet = {
-    enable = true;
-    indicator = false;
-  };
-
-  # List packages installed in system profile. To search, run:
-  # $ nix search wget
+  ############################
+  # System packages
+  ############################
   environment.systemPackages = with pkgs; [
-    vim # Do not forget to add an editor to edit configuration.nix! The Nano editor is also installed by default.
-    neovim
-    wl-clipboard
+    # --- Editors & Shell UX ---
     bat
-    anime4k
-    socat
+    neovim
+    vim
+    zoxide
+
+    # --- CLI essentials ---
     eza
-    wget
-    foot
-    spaceship-prompt
-    git
-    bitwarden
-    zip
-    xclip
     fd
     fzf
-    zotero
-    jdk11
-    hunspell
-    hunspellDicts.en_US
-    pavucontrol
-    zoxide
+    ripgrep
+    wget
     xcp
-    polkit_gnome
+    zip
     unzip
+
+    # --- Nix tooling ---
+    nil
+    nixfmt-rfc-style
+    inputs.nix-alien.packages.${pkgs.system}.nix-alien
+
+    # --- Wayland / Desktop ---
+    foot
+    libdecor
+    wl-clipboard
+    xwayland-satellite
+
+    # --- Media / Graphics ---
+    anime4k
     ffmpeg
     libva-utils
-    nixfmt-rfc-style
-    nil
-    kdePackages.qt6ct
-    ripgrep
-    xwayland-satellite
+    pavucontrol
+
+    # --- Networking / Secrets ---
+    bitwarden
+    polkit_gnome
+    xclip
+    socat
+
+    # --- Development toolchains ---
     cmake
-    gnumake
     gcc
-    libtool
+    gnumake
+    jdk11
     ladspaPlugins
-    inputs.nix-alien.packages.${pkgs.system}.nix-alien
+    libtool
     python311
 
+    # --- Spellcheck / Fonts ---
+    hunspell
+    hunspellDicts.en_US
+
+    # --- KDE Wallet bits ---
     kdePackages.kwallet
     kdePackages.kwalletmanager
-    kdePackages.kwallet-pam  # For PAM integration if needed
-    #
+    kdePackages.kwallet-pam
+
+    # --- Apps ---
+    git
+    zotero
+
+    # --- Handy script: send steam URL to FIFO ---
     (pkgs.writeShellScriptBin "steam-run-url" ''
       FIFO="/run/user/$(id --user)/steam-run-url.fifo"
       echo "$1" > "$FIFO"
     '')
-    libdecor
   ];
 }

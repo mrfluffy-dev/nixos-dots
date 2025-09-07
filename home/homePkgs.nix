@@ -6,259 +6,278 @@
   ...
 }:
 let
+  # hyprlock = pkgs.callPackage ../../universal/personalPKGS/hyprlock.nix {};
+  # hypridle = pkgs.callPackage ../../universal/personalPKGS/hypridle.nix {};
+
+  defaultProfile = {
+    id = 0;
+    name = "default";
+    isDefault = true;
+  };
+
+  anyrunPlugins = with pkgs.anyrun; [
+    "${pkgs.anyrun}/lib/libapplications.so"
+    "${pkgs.anyrun}/lib/libdictionary.so"
+    "${pkgs.anyrun}/lib/libsymbols.so"
+    "${pkgs.anyrun}/lib/librink.so"
+    "${pkgs.anyrun}/lib/libtranslate.so"
+    "${pkgs.anyrun}/lib/libwebsearch.so"
+  ];
 in
-#hyprlock = pkgs.callPackage ../../universal/personalPKGS/hyprlock.nix {};
-#hypridle = pkgs.callPackage ../../universal/personalPKGS/hypridle.nix {};
 {
   imports = [
     inputs.zen-browser.homeModules.beta
   ];
-  programs.zen-browser = {
-    enable = true;
-    profiles.default = {
-      id = 0;
-      name = "default";
-      isDefault = true;
-    };
-  };
-  programs.firefox = {
-    enable = true;
-    profiles.default = {
-      id = 0;
-      name = "default";
-      isDefault = true;
-    };
-  };
 
-  programs.nix-index.enable = true;
-  programs.lazygit.enable = true;
+  programs = {
+    zen-browser = {
+      enable = true;
+      profiles.default = defaultProfile;
+    };
+
+    firefox = {
+      enable = true;
+      profiles.default = defaultProfile;
+    };
+
+    nix-index.enable = true;
+    lazygit.enable = true;
+
+    vscode = {
+      enable = true;
+      profiles.default.extensions = [
+        pkgs.vscode-extensions.platformio.platformio-vscode-ide
+      ];
+    };
+
+    anyrun = {
+      enable = true;
+      config = {
+        plugins = anyrunPlugins;
+        x.fraction = 0.5;
+        y.fraction = 0.3;
+        width.fraction = 0.3;
+        hideIcons = false;
+        ignoreExclusiveZones = false;
+        layer = "overlay";
+        hidePluginInfo = false;
+        closeOnClick = false;
+        showResultsImmediately = false;
+        maxEntries = null;
+      };
+      extraCss = ''
+        .some_class
+        enable = true;{
+          background: red;
+        }
+      '';
+      extraConfigFiles."websearch.ron".text = ''
+        Config(
+          prefix: "",
+          engines: [Google]
+        )
+      '';
+      extraConfigFiles."dictionary.ron".text = ''
+        Config(
+          prefix: "",
+          max_entries: 5,
+        )
+      '';
+      extraConfigFiles."rink.ron".text = ''
+        Config(
+          prefix: "",
+          max_entries: 5,
+        )
+      '';
+      extraConfigFiles."translate.ron".text = ''
+        Config(
+          prefix: ":",
+          language_delimiter: ">",
+          max_entries: 3,
+        )
+      '';
+      extraConfigFiles."symbols.ron".text = ''
+        Config (
+          prefix: "",
+          // Custom user defined symbols to be included along the unicode symbols
+          symbols: {
+            // "name": "text to be copied"
+            "shrug": "¯\\_(ツ)_/¯",
+          },
+          max_entries: 3,
+        )
+      '';
+    };
+  };
 
   qt.enable = true;
-  #qt.style = "gtk2";
-  #qt.platformTheme = "qt5ct";
-  #imports = [ inputs.anyrun.homeManagerModules.default ];
+  # qt.style = "gtk2";
+  # qt.platformTheme = "qt5ct";
+  # imports = [ inputs.anyrun.homeManagerModules.default ];
 
-  nixpkgs.config.allowUnfree = true;
-  nixpkgs.config.permittedInsecurePackages = [
-    "freeimage-unstable-2021-11-01"
-    "qtwebengine-5.15.19"
-  ];
-  programs.vscode = {
-    enable = true;
-    profiles = {
-      default = {
-        extensions = [
-          pkgs.vscode-extensions.platformio.platformio-vscode-ide
-        ];
-      };
-    };
-  };
-  programs.anyrun = {
-    enable = true;
+  nixpkgs = {
     config = {
-      plugins = [
-        # An array of all the plugins you want, which either can be paths to the .so files, or their packages
-        "${pkgs.anyrun}/lib/libapplications.so"
-        "${pkgs.anyrun}/lib/libdictionary.so"
-        "${pkgs.anyrun}/lib/libsymbols.so"
-        "${pkgs.anyrun}/lib/librink.so"
-        "${pkgs.anyrun}/lib/libtranslate.so"
-        "${pkgs.anyrun}/lib/libwebsearch.so"
+      allowUnfree = true;
+      permittedInsecurePackages = [
+        "freeimage-unstable-2021-11-01"
+        "qtwebengine-5.15.19"
       ];
-      x = {
-        fraction = 0.5;
-      };
-      y = {
-        fraction = 0.3;
-      };
-      width = {
-        fraction = 0.3;
-      };
-      hideIcons = false;
-      ignoreExclusiveZones = false;
-      layer = "overlay";
-      hidePluginInfo = false;
-      closeOnClick = false;
-      showResultsImmediately = false;
-      maxEntries = null;
     };
-    extraCss = ''
-      .some_class 
-      enable = true;{
-        background: red;
-      }
-    '';
-    extraConfigFiles."websearch.ron".text = ''
-      Config(
-        prefix: "",
-        // Options: Google, Ecosia, Bing, DuckDuckGo, Custom
-        //
-        // Custom engines can be defined as such:
-        // Custom(
-        //   name: "Searx",
-        //   url: "searx.be/?q={}",
-        // )
-        //
-        // NOTE: `{}` is replaced by the search query and `https://` is automatically added in front.
-        engines: [Google]
-      )
-    '';
-    extraConfigFiles."dictionary.ron".text = ''
-      Config(
-        prefix: "",
-        max_entries: 5,
-      )
-    '';
-    extraConfigFiles."rink.ron".text = ''
-      Config(
-        prefix: "",
-        max_entries: 5,
-      )
-    '';
-    extraConfigFiles."translate.ron".text = ''
-      Config(
-        prefix: ":",
-        language_delimiter: ">",
-        max_entries: 3,
-      )
-    '';
-
-    extraConfigFiles."symbols.ron".text = ''
-      Config (
-              // The prefix that the search needs to begin with to yield symbol results
-              prefix: "",
-              // Custom user defined symbols to be included along the unicode symbols
-              symbols: {
-                       // "name": "text to be copied"
-                       "shrug": "¯\\_(ツ)_/¯",
-              },
-              max_entries: 3,
-      )
-    '';
   };
+
   services.kdeconnect.enable = true;
 
-  #  programs.obs-studio = {
-  #    enable = true;
-  #    plugins = with pkgs.obs-studio-plugins; [
-  #      wlrobs
-  #      obs-backgroundremoval
-  #      obs-pipewire-audio-capture
-  #    ];
-  #  };
-  #
   home.packages = with pkgs; [
-
-    # # Adds the 'hello' command to your environment. It prints a friendly
-    # # "Hello, world!" when run.
-    # pkgs.hello
-
-    # # It is sometimes useful to fine-tune packages, for example, by applying
-    # # overrides. You can do that directly here, just don't forget the
-    # # parentheses. Maybe you want to install Nerd Fonts with a limited number of
-    # # fonts?
-    # (pkgs.nerdfonts.override { fonts = [ "FantasqueSansMono" ]; })
-
-    # # You can also create simple shell scripts directly inside your
-    # # configuration. For example, this adds a command 'my-hello' to your
-    # # environment:
-    # (pkgs.writeShellScriptBin "my-hello" ''
-    #   echo "Hello, ${config.home.username}!"
-    # '')
+    ############################
+    # Shells & Terminals
+    ############################
+    alacritty
     zsh
-    zoom-us
-    rink
-    firefox
-    btop
-    libreoffice-fresh
-    rustup
-    rustc
-    macchina
-    hyprpaper
-    #xwaylandvideobridge
+
+    ############################
+    # CLI Shit
+    ############################
+    atuin
+
+    ############################
+    # System Utilities
+    ############################
+    app2unit
+    brightnessctl
+    ddcutil
     duf
-    grim
-    slurp
-    swappy
-    heroic
-    gamemode
-    goverlay
+    libnotify
+    lm_sensors
+    macchina
     rm-improved
-    nodejs_20
-    playerctl
-    pamixer
-    openai-whisper
-    libreoffice
-    zathura
-    imv
-    libsixel
-    prismlauncher
-    godot_4
-    wf-recorder
-    #jellyfin-media-player
+    xarchiver
+    xdg-user-dirs
+
+    ############################
+    # Monitoring & TUI Apps
+    ############################
+    btop
+    cava
+
+    ############################
+    # Wayland / Desktop Tools
+    ############################
+    grim
+    hyprpaper
     hyprpicker
     mangohud
-    #discord
-    mpv
     rofi
-    xdg-user-dirs
-    xarchiver
-    atuin
-    blender-hip
-    wineWowPackages.stable
-    gdb
+    slurp
+    swappy
+    wf-recorder
+
+    ############################
+    # Audio / Media Tools
+    ############################
+    openai-whisper
+    pamixer
+    playerctl
     alsa-utils
+
+    ############################
+    # Browsers & Web
+    ############################
     brave
+    firefox
+    zoom-us
+
+    ############################
+    # Communication & Sharing
+    ############################
+    element-desktop
+    localsend
     slack
+    thunderbird
+
+    ############################
+    # Documents & Viewers
+    ############################
+    libreoffice
+    libreoffice-fresh
+    zathura
+
+    ############################
+    # Media Players & Imaging
+    ############################
+    imv
+    mpv
+    upscaler
+    youtube-music
+    libsixel
+
+    ############################
+    # Development Toolchains
+    ############################
+    gdb
+    nodejs_20
+    platformio
+    rustc
+    rustup
     zed-editor
-    dualsensectl
-    mangayomi
-    scrcpy
+
+    # Language tooling from inputs
+    inputs.qs-qml.packages.${pkgs.system}.qml-ts-mode
+    inputs.qs-qml.packages.${pkgs.system}.tree-sitter-qmljs
+
+    ############################
+    # Game Dev / Engines
+    ############################
+    blender-hip
+    godot_4
+
+    ############################
+    # Emulation
+    ############################
     fuse
     fuse-emulator
     fuse3
-    alacritty
-    #inputs.way-inhibitor.packages.${pkgs.system}.default
-    #inputs.zen-browser.packages.${pkgs.system}.twilight
-    #inputs.quickshell.packages.${pkgs.system}.default
-    inputs.qs-qml.packages.${pkgs.system}.tree-sitter-qmljs
-    inputs.qs-qml.packages.${pkgs.system}.qml-ts-mode
-    protonup-qt
-    ddcutil
-    brightnessctl
-    app2unit
-    cava
-    lm_sensors
-    thunderbird
-    libnotify
-    localsend
+
+    ############################
+    # Android Tools
+    ############################
     android-tools
-    #grayjay
-    youtube-music
-    inputs.caelestia.packages.${pkgs.system}.caelestia-shell
-    inputs.caelestia-cli.packages.${pkgs.system}.caelestia-cli
-    kdePackages.dolphin
-    kdePackages.kio
-    kdePackages.kio-extras
-    #kdePackages.breeze-icons
-    #kdePackages.dolphin-plugins
-    kdePackages.kdesdk-thumbnailers # new
-    kdePackages.kdegraphics-thumbnailers # new
-    kdePackages.kdegraphics-mobipocket # new
-    kdePackages.kimageformats # new
-    #kdePackages.calligra # new
-    #kdePackages.qtimageformats # new
-    kdePackages.ffmpegthumbs # new
-    #kdePackages.taglib # new
+    scrcpy
+
+    ############################
+    # Gaming & Launchers
+    ############################
+    dualsensectl
+    gamemode
+    goverlay
+    heroic
+    prismlauncher
+    protonup-qt
+    wineWowPackages.stable
+    mangayomi
+    rink
+
+    ############################
+    # KDE / File Management
+    ############################
     kdePackages.baloo # new
     kdePackages.baloo-widgets # new
-    #kdePackages.kde-cli-tools
-    #resvg # new
-    #
-    #platformio
-    platformio
-    element-desktop
+    kdePackages.dolphin
+    kdePackages.ffmpegthumbs # new
+    kdePackages.kdegraphics-mobipocket # new
+    kdePackages.kdegraphics-thumbnailers # new
+    kdePackages.kdesdk-thumbnailers # new
+    kdePackages.kimageformats # new
+    kdePackages.kio
+    kdePackages.kio-extras
+    # kdePackages.breeze-icons
+    # kdePackages.dolphin-plugins
+    # kdePackages.kde-cli-tools
+    # resvg # new
 
-    upscaler
+    ############################
+    # Blockchain (inputs)
+    ############################
+    inputs.caelestia-cli.packages.${pkgs.system}.caelestia-cli
+    inputs.caelestia.packages.${pkgs.system}.caelestia-shell
   ];
 }

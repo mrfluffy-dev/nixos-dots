@@ -1,6 +1,5 @@
 # Edit this configuration file to define what should be installed on
-# your system.  Help is available in the configuration.nix(5) man page
-# and in the NixOS manual (accessible by running ‘nixos-help’).
+# your system. Help is available in configuration.nix(5) and via `nixos-help`.
 
 {
   config,
@@ -14,11 +13,18 @@
 
 let
   oreo = pkgs.callPackage ./personalPKGS/oreo.nix { };
-in
 
+  # Window manager toggles
+  wmAll     = window_manager == "all";
+  useRiver  = window_manager == "river"    || wmAll;
+  useNiri   = window_manager == "niri"     || wmAll;
+  useHypr   = window_manager == "hyprland" || wmAll;
+in
 {
+  ##############################################################################
+  # Imports
+  ##############################################################################
   imports = [
-    # Include the results of the hardware scan.
     ./hardware-configuration.nix
     ./system/hardware.nix
     ./system/boot.nix
@@ -30,195 +36,169 @@ in
     inputs.home-manager.nixosModules.home-manager
     inputs.niri.nixosModules.niri
   ];
-  # niri settings
-  nix = {
-    settings = {
-      experimental-features = [
-        "nix-command"
-        "flakes"
-      ];
-      build-dir = "/var/tmp";
-      auto-optimise-store = true;
-    };
 
+  ##############################################################################
+  # Nix settings
+  ##############################################################################
+  nix.settings = {
+    experimental-features = [ "nix-command" "flakes" ];
+    build-dir = "/var/tmp";
+    auto-optimise-store = true;
   };
 
-  # Set your time zone.
-  #time.timeZone = "Europe/Dublin";
-  #programs.river.enable = true;
-  #programs.niri.enable = true;
-  #programs.niri.package = pkgs.niri-stable;
-  #nixpkgs.overlays = [ inputs.niri.overlays.niri ];
-  #programs.hyprland.enable = true;
-  programs.river.enable = window_manager == "river" || window_manager == "all";
-  qt.enable = true;
-  #qt.style = "gtk2";
-  qt.platformTheme = "qt5ct";
+  ##############################################################################
+  # Desktop / WM
+  ##############################################################################
+  programs.river.enable = useRiver;
+
+  qt = {
+    enable = true;
+    # style = "gtk2";
+    platformTheme = "qt5ct";
+  };
 
   xdg.menus.enable = true;
-  #shitty dolphin shit coz fuck that is why
-  environment.etc."/xdg/menus/applications.menu".text = builtins.readFile "${pkgs.kdePackages.plasma-workspace}/etc/xdg/menus/plasma-applications.menu";
 
+  # Work around Dolphin menu oddities: force Plasma menu definition
+  environment.etc."/xdg/menus/applications.menu".text =
+    builtins.readFile "${pkgs.kdePackages.plasma-workspace}/etc/xdg/menus/plasma-applications.menu";
+
+  # Niri (via overlay)
   nixpkgs.overlays = [ inputs.niri.overlays.niri ];
   programs.niri = {
-    enable = window_manager == "niri" || window_manager == "all";
+    enable  = useNiri;
     package = pkgs.niri-stable; # Only needed if not provided by the overlay
   };
 
-  programs.hyprland.enable = window_manager == "hyprland" || window_manager == "all";
-  # Configure keymap in X11
+  # Hyprland
+  programs.hyprland.enable = useHypr;
+
+  # X11 base (kept enabled for keymap + DM if needed)
   services.xserver = {
+    enable = true;
     xkb = {
       layout = "ie";
       variant = "";
     };
-    enable = true;
-    #displayManager.lightdm = {
-    #  enable = true;
-    #  greeters.gtk = {
-    #    enable = true;
-    #    theme.package = pkgs.amarena-theme;
-    #    theme.name = "amarena";
-    #    cursorTheme.package = oreo.override { colors = [ "oreo_spark_pink_cursors" ]; };
-    #    cursorTheme.name = "oreo_spark_pink_cursors";
-    #    extraConfig = "background=${./assets/Wallpapers/138.png}";
-    #  };
-    #};
+
+    # displayManager.lightdm = {
+    #   enable = true;
+    #   greeters.gtk = {
+    #     enable = true;
+    #     theme.package = pkgs.amarena-theme;
+    #     theme.name = "amarena";
+    #     cursorTheme.package = oreo.override { colors = [ "oreo_spark_pink_cursors" ]; };
+    #     cursorTheme.name = "oreo_spark_pink_cursors";
+    #     extraConfig = "background=${./assets/Wallpapers/138.png}";
+    #   };
+    # };
   };
+
+  # greetd + tuigreet
   services.greetd = {
     enable = true;
     restart = true;
-    settings = {
-      default_session = {
-        command = "${lib.getExe pkgs.greetd.tuigreet} --window-padding 1 --time --time-format '%R - %F' --remember --remember-session --asterisks";
-        user = "greeter";
-      };
+    useTextGreeter = true;
+    settings.default_session = {
+      command = "${lib.getExe pkgs.tuigreet} --window-padding 1 --time --time-format '%R - %F' --remember --remember-session --asterisks";
+      user = "greeter";
     };
   };
 
-  security.rtkit.enable = true;
-  security.polkit = {
-    enable = true;
-    #package = pkgs.polkit_gnome;
+  ##############################################################################
+  # Security / PolicyKit / PAM
+  ##############################################################################
+  security = {
+    rtkit.enable = true;
+    polkit.enable = true;
+    pam.services = {
+      swaylock = { };
+      greetd.enableGnomeKeyring = true;
+      greetd.kwallet.enable = true;
+    };
   };
-  environment.sessionVariables = {
-    ZDOTDIR = "$HOME/.config/zsh";
-  };
-  environment.pathsToLink = [ "/share/zsh" ];
-  environment.variables = {
-    # VAAPI and VDPAU config for accelerated video.
-    # See https://wiki.archlinux.org/index.php/Hardware_video_acceleration
-    VDPAU_DRIVER = "radeonsi";
-    LIBVA_DRIVER_NAME = "radeonsi";
-    #AMD_VULKAN_ICD = "RADV";
-    #VK_ICD_FILENAMES = "/run/opengl-driver/share/vulkan/icd.d/radeon_icd.x86_64.json";
-    #XDG_CURRENT_DESKTOP = "hyprland";
-    #QT_QPA_PLATFORMTHEME = "qt6ct";
-  };
-  # Define a user account. Don't forget to set a password with ‘passwd’.
-  users.users.mrfluffy = {
-    isNormalUser = true;
-    shell = pkgs.zsh;
-    createHome = true;
-    extraGroups = [
-      "wheel"
-      "networkmanager"
-      "video"
-      "render"
-      "docker"
-      "libvirt"
-      "input"
-    ]; # Enable ‘sudo’ for the user.
-    packages = with pkgs; [
 
+  ##############################################################################
+  # Environment
+  ##############################################################################
+  environment = {
+    sessionVariables = {
+      ZDOTDIR = "$HOME/.config/zsh";
+    };
+    pathsToLink = [ "/share/zsh" ];
+    variables = {
+      # VAAPI and VDPAU config for accelerated video.
+      # See https://wiki.archlinux.org/index.php/Hardware_video_acceleration
+      VDPAU_DRIVER = "radeonsi";
+      LIBVA_DRIVER_NAME = "radeonsi";
+      # AMD_VULKAN_ICD = "RADV";
+      # VK_ICD_FILENAMES = "/run/opengl-driver/share/vulkan/icd.d/radeon_icd.x86_64.json";
+      # XDG_CURRENT_DESKTOP = "hyprland";
+      # QT_QPA_PLATFORMTHEME = "qt6ct";
+    };
+
+    systemPackages = with pkgs; [
+      vim
+      wget
+      neovim
     ];
   };
-  users.users.work = {
-    isNormalUser = true;
-    shell = pkgs.zsh;
-    createHome = true;
-    extraGroups = [
-      "wheel"
-      "networkmanager"
-      "video"
-      "render"
-      "docker"
-      "libvirt"
-      "input"
-    ]; # Enable ‘sudo’ for the user.
-    packages = with pkgs; [
 
-    ];
+  ##############################################################################
+  # Users
+  ##############################################################################
+  users = {
+    users.mrfluffy = {
+      isNormalUser = true;
+      shell = pkgs.zsh;
+      createHome = true;
+      extraGroups = [ "wheel" "networkmanager" "video" "render" "docker" "libvirt" "input" ];
+      packages = with pkgs; [ ];
+    };
+
+    users.work = {
+      isNormalUser = true;
+      shell = pkgs.zsh;
+      createHome = true;
+      extraGroups = [ "wheel" "networkmanager" "video" "render" "docker" "libvirt" "input" ];
+      packages = with pkgs; [ ];
+    };
+
+    groups.libvirtd.members = [ "mrfluffy" "work" ];
   };
-  users.groups.libvirtd.members = [
-    "mrfluffy"
-    "work"
-  ];
 
+  ##############################################################################
+  # Home-Manager
+  ##############################################################################
   home-manager = {
-    # also pass inputs to home-manager modules
-    extraSpecialArgs = {
-      inherit inputs window_manager systemName;
-    };
+    extraSpecialArgs = { inherit inputs window_manager systemName; };
     users = {
-      "mrfluffy" = import ./home/mrfluffy.nix;
-
-      "work" = import ./home/work.nix;
+      mrfluffy = import ./home/mrfluffy.nix;
+      work     = import ./home/work.nix;
     };
   };
 
-  virtualisation.docker = {
-    enable = true;
-    storageDriver = lib.mkIf (systemName == "pc") "btrfs";
-  };
-  virtualisation.libvirtd.enable = true;
-
-  # Allow unfree packages
-  nixpkgs = {
-    config = {
-      allowUnfree = true;
-      permittedInsecurePackages = [
-      ];
+  ##############################################################################
+  # Virtualisation
+  ##############################################################################
+  virtualisation = {
+    docker = {
+      enable = true;
+      storageDriver = lib.mkIf (systemName == "pc") "btrfs";
     };
+    libvirtd.enable = true;
   };
-  security.pam.services.swaylock = { };
 
-  security.pam.services.greetd.enableGnomeKeyring = true;
-  security.pam.services.greetd.kwallet.enable = true;
+  ##############################################################################
+  # Nixpkgs policy
+  ##############################################################################
+  nixpkgs.config = {
+    allowUnfree = true;
+    permittedInsecurePackages = [ ];
+  };
 
-  # List packages installed in system profile. To search, run:
-  # $ nix search wget
-  environment.systemPackages = with pkgs; [
-    vim # Do not forget to add an editor to edit configuration.nix! The Nano editor is also installed by default.
-    wget
-    neovim
-  ];
-
-  # Some programs need SUID wrappers, can be configured further or are
-  # started in user sessions.
-  # programs.mtr.enable = true;
-  # programs.gnupg.agent = {
-  #   enable = true;
-  #   enableSSHSupport = true;
-  # };
-
-  # List services that you want to enable:
-
-  # Enable the OpenSSH daemon.
-  #services.openssh.enable = true;
-
-  # Open ports in the firewall.
-  # networking.firewall.allowedTCPPorts = [ ... ];
-  # networking.firewall.allowedUDPPorts = [ ... ];
-  # Or disable the firewall altogether.
-  # networking.firewall.enable = false;
-
-  # This value determines the NixOS release from which the default
-  # settings for stateful data, like file locations and database versions
-  # on your system were taken. It‘s perfectly fine and recommended to leave
-  # this value at the release version of the first install of this system.
-  # Before changing this value read the documentation for this option
-  # (e.g. man configuration.nix or on https://nixos.org/nixos/options.html).
+  ##############################################################################
+  # State version
+  ##############################################################################
   system.stateVersion = "24.11"; # Did you read the comment?
-
 }

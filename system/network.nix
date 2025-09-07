@@ -5,57 +5,57 @@
   systemName,
   ...
 }:
+let
+  isLaptop = systemName == "laptop";
+  isPc     = systemName == "pc";
+in
 {
-  networking = {
-    # Define hostname based on system type
-    hostName = lib.mkMerge [
-      (lib.mkIf (systemName == "laptop") "mrfluffyLaptop")
-      (lib.mkIf (systemName == "pc") "mrfluffyPC")
-    ];
+  networking = lib.mkMerge [
+    # Hostname per system type
+    (lib.mkIf isLaptop { hostName = "mrfluffyLaptop"; })
+    (lib.mkIf isPc     { hostName = "mrfluffyPC";     })
 
-    # Firewall configuration
-    firewall = {
-      # Open ports in the firewall.
-      # allowedTCPPorts = [ ... ];
-      # allowedUDPPorts = [ ... ];
-      # Or disable the firewall altogether.
-      enable = false;
-      checkReversePath = false;
-    };
+    # Common networking config
+    {
+      # Firewall
+      firewall = {
+        # allowedTCPPorts = [ ... ];
+        # allowedUDPPorts = [ ... ];
+        enable = false;
+        checkReversePath = false;
+      };
 
-    # Networking options
-    # Pick only one of the below networking options.
-    # wireless.enable = true; # Enables wireless support via wpa_supplicant.
-    networkmanager = {
-      enable = true; # Easiest to use and most distros use this by default.
-      dns = "none";
-    };
+      # NetworkManager
+      networkmanager = {
+        enable = true;
+        dns = "none";
+      };
 
-    # DHCP settings
-    useDHCP = false;
-    dhcpcd.enable = false;
+      # DHCP
+      useDHCP = false;
+      dhcpcd.enable = false;
 
-    # IPv6 configuration
-    enableIPv6 = true;
+      # IPv6
+      enableIPv6 = true;
 
-    # Configure network proxy if necessary
-    # proxy.default = "http://user:password@proxy:port/";
-    # proxy.noProxy = "127.0.0.1,localhost,internal.domain";
-
-    # Hosts and DNS configuration
-    extraHosts = ''
-      127.0.0.0 localhost
-    '';
-    nameservers = [
-      "192.168.1.1"
+      # Hosts & DNS
+      extraHosts = ''
+        127.0.0.0 localhost
+      '';
+      nameservers = [
+        "192.168.1.1"
       ];
-    search = [
-      "localdomain"
-      "local"
-    ];
+      search = [
+        "localdomain"
+        "local"
+      ];
 
-    # # environment.etc = {
-    # # "resolv.conf".text = "nameserver 192.168.1.180\noptions edns0 trust-ad\nsearch home\n";
-    # # };
-  };
+      # Proxies (disabled)
+      # proxy.default = "http://user:password@proxy:port/";
+      # proxy.noProxy = "127.0.0.1,localhost,internal.domain";
+
+      # Wireless (alternative approach, disabled)
+      # wireless.enable = true; # wpa_supplicant
+    }
+  ];
 }
