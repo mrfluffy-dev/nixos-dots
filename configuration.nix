@@ -71,7 +71,10 @@ in
   };
 
   # Hyprland
-  programs.hyprland.enable = useHypr;
+  programs.hyprland = {
+    enable = useHypr;
+    package = inputs.hyprland.packages.${pkgs.system}.hyprland;
+  };
 
   # X11 base (kept enabled for keymap + DM if needed)
   services.xserver = {

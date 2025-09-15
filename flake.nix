@@ -37,6 +37,15 @@
       url = "github:thiagokokada/nix-alien";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    hyprland = {
+      url = "github:hyprwm/Hyprland";
+      #inputs.nixpkgs.follows = "nixpkgs";
+    };
+    hyprland-hyprsplit = {
+      url = "github:Duckonaut/split-monitor-workspaces";
+      inputs.hyprland.follows = "hyprland";
+    };
+
   };
 
   outputs =
@@ -48,6 +57,7 @@
     }@inputs:
     let
       system = "x86_64-linux";
+      pkgs = nixpkgs.legacyPackages.${system};
       #Avalable options are ["niri" "river" "hyprland" "all"]
       window_manager = "hyprland";
     in

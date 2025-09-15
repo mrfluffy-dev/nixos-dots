@@ -9,7 +9,9 @@
 }:
 let
   caelestia-cli = inputs.caelestia-cli.packages.${pkgs.system}.caelestia-cli;
-
+  hypr-package = inputs.hyprland.packages.${pkgs.system}.hyprland;
+  hypr-portal = inputs.hyprland.packages.${pkgs.system}.xdg-desktop-portal-hyprland;
+  hypr-split = inputs.hyprland-hyprsplit.packages.${pkgs.system}.split-monitor-workspaces;
   mod          = "Alt";
   terminal     = "footclient";
   fileManager  = "dolphin";
@@ -21,9 +23,11 @@ in
 {
   wayland.windowManager.hyprland = {
     enable  = window_manager == "hyprland" || window_manager == "all";
+    package = hypr-package;
+    portalPackage = hypr-portal;
     plugins = [
-      pkgs.hyprlandPlugins.hyprsplit
-      pkgs.hyprlandPlugins.hyprscrolling
+      #pkgs.hyprlandPlugins.hyprsplit
+      hypr-split
     ];
 
     settings = {
@@ -105,16 +109,9 @@ in
       ##########################################################################
 
       plugin = {
-        hyprsplit = {
-          num_workspaces        = 10;
-          persistent_workspaces = true;
-        };
-
-        hyprscrolling = {
-          fullscreen_on_one_column = false;
-          column_width             = 0.7;
-          explicit_column_widths   = [ 0.333 0.5 0.667 1.0 ];
-          focus_fit_method         = 0;
+        split-monitor-workspaces = {
+          count        = 10;
+          penable_persistent_workspaces = 1;
         };
       };
 
@@ -308,28 +305,28 @@ in
         "${mod} SHIFT, J, movewindow, d"
 
         # Workspaces (switch)
-        "${mod}, 1, split:workspace, 1 "
-        "${mod}, 2, split:workspace, 2 "
-        "${mod}, 3, split:workspace, 3 "
-        "${mod}, 4, split:workspace, 4 "
-        "${mod}, 5, split:workspace, 5 "
-        "${mod}, 6, split:workspace, 6 "
-        "${mod}, 7, split:workspace, 7 "
-        "${mod}, 8, split:workspace, 8 "
-        "${mod}, 9, split:workspace, 9 "
-        "${mod}, 0, split:workspace, 10"
+        "${mod}, 1, split-workspace, 1 "
+        "${mod}, 2, split-workspace, 2 "
+        "${mod}, 3, split-workspace, 3 "
+        "${mod}, 4, split-workspace, 4 "
+        "${mod}, 5, split-workspace, 5 "
+        "${mod}, 6, split-workspace, 6 "
+        "${mod}, 7, split-workspace, 7 "
+        "${mod}, 8, split-workspace, 8 "
+        "${mod}, 9, split-workspace, 9 "
+        "${mod}, 0, split-workspace, 10"
 
         # Workspaces (move active window)
-        "${mod} SHIFT, 1, split:movetoworkspacesilent, 1 "
-        "${mod} SHIFT, 2, split:movetoworkspacesilent, 2 "
-        "${mod} SHIFT, 3, split:movetoworkspacesilent, 3 "
-        "${mod} SHIFT, 4, split:movetoworkspacesilent, 4 "
-        "${mod} SHIFT, 5, split:movetoworkspacesilent, 5 "
-        "${mod} SHIFT, 6, split:movetoworkspacesilent, 6 "
-        "${mod} SHIFT, 7, split:movetoworkspacesilent, 7 "
-        "${mod} SHIFT, 8, split:movetoworkspacesilent, 8 "
-        "${mod} SHIFT, 9, split:movetoworkspacesilent, 9 "
-        "${mod} SHIFT, 0, split:movetoworkspacesilent, 10"
+        "${mod} SHIFT, 1, split-movetoworkspacesilent, 1 "
+        "${mod} SHIFT, 2, split-movetoworkspacesilent, 2 "
+        "${mod} SHIFT, 3, split-movetoworkspacesilent, 3 "
+        "${mod} SHIFT, 4, split-movetoworkspacesilent, 4 "
+        "${mod} SHIFT, 5, split-movetoworkspacesilent, 5 "
+        "${mod} SHIFT, 6, split-movetoworkspacesilent, 6 "
+        "${mod} SHIFT, 7, split-movetoworkspacesilent, 7 "
+        "${mod} SHIFT, 8, split-movetoworkspacesilent, 8 "
+        "${mod} SHIFT, 9, split-movetoworkspacesilent, 9 "
+        "${mod} SHIFT, 0, split-movetoworkspacesilent, 10"
 
         # Special workspace (scratchpad)
         "${mod}, SLASH, togglespecialworkspace, magic"
