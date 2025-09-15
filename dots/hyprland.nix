@@ -56,7 +56,7 @@ in
         ++ lib.optional (systemName == "pc") {
           output              = "DP-1";
           mode                = "2560x1440@239.97";
-          position            = "2560x0";  # Corrected from 2569x0 for seamless alignment
+          position            = "2560x0";#"1440x750";  # Corrected from 2569x0 for seamless alignment
           scale               = 1;
           #supports_wide_color = 1;
           bitdepth            = 10;
@@ -76,6 +76,7 @@ in
           mode     = "2560x1440@144";
           scale    = 1;
           position = "0x0";
+          transform = 0;
         };
 
       ##########################################################################

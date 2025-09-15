@@ -36,8 +36,8 @@ in
   ];
 
   # You can find color schemes at: https://github.com/tinted-theming/schemes
-  colorScheme = inputs.nix-colors.colorSchemes.hardcore;
-  stylix.base16Scheme.base00 = "141414";
+  colorScheme = inputs.nix-colors.colorSchemes.blueish;
+  stylix.base16Scheme.base00 = "0F1417";
 
   # Home Manager user information
   home.username = "work";
