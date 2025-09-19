@@ -152,10 +152,11 @@
     environmentVariables = {
       OLLAMA_DEBUG = "1";
       OLLAMA_MMAP = "0";
-      OLLAMA_NUM_CTX = "8192";
+      OLLAMA_NUM_CTX = "40000";
       OLLAMA_NUM_GPU = "20";
+      OLLAMA_FLASH_ATTENTION="true";
       # HSA_OVERRIDE_GFX_VERSION = "11.0.0";
-      # OLLAMA_KV_CACHE_TYPE = "q4";
+      OLLAMA_KV_CACHE_TYPE = "f16";
     };
   };
 

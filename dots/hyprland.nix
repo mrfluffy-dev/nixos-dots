@@ -61,7 +61,8 @@ in
           #supports_wide_color = 1;
           bitdepth            = 10;
           cm                  = "hdr";
-          supports_hdr        = 1;
+          supports_hdr        = true;
+          supports_wide_color = true;
           sdr_min_luminance   = 0;    # For true black on OLED
           sdr_max_luminance   = 275;  # Matches typical SDR brightness
           min_luminance       = 0;
