@@ -27,7 +27,7 @@ in
     ../dots/waybar.nix
     ../dots/zsh.nix
     ../dots/nixcord.nix
-    ../dots/hyprlock.nix
+    #../dots/hyprlock.nix
     ../dots/xdg.nix
     ../dots/river.nix
     ../dots/niri.nix

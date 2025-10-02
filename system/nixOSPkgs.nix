@@ -64,14 +64,35 @@ in
     ];
   };
 
+
+
   ############################
   # Core programs
   ############################
   programs = {
+
+    appimage = {
+      enable = true;
+      binfmt = true;  # Optional: Allows direct execution of .AppImage files without `appimage-run` prefix
+      package = pkgs.appimage-run.override {
+        extraPkgs = pkgs: with pkgs; [
+          libepoxy
+	  jdk17
+          # Add more if needed, e.g., libGL libGLU for OpenGL issues
+        ];
+      };
+    };
     gamescope = {
       enable = true;
       capSysNice = true;
     };
+
+    nix-index-database = {
+      comma = {
+        enable = true;
+      };
+    };
+
 
     nh = {
       enable = true;

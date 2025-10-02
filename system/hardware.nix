@@ -57,7 +57,7 @@ in
     enable = true;          # Enable Bluetooth support
     powerOnBoot = true;     # Power up controller on boot
     settings.General = {
-      Enable = "Source,Sink,Media,Socket";
+      #Enable = "Source,Sink,Media,Socket";
       # Experimental = true;
     };
   };
@@ -67,6 +67,10 @@ in
     enable = true;
     daemon.enable = true;
   };
+  hardware.enableRedistributableFirmware = true;
+  hardware.firmware = [ 
+    pkgs.linux-firmware
+  ];
 
   # ── Audio (disabled examples) ───────────────────────────────────────────────
   # sound.enable = true;
