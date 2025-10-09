@@ -28,7 +28,7 @@ in
       # NetworkManager
       networkmanager = {
         enable = true;
-        dns = "none";
+        dns = "default";  # Changed from "none" to get DNS from DHCP (router)
       };
 
       # DHCP
@@ -42,12 +42,9 @@ in
       extraHosts = ''
         127.0.0.0 localhost
       '';
-      nameservers = [
-        "192.168.1.1"
-        "1.1.1.1"
-      ];
+      # nameservers = [ ... ];  # Commented out to use DHCP-provided ones
       search = [
-        "localdomain"
+        "home.arpa"
         "local"
       ];
 
