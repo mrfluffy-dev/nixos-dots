@@ -214,10 +214,5 @@ in
     git
     zotero
 
-    # --- Handy script: send steam URL to FIFO ---
-    (pkgs.writeShellScriptBin "steam-run-url" ''
-      FIFO="/run/user/$(id --user)/steam-run-url.fifo"
-      echo "$1" > "$FIFO"
-    '')
   ];
 }
