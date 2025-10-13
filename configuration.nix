@@ -42,14 +42,14 @@ in
   ##############################################################################
   nix.settings = {
     experimental-features = [ "nix-command" "flakes" ];
-    build-dir = "/var/tmp";
+    build-dir = "/nix/var/nix/builds";
     auto-optimise-store = true;
   };
 
   ##############################################################################
   # Desktop / WM
   ##############################################################################
-  programs.river.enable = useRiver;
+  programs.river-classic.enable = useRiver;
 
   qt = {
     enable = true;

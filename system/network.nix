@@ -44,7 +44,7 @@ in
       '';
       # nameservers = [ ... ];  # Commented out to use DHCP-provided ones
       search = [
-        "home.arpa"
+        "localdomain"
         "local"
       ];
 

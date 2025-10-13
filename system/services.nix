@@ -84,10 +84,10 @@
   };
 
   # Laptop-specific lid and sleep behavior
-  services.logind = lib.mkIf (systemName == "laptop") {
-    lidSwitch = "suspend-then-hibernate";
-    lidSwitchExternalPower = "suspend-then-hibernate";
-    lidSwitchDocked = "suspend-then-hibernate";
+  services.logind.settings.Login = lib.mkIf (systemName == "laptop") {
+    HandleLidSwitch = "suspend-then-hibernate";
+    HandleLidSwitchExternalPower = "suspend-then-hibernate";
+    HandleLidSwitchDocked = "suspend-then-hibernate";
   };
 
   systemd.sleep.extraConfig = lib.mkIf (systemName == "laptop") ''
