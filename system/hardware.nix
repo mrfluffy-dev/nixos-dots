@@ -39,7 +39,7 @@ in
         rocmPackages.clr.icd
         rocmPackages.rocm-smi
         rocmPackages.clr
-        rocmPackages.hipblas
+        #rocmPackages.hipblas
         rocmPackages.rocblas
         rocmPackages.rocsolver
         rocmPackages.rocm-comgr
