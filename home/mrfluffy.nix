@@ -33,6 +33,7 @@ in
     ../dots/niri.nix
     ../dots/hyprland.nix
     ../dots/hyprpaper.nix
+    ../dots/caelestia.nix
   ];
 
   # You can find color schemes at: https://github.com/tinted-theming/schemes
