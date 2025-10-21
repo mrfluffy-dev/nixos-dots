@@ -445,11 +445,11 @@
           "Alt+W".action = toggle-column-tabbed-display;
 
           # Screenshots
-          "Print".action = screenshot { show-pointer = false; };
+          #"Print".action = screenshot { show-pointer = false; };
           "Ctrl+Print".action.screenshot-screen = {
             write-to-disk = false;
           };
-          "Alt+Print".action = screenshot-window;
+          #"Alt+Print".action = screenshot-window;
 
           # Other
           "Alt+Escape".action = toggle-keyboard-shortcuts-inhibit;

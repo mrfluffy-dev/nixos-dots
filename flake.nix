@@ -41,11 +41,15 @@
     };
     hyprland = {
       url = "github:hyprwm/Hyprland";
-      #inputs.nixpkgs.follows = "nixpkgs";
+      inputs.nixpkgs.follows = "nixpkgs";
     };
     hyprland-hyprsplit = {
       url = "github:Duckonaut/split-monitor-workspaces";
       inputs.hyprland.follows = "hyprland";
+    };
+    hyprlauncher = {
+      url = "github:mrfluffy-dev/hyprlauncher";
+      inputs.nixpkgs.follows = "nixpkgs";
     };
 
   };
