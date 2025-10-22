@@ -12,22 +12,24 @@ let
   hypr-package = inputs.hyprland.packages.${pkgs.system}.hyprland;
   hypr-portal = inputs.hyprland.packages.${pkgs.system}.xdg-desktop-portal-hyprland;
   hypr-split = inputs.hyprland-hyprsplit.packages.${pkgs.system}.split-monitor-workspaces;
-  mod          = "Alt";
-  terminal     = "footclient";
-  fileManager  = "dolphin";
-  runner       = "${lib.getExe caelestia-cli} shell drawers toggle launcher";
+  hyprscrolling = inputs.hyprland-plugins.packages.${pkgs.system}.hyprscrolling;
+  mod = "Alt";
+  terminal = "footclient";
+  fileManager = "dolphin";
+  runner = "${lib.getExe caelestia-cli} shell drawers toggle launcher";
   # runner     = "anyrun";
-  browser      = "zen-beta";
-  editor       = "emacsclient -c";
+  browser = "zen-beta";
+  editor = "emacsclient -c";
 in
 {
   wayland.windowManager.hyprland = {
-    enable  = window_manager == "hyprland" || window_manager == "all";
+    enable = window_manager == "hyprland" || window_manager == "all";
     package = hypr-package;
     portalPackage = hypr-portal;
     plugins = [
       #pkgs.hyprlandPlugins.hyprsplit
       hypr-split
+      hyprscrolling
     ];
 
     settings = {
@@ -48,34 +50,34 @@ in
       monitorv2 =
         [ ]
         ++ lib.optional (systemName == "laptop") {
-          output   = "eDP-1";
-          mode     = "1920x1080@59.99700";
-          scale    = 1;
+          output = "eDP-1";
+          mode = "1920x1080@59.99700";
+          scale = 1;
           position = "0x0";
         }
         ++ lib.optional (systemName == "pc") {
-          output              = "DP-1";
-          mode                = "2560x1440@239.97";
-          position            = "2560x0";#"1440x750";  # Corrected from 2569x0 for seamless alignment
-          scale               = 1;
+          output = "DP-1";
+          mode = "2560x1440@239.97";
+          position = "2560x0"; # "1440x750";  # Corrected from 2569x0 for seamless alignment
+          scale = 1;
           #supports_wide_color = 1;
-          bitdepth            = 10;
-          cm                  = "hdr";
-          supports_hdr        = true;
+          bitdepth = 10;
+          cm = "hdr";
+          supports_hdr = true;
           supports_wide_color = true;
-          sdr_min_luminance   = 0;    # For true black on OLED
-          sdr_max_luminance   = 275;  # Matches typical SDR brightness
-          min_luminance       = 0;
-          max_luminance       = 1000; # HDR peak
-          max_avg_luminance   = 400;  # Average frame luminance
-          sdrbrightness       = 1.2;  # Slight boost to avoid washed out look
-          sdrsaturation       = 1.0;
+          sdr_min_luminance = 0; # For true black on OLED
+          sdr_max_luminance = 275; # Matches typical SDR brightness
+          min_luminance = 0;
+          max_luminance = 1000; # HDR peak
+          max_avg_luminance = 400; # Average frame luminance
+          sdrbrightness = 1.2; # Slight boost to avoid washed out look
+          sdrsaturation = 1.0;
           #transform          = 2;    # Uncomment if needed
         }
         ++ lib.optional (systemName == "pc") {
-          output   = "DP-2";
-          mode     = "2560x1440@144";
-          scale    = 1;
+          output = "DP-2";
+          mode = "2560x1440@144";
+          scale = 1;
           position = "0x0";
           transform = 0;
         };
@@ -86,20 +88,19 @@ in
 
       # Autostart necessary processes (like notifications daemons, status bars, etc.)
       # Or execute your favorite apps at launch like this:
-      exec-once =
-        [
-          # "waybar"
-          # "quickshell"
-          "${pkgs.polkit_gnome}/libexec/polkit-gnome-authentication-agent-1"
-          "fcitx5 -d"
-          "foot -s"
-          "systemctl --user import-environment DBUS_SESSION_BUS_ADDRESS WAYLAND_DISPLAY XDG_SESSION_TYPE XDG_CURRENT_DESKTOP XDG_SESSION_DESKTOP QT_QPA_PLATFORMTHEME GTK_THEME"
-          "dbus-update-activation-environment --systemd --all"
-        ]
-        ++ lib.optionals (config.home.username == "work") [
-          "thunderbird"
-          "sleep 10 && emacsclient -c --frame-parameters='((name . \"work\"))' $HOME/Documents/work/README.org"
-        ];
+      exec-once = [
+        # "waybar"
+        # "quickshell"
+        "${pkgs.polkit_gnome}/libexec/polkit-gnome-authentication-agent-1"
+        "fcitx5 -d"
+        "foot -s"
+        "systemctl --user import-environment DBUS_SESSION_BUS_ADDRESS WAYLAND_DISPLAY XDG_SESSION_TYPE XDG_CURRENT_DESKTOP XDG_SESSION_DESKTOP QT_QPA_PLATFORMTHEME GTK_THEME"
+        "dbus-update-activation-environment --systemd --all"
+      ]
+      ++ lib.optionals (config.home.username == "work") [
+        "thunderbird"
+        "sleep 10 && emacsclient -c --frame-parameters='((name . \"work\"))' $HOME/Documents/work/README.org"
+      ];
       # ++ lib.optional (systemName == "laptop")
       #   "swaybg -o eDP-1 -i ${../assets/Wallpapers/138.png}"
       #
@@ -112,8 +113,13 @@ in
 
       plugin = {
         split-monitor-workspaces = {
-          count        = 10;
+          count = 10;
           penable_persistent_workspaces = 1;
+        };
+        hyprscrolling = {
+          column_width = 0.9;
+          follow_focus = true;
+          fullscreen_on_one_column = true;
         };
       };
 
@@ -133,44 +139,44 @@ in
       # https://wiki.hyprland.org/Configuring/Variables/
       # https://wiki.hyprland.org/Configuring/Variables/#general
       general = {
-        gaps_in           = 5;
-        gaps_out          = 10;
-        border_size       = 2;
+        gaps_in = 5;
+        gaps_out = 10;
+        border_size = 2;
         # "col.active_border"   = "rgba(33ccffee) rgba(00ff99ee) 45deg";
         # "col.inactive_border" = "rgba(595959aa)";
-        resize_on_border  = false; # enable resizing windows by clicking and dragging on borders and gaps
-        allow_tearing     = false; # see https://wiki.hyprland.org/Configuring/Tearing/ before enabling
-        layout            = "dwindle";
+        resize_on_border = false; # enable resizing windows by clicking and dragging on borders and gaps
+        allow_tearing = false; # see https://wiki.hyprland.org/Configuring/Tearing/ before enabling
+        layout = "scrolling";  #"dwindle";
       };
 
       render = {
-        cm_enabled         = true;  # turn on the CM pipeline (requires Hyprland restart)
-        cm_fs_passthrough  = 2;     # passthrough only for HDR content (safer than 1)
-        cm_auto_hdr        = 1;     # auto-switch monitor to HDR for fullscreen apps
-        send_content_type  = true;  # helps auto HDR on some displays
+        cm_enabled = true; # turn on the CM pipeline (requires Hyprland restart)
+        cm_fs_passthrough = 2; # passthrough only for HDR content (safer than 1)
+        cm_auto_hdr = 1; # auto-switch monitor to HDR for fullscreen apps
+        send_content_type = true; # helps auto HDR on some displays
         # cm_fs_passthrough = 1;    # optional: keep your existing line; you can replace with 2 as above
       };
 
       # https://wiki.hyprland.org/Configuring/Variables/#decoration
       decoration = {
-        rounding        = 10;
-        rounding_power  = 2;
-        active_opacity  = 1.0;
-        inactive_opacity= 1.0;
+        rounding = 10;
+        rounding_power = 2;
+        active_opacity = 1.0;
+        inactive_opacity = 1.0;
 
         shadow = {
-          enabled      = true;
-          range        = 4;
+          enabled = true;
+          range = 4;
           render_power = 3;
           # color      = "rgba(1a1a1aee)";
         };
 
         # https://wiki.hyprland.org/Configuring/Variables/#blur
         blur = {
-          enabled   = false;
-          size      = 3;
-          passes    = 1;
-          vibrancy  = 0.1696;
+          enabled = false;
+          size = 3;
+          passes = 1;
+          vibrancy = 0.1696;
         };
       };
 
@@ -212,9 +218,9 @@ in
 
       # See https://wiki.hyprland.org/Configuring/Dwindle-Layout/ for more
       dwindle = {
-        pseudotile    = true; # Master switch for pseudotiling. Enabling is bound to mainMod + P in the keybinds
-        preserve_split= true; # You probably want this
-        force_split   = 2;
+        pseudotile = true; # Master switch for pseudotiling. Enabling is bound to mainMod + P in the keybinds
+        preserve_split = true; # You probably want this
+        force_split = 2;
       };
 
       # See https://wiki.hyprland.org/Configuring/Master-Layout/ for more
@@ -229,9 +235,9 @@ in
       # https://wiki.hyprland.org/Configuring/Variables/#misc
       misc = {
         force_default_wallpaper = -1; # Set to 0 or 1 to disable the anime mascot wallpapers
-        disable_hyprland_logo   = true; # If true disables the random hyprland logo / anime girl background. :(
-        enable_swallow          = true;
-        swallow_regex           = "footclient";
+        disable_hyprland_logo = true; # If true disables the random hyprland logo / anime girl background. :(
+        enable_swallow = true;
+        swallow_regex = "footclient";
       };
 
       # https://wiki.hyprland.org/Configuring/Variables/#input
@@ -240,14 +246,14 @@ in
           (lib.mkIf (systemName == "laptop") "ie")
           (lib.mkIf (systemName == "pc") "us")
         ];
-        repeat_rate  = 40;
+        repeat_rate = 40;
         repeat_delay = 500;
         # kb_variant  =
         # kb_model    =
         # kb_options  =
         # kb_rules    =
         follow_mouse = 1;
-        sensitivity  = 0; # -1.0 - 1.0, 0 means no modification.
+        sensitivity = 0; # -1.0 - 1.0, 0 means no modification.
 
         touchpad = {
           natural_scroll = false;
@@ -263,7 +269,7 @@ in
       # Example per-device config
       # See https://wiki.hyprland.org/Configuring/Keywords/#per-device-input-configs
       device = {
-        name        = "epic-mouse-v1";
+        name = "epic-mouse-v1";
         sensitivity = -0.5;
       };
 
@@ -301,10 +307,19 @@ in
         "${mod}, L, layoutmsg, move +col"
 
         # Move window
-        "${mod} SHIFT, H, movewindow, l"
-        "${mod} SHIFT, L, movewindow, r"
-        "${mod} SHIFT, K, movewindow, u"
-        "${mod} SHIFT, J, movewindow, d"
+        #"${mod} SHIFT, H, movewindow, l"
+        #"${mod} SHIFT, L, movewindow, r"
+        #"${mod} SHIFT, K, movewindow, u"
+        #"${mod} SHIFT, J, movewindow, d"
+        "${mod} SHIFT, L, layoutmsg, movewindowto r"
+        "${mod} SHIFT, H, layoutmsg, movewindowto l"
+        "${mod} SHIFT, K, layoutmsg, movewindowto u"
+        "${mod} SHIFT, J, layoutmsg, movewindowto d"
+        "${mod}, semicolon, layoutmsg, promote"
+
+        #hyperscrolling stuff
+        "${mod}, period, layoutmsg, move +col"
+        "${mod}, comma, layoutmsg, move -col"
 
         # Workspaces (switch)
         "${mod}, 1, split-workspace, 1 "

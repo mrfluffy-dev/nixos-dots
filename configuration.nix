@@ -15,10 +15,10 @@ let
   oreo = pkgs.callPackage ./personalPKGS/oreo.nix { };
 
   # Window manager toggles
-  wmAll     = window_manager == "all";
-  useRiver  = window_manager == "river"    || wmAll;
-  useNiri   = window_manager == "niri"     || wmAll;
-  useHypr   = window_manager == "hyprland" || wmAll;
+  wmAll = window_manager == "all";
+  useRiver = window_manager == "river" || wmAll;
+  useNiri = window_manager == "niri" || wmAll;
+  useHypr = window_manager == "hyprland" || wmAll;
 in
 {
   ##############################################################################
@@ -41,7 +41,10 @@ in
   # Nix settings
   ##############################################################################
   nix.settings = {
-    experimental-features = [ "nix-command" "flakes" ];
+    experimental-features = [
+      "nix-command"
+      "flakes"
+    ];
     build-dir = "/nix/var/nix/builds";
     auto-optimise-store = true;
   };
@@ -66,7 +69,7 @@ in
   # Niri (via overlay)
   nixpkgs.overlays = [ inputs.niri.overlays.niri ];
   programs.niri = {
-    enable  = useNiri;
+    enable = useNiri;
     package = pkgs.niri-stable; # Only needed if not provided by the overlay
   };
 
@@ -155,7 +158,15 @@ in
       isNormalUser = true;
       shell = pkgs.zsh;
       createHome = true;
-      extraGroups = [ "wheel" "networkmanager" "video" "render" "docker" "libvirt" "input" ];
+      extraGroups = [
+        "wheel"
+        "networkmanager"
+        "video"
+        "render"
+        "docker"
+        "libvirt"
+        "input"
+      ];
       packages = with pkgs; [ ];
     };
 
@@ -163,11 +174,22 @@ in
       isNormalUser = true;
       shell = pkgs.zsh;
       createHome = true;
-      extraGroups = [ "wheel" "networkmanager" "video" "render" "docker" "libvirt" "input" ];
+      extraGroups = [
+        "wheel"
+        "networkmanager"
+        "video"
+        "render"
+        "docker"
+        "libvirt"
+        "input"
+      ];
       packages = with pkgs; [ ];
     };
 
-    groups.libvirtd.members = [ "mrfluffy" "work" ];
+    groups.libvirtd.members = [
+      "mrfluffy"
+      "work"
+    ];
   };
 
   ##############################################################################
@@ -177,7 +199,7 @@ in
     extraSpecialArgs = { inherit inputs window_manager systemName; };
     users = {
       mrfluffy = import ./home/mrfluffy.nix;
-      work     = import ./home/work.nix;
+      work = import ./home/work.nix;
     };
   };
 
