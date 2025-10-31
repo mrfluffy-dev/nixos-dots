@@ -118,7 +118,7 @@ in
         };
         hyprscrolling = {
           column_width = 0.9;
-          follow_focus = true;
+          follow_focus = false;
           fullscreen_on_one_column = true;
         };
       };

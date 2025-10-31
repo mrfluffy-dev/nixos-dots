@@ -49,9 +49,28 @@ in
 
     vscode = {
       enable = true;
-      profiles.default.extensions = [
-        pkgs.vscode-extensions.platformio.platformio-vscode-ide
-      ];
+
+      # Key fix: don’t let the CLI touch ~/.vscode/extensions
+      mutableExtensionsDir = false;
+
+      # (Optional but nice) Use a build with a stable headless CLI:
+      # package = pkgs.vscodium;   # or keep pkgs.vscode
+
+      profiles.default = {
+        extensions = with pkgs.vscode-extensions; [
+          platformio.platformio-vscode-ide
+        ];
+
+        # Optional: keep Code from trying to self-update
+        # userSettings = {
+        #   "update.mode" = "none";
+        #   "extensions.autoUpdate" = false;
+        # };
+      };
+
+      # Optional (older HM versions expose these at top-level):
+      # enableUpdateCheck = false;
+      # enableExtensionUpdateCheck = false;
     };
 
     anyrun = {
@@ -276,6 +295,9 @@ in
     # kdePackages.dolphin-plugins
     # kdePackages.kde-cli-tools
     # resvg # new
+    adwaita-icon-theme
+    hicolor-icon-theme
+    qt6.qtsvg
 
     ############################
     # Experimental (inputs)

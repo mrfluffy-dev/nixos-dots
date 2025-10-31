@@ -25,7 +25,7 @@ in
         enable = true;
         flatpakSupport.enable = true;
       };
-      # kde.enable = true;
+      kde.enable = true;
 
       qt.enable = true;
       vscode.enable = true;

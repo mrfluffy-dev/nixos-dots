@@ -52,7 +52,7 @@
       inputs.hyprland.follows = "hyprland";
     };
     hyprlauncher = {
-      url = "github:mrfluffy-dev/hyprlauncher";
+      url = "github:hyprwm/hyprlauncher";
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
