@@ -28,6 +28,7 @@ in
   imports = [
     inputs.zen-browser.homeModules.beta
     inputs.caelestia.homeManagerModules.default
+    inputs.vicinae.homeManagerModules.default
   ];
 
   programs = {
@@ -131,6 +132,13 @@ in
         )
       '';
     };
+  };
+
+  services.vicinae = {
+    enable = true; # default: false
+    autoStart = true; # default: true
+    useLayerShell = false;
+    #package = # specify package to use here. Can be omitted.
   };
 
   qt.enable = true;
@@ -243,8 +251,8 @@ in
     zed-editor
 
     # Language tooling from inputs
-    inputs.qs-qml.packages.${pkgs.system}.qml-ts-mode
-    inputs.qs-qml.packages.${pkgs.system}.tree-sitter-qmljs
+    #inputs.qs-qml.packages.${pkgs.system}.qml-ts-mode
+    #inputs.qs-qml.packages.${pkgs.system}.tree-sitter-qmljs
 
     ############################
     # Game Dev / Engines

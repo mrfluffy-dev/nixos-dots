@@ -1,6 +1,6 @@
 {
   description = "Nixos config flake";
-  inputs = {
+inputs = {
     nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
     nix-index-database.url = "github:nix-community/nix-index-database";
     nix-index-database.inputs.nixpkgs.follows = "nixpkgs";
@@ -19,14 +19,16 @@
         home-manager.follows = "home-manager";
       };
     };
-    nixcord.url = "github:kaylorben/nixcord";
-    niri.url = "github:sodiboo/niri-flake";
+    nixcord = {
+      url = "github:kaylorben/nixcord";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+    #niri.url = "github:sodiboo/niri-flake";
     caelestia.url = "github:caelestia-dots/shell";
     caelestia-cli.url = "github:caelestia-dots/cli";
     quickshell = {
       # remove ?ref=v0.1.0 to track the master branch
       url = "git+https://git.outfoxxed.me/outfoxxed/quickshell";
-
       # THIS IS IMPORTANT
       # Mismatched system dependencies will lead to crashes and other issues.
       inputs.nixpkgs.follows = "nixpkgs";
@@ -55,9 +57,11 @@
       url = "github:hyprwm/hyprlauncher";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-
+    vicinae = {
+      url = "github:vicinaehq/vicinae";
+      #inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
-
   outputs =
     {
       self,
@@ -81,7 +85,7 @@
           modules = [
             ./configuration.nix
             inputs.home-manager.nixosModules.default
-	    inputs.nix-index-database.nixosModules.nix-index
+            inputs.nix-index-database.nixosModules.nix-index
           ];
         };
         mrfluffyPC = nixpkgs.lib.nixosSystem {
@@ -92,7 +96,7 @@
           modules = [
             ./configuration.nix
             inputs.home-manager.nixosModules.default
-	    inputs.nix-index-database.nixosModules.nix-index
+            inputs.nix-index-database.nixosModules.nix-index
           ];
         };
       };

@@ -34,7 +34,7 @@ in
     ./system/fonts.nix
     ./system/nixOSPkgs.nix
     inputs.home-manager.nixosModules.home-manager
-    inputs.niri.nixosModules.niri
+    #inputs.niri.nixosModules.niri
   ];
 
   ##############################################################################
@@ -67,11 +67,11 @@ in
     builtins.readFile "${pkgs.kdePackages.plasma-workspace}/etc/xdg/menus/plasma-applications.menu";
 
   # Niri (via overlay)
-  nixpkgs.overlays = [ inputs.niri.overlays.niri ];
-  programs.niri = {
-    enable = useNiri;
-    package = pkgs.niri-stable; # Only needed if not provided by the overlay
-  };
+  #nixpkgs.overlays = [ inputs.niri.overlays.niri ];
+  #programs.niri = {
+  #  enable = useNiri;
+  #  package = pkgs.niri-stable; # Only needed if not provided by the overlay
+  #};
 
   # Hyprland
   programs.hyprland = {

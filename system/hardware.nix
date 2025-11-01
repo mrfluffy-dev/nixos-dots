@@ -10,7 +10,7 @@ let
   # Shared VA-API / VDPAU bits across both machines
   commonVA = with pkgs; [
     libva
-    vaapiVdpau
+    libva-vdpau-driver
     libvdpau-va-gl
   ];
 in

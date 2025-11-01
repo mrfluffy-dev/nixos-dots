@@ -8,7 +8,7 @@
 {
   #fonts.fontconfig.enable = true;
   fonts.packages = with pkgs; [
-    ubuntu_font_family
+    ubuntu-classic
     siji
     unifont
     noto-fonts

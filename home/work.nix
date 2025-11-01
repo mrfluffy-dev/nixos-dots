@@ -30,7 +30,7 @@ in
     #../dots/hyprlock.nix
     ../dots/xdg.nix
     ../dots/river.nix
-    ../dots/niri.nix
+    #../dots/niri.nix
     ../dots/hyprland.nix
     ../dots/hyprpaper.nix
     ../dots/caelestia.nix

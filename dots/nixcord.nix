@@ -8,9 +8,14 @@
 {
   programs.nixcord = {
     enable = true;
-    discord.enable = false;
+    discord = {
+      enable = false;
+      package = pkgs.vencord;
+    };
     vesktop = {
       enable = true;
+      package = pkgs.vesktop;
+      useSystemVencord = false;
     };
     config = {
       plugins = {

@@ -187,7 +187,7 @@ in
     pavucontrol
 
     # --- Networking / Secrets ---
-    bitwarden
+    bitwarden-desktop
     polkit_gnome
     xclip
     socat
