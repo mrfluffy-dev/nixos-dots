@@ -12,11 +12,12 @@ let
   hypr-package = inputs.hyprland.packages.${pkgs.system}.hyprland;
   hypr-portal = inputs.hyprland.packages.${pkgs.system}.xdg-desktop-portal-hyprland;
   hypr-split = inputs.hyprland-hyprsplit.packages.${pkgs.system}.split-monitor-workspaces;
-  hyprscrolling = inputs.hyprland-plugins.packages.${pkgs.system}.hyprscrolling;
+  #hyprscrolling = inputs.hyprland-plugins.packages.${pkgs.system}.hyprscrolling;
   mod = "Alt";
   terminal = "footclient";
   fileManager = "dolphin";
-  runner = "${lib.getExe caelestia-cli} shell drawers toggle launcher";
+  #runner = "${lib.getExe caelestia-cli} shell drawers toggle launcher";
+  runner = "vicinae toggle";
   # runner     = "anyrun";
   browser = "zen-beta";
   editor = "emacsclient -c";
@@ -29,7 +30,7 @@ in
     plugins = [
       #pkgs.hyprlandPlugins.hyprsplit
       hypr-split
-      hyprscrolling
+      #hyprscrolling
     ];
 
     settings = {
@@ -146,7 +147,7 @@ in
         # "col.inactive_border" = "rgba(595959aa)";
         resize_on_border = false; # enable resizing windows by clicking and dragging on borders and gaps
         allow_tearing = false; # see https://wiki.hyprland.org/Configuring/Tearing/ before enabling
-        layout = "scrolling";  #"dwindle";
+        layout = "master";
       };
 
       render = {
@@ -297,24 +298,24 @@ in
         "${mod}, P, pseudo, "
 
         # Focus (arrows)
-        # "${mod}, H, movefocus, l"
-        # "${mod}, L, movefocus, r"
+        "${mod}, H, movefocus, l"
+        "${mod}, L, movefocus, r"
         "${mod}, K, movefocus, u"
         "${mod}, J, movefocus, d"
 
         # Column movement (hyprscrolling)
-        "${mod}, h, layoutmsg, move -col"
-        "${mod}, L, layoutmsg, move +col"
+        #"${mod}, h, layoutmsg, move -col"
+        #"${mod}, L, layoutmsg, move +col"
 
         # Move window
-        #"${mod} SHIFT, H, movewindow, l"
-        #"${mod} SHIFT, L, movewindow, r"
-        #"${mod} SHIFT, K, movewindow, u"
-        #"${mod} SHIFT, J, movewindow, d"
-        "${mod} SHIFT, L, layoutmsg, movewindowto r"
-        "${mod} SHIFT, H, layoutmsg, movewindowto l"
-        "${mod} SHIFT, K, layoutmsg, movewindowto u"
-        "${mod} SHIFT, J, layoutmsg, movewindowto d"
+        "${mod} SHIFT, H, movewindow, l"
+        "${mod} SHIFT, L, movewindow, r"
+        "${mod} SHIFT, K, movewindow, u"
+        "${mod} SHIFT, J, movewindow, d"
+        #"${mod} SHIFT, L, layoutmsg, movewindowto r"
+        #"${mod} SHIFT, H, layoutmsg, movewindowto l"
+        #"${mod} SHIFT, K, layoutmsg, movewindowto u"
+        #"${mod} SHIFT, J, layoutmsg, movewindowto d"
         "${mod}, semicolon, layoutmsg, promote"
 
         #hyperscrolling stuff
