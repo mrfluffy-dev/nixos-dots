@@ -10,8 +10,6 @@ inputs = {
     };
     stylix.url = "github:nix-community/stylix";
     nix-colors.url = "github:Misterio77/nix-colors";
-    anyrun.url = "github:Kirottu/anyrun";
-    anyrun.inputs.nixpkgs.follows = "nixpkgs";
     zen-browser = {
       url = "github:0xc000022070/zen-browser-flake";
       inputs = {
@@ -66,7 +64,6 @@ inputs = {
     {
       self,
       nixpkgs,
-      anyrun,
       ...
     }@inputs:
     let

@@ -14,15 +14,6 @@ let
     name = "default";
     isDefault = true;
   };
-
-  anyrunPlugins = with pkgs.anyrun; [
-    "${pkgs.anyrun}/lib/libapplications.so"
-    "${pkgs.anyrun}/lib/libdictionary.so"
-    "${pkgs.anyrun}/lib/libsymbols.so"
-    "${pkgs.anyrun}/lib/librink.so"
-    "${pkgs.anyrun}/lib/libtranslate.so"
-    "${pkgs.anyrun}/lib/libwebsearch.so"
-  ];
 in
 {
   imports = [
@@ -74,65 +65,6 @@ in
       # enableExtensionUpdateCheck = false;
     };
 
-    anyrun = {
-      enable = true;
-      config = {
-        plugins = anyrunPlugins;
-        x.fraction = 0.5;
-        y.fraction = 0.3;
-        width.fraction = 0.3;
-        hideIcons = false;
-        ignoreExclusiveZones = false;
-        layer = "overlay";
-        hidePluginInfo = false;
-        closeOnClick = false;
-        showResultsImmediately = false;
-        maxEntries = null;
-      };
-      extraCss = ''
-        .some_class
-        enable = true;{
-          background: red;
-        }
-      '';
-      extraConfigFiles."websearch.ron".text = ''
-        Config(
-          prefix: "",
-          engines: [Google]
-        )
-      '';
-      extraConfigFiles."dictionary.ron".text = ''
-        Config(
-          prefix: "",
-          max_entries: 5,
-        )
-      '';
-      extraConfigFiles."rink.ron".text = ''
-        Config(
-          prefix: "",
-          max_entries: 5,
-        )
-      '';
-      extraConfigFiles."translate.ron".text = ''
-        Config(
-          prefix: ":",
-          language_delimiter: ">",
-          max_entries: 3,
-        )
-      '';
-      extraConfigFiles."symbols.ron".text = ''
-        Config (
-          prefix: "",
-          // Custom user defined symbols to be included along the unicode symbols
-          symbols: {
-            // "name": "text to be copied"
-            "shrug": "¯\\_(ツ)_/¯",
-          },
-          max_entries: 3,
-        )
-      '';
-    };
-  };
 
   services.vicinae = {
     enable = true; # default: false
@@ -171,7 +103,6 @@ in
   qt.enable = true;
   # qt.style = "gtk2";
   # qt.platformTheme = "qt5ct";
-  # imports = [ inputs.anyrun.homeManagerModules.default ];
 
   nixpkgs = {
     config = {
