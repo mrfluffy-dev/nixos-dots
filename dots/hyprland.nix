@@ -227,6 +227,8 @@ in
       # See https://wiki.hyprland.org/Configuring/Master-Layout/ for more
       master = {
         new_status = "master";
+	mfact = 0.5;
+	new_on_top = true;
       };
 
       ##########################################################################

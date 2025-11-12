@@ -247,7 +247,7 @@ in
     ############################
     # Communication & Sharing
     ############################
-    element-desktop
+    #element-desktop
     localsend
     thunderbird
 
