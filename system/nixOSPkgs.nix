@@ -214,5 +214,9 @@ in
     git
     zotero
 
+
+    # --- File System Stuff ---
+    cifs-utils
+
   ];
 }
