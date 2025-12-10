@@ -175,6 +175,7 @@ in
     brave
     firefox
     ladybird
+    wgnord
 
     ############################
     # Communication & Sharing
