@@ -69,6 +69,12 @@ in
     ############################
     brave
 
+    ############################
+    # work stuff
+    ############################
+    #awscli2
+    
+
     # swaynotificationcenter
     # inputs.ladybird.packages."${pkgs.system}".ladybird
 

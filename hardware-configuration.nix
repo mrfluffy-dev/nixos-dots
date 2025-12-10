@@ -72,6 +72,29 @@
     })
   ];
 
+  fileSystems."/server" = lib.mkIf (systemName == "pc") {   # or remove the mkIf if you want it on both
+    device = "//192.168.1.8/mrfluffy";   # adjust the share name if it’s not the home share
+    fsType = "cifs";
+    options = let
+      # Separate credentials from the Nix store (very important for security)
+      credFile = "/etc/nixos/smb-credentials-mrfluffy";
+    in [
+      # Basic recommended options
+      "credentials=${credFile}"
+      "gid=users"                  # make files belong to the "users" group (or your preferred group)
+      "uid=1000"                   # replace with your user’s UID, or use "uid=${config.users.users.yourname.uid}"
+      "file_mode=0664"
+      "dir_mode=0775"
+      "nofail"                     # ← this makes the mount OPTIONAL (boot continues if unreachable)
+      "noauto"                     # don’t mount automatically at boot (optional, combine with x-systemd.automount)
+      "x-systemd.automount"        # creates a systemd automount unit → mounts on first access
+      "x-systemd.mount-timeout=15" # don’t wait forever
+      "vers=3.0"                   # force SMB3 if the server supports it (recommended)
+      # "iocharset=utf8"           # usually not needed with modern servers
+      # "cache=loose"              # improves performance for some workloads
+    ];
+  };
+
   swapDevices =
     [ ]
     ++ (lib.optionals (systemName == "pc") [

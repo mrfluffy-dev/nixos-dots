@@ -408,13 +408,13 @@ in
 
       windowrule = [
         # Ignore maximize requests from apps. You'll probably like this.
-        "suppressevent maximize, class:.*"
+        "match:class .*, suppress_event maximize"
 
         # Fix some dragging issues with XWayland
-        "nofocus,class:^$,title:^$,xwayland:1,floating:1,fullscreen:0,pinned:0"
+        "match:class ^$, match:title ^$, match:xwayland 1, match:float 1, match:fullscreen 0, match:pin 0, no_focus on"
 
-        "workspace special:magic silent, class:thunderbird"
-        "workspace special:magic silent, class:emacs, title:work"
+        "match:class thunderbird, workspace special:magic silent"
+        "match:class emacs, match:title work, workspace special:magic silent"
       ];
     };
   };

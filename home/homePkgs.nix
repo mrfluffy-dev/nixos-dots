@@ -238,7 +238,9 @@ in
     dualsensectl
     gamemode
     goverlay
-    heroic
+    (pkgs.heroic.override {
+      extraPkgs = pkgs: [ pkgs.gamescope ];  # pulls in the real package
+    })
     prismlauncher
     protonup-qt
     wineWowPackages.stable
