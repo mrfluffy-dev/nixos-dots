@@ -145,9 +145,9 @@
   # Ollama (only on PC)
   services.ollama = lib.mkIf (systemName == "pc") {
     enable = true;
+    package = pkgs.ollama-rocm;
     port = 11434;
     host = "0.0.0.0";
-    acceleration = "rocm";
     rocmOverrideGfx = "11.0.0";
     environmentVariables = {
       OLLAMA_DEBUG = "1";

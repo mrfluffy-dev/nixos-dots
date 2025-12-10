@@ -111,7 +111,6 @@ in
     };
 
     virt-manager.enable = true;
-    zsh.enable = true;
     corectrl.enable = true;
 
     opengamepadui = {
@@ -124,7 +123,7 @@ in
       remotePlay.openFirewall = true;
       dedicatedServer.openFirewall = true;
       extraCompatPackages = with pkgs; [ gamescope mangohud gamemode ];
-      gamescopeSession.enable = true;
+      gamescopeSession.enable = false;
     };
 
     # Dynamic linker for foreign binaries
