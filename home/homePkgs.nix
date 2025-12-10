@@ -64,6 +64,7 @@ in
       # enableUpdateCheck = false;
       # enableExtensionUpdateCheck = false;
     };
+  };
 
 
   services.vicinae = {
@@ -194,7 +195,7 @@ in
     ############################
     imv
     mpv
-    upscaler
+    #upscaler
     youtube-music
     libsixel
 
