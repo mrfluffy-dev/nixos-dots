@@ -51,10 +51,6 @@ inputs = {
       url = "github:Duckonaut/split-monitor-workspaces";
       inputs.hyprland.follows = "hyprland";
     };
-    hyprlauncher = {
-      url = "github:hyprwm/hyprlauncher";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
     vicinae = {
       url = "github:vicinaehq/vicinae";
       #inputs.nixpkgs.follows = "nixpkgs";

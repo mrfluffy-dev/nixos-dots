@@ -26,6 +26,7 @@ in
     ./system/boot.nix
     ./system/network.nix
     ./system/inputMethods.nix
+    ./system/hardware.nix
     ./system/fonts.nix
     inputs.home-manager.nixosModules.home-manager
     #inputs.niri.nixosModules.niri
@@ -187,33 +188,6 @@ in
           };
         };
 
-        #boot.loader.systemd-boot.sortKey = lib.mkForce "00000000001-steam";
-        hardware.graphics = {
-          enable = true;
-          enable32Bit = true;
-          extraPackages = with pkgs; [
-            libva
-            libva-vdpau-driver
-            libvdpau-va-gl
-
-          ];
-        };
-        # ── Bluetooth ────────────────────────────────────────────────────────────────
-        hardware.bluetooth = {
-          enable = true; # Enable Bluetooth support
-          powerOnBoot = true; # Power up controller on boot
-          settings.General = {
-            #Enable = "Source,Sink,Media,Socket";
-            # Experimental = true;
-          };
-        };
-
-        # ── Tablets ─────────────────────────────────────────────────────────────────
-        hardware.enableRedistributableFirmware = true;
-        hardware.firmware = [
-          pkgs.linux-firmware
-        ];
-
         environment = {
           systemPackages = with pkgs; [
             mangohud
@@ -261,7 +235,6 @@ in
         ##############################################################################
         imports = [
           ./system/services.nix
-          ./system/hardware.nix
           ./system/nixOSPkgs.nix
           #inputs.niri.nixosModules.niri
         ];

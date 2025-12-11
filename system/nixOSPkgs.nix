@@ -131,6 +131,7 @@ in
     nix-ld = {
       enable = true;
       libraries = with pkgs; [
+        gcc15.cc.lib
         # add libraries here if needed
         # alsa-lib
         # libGL
@@ -194,7 +195,7 @@ in
 
     # --- Development toolchains ---
     cmake
-    gcc
+    gcc15
     gnumake
     jdk11
     ladspaPlugins

@@ -274,7 +274,7 @@ in
     # Experimental (inputs)
     ############################
     #inputs.ladybird.packages."${pkgs.system}".ladybird
-    inputs.hyprlauncher.packages.${pkgs.system}.default
+    #inputs.hyprlauncher.packages.${pkgs.system}.default
 
     ############################
     # Blockchain (inputs)
