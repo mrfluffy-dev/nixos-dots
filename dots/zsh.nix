@@ -44,8 +44,8 @@
     };
 
     shellAliases = {
-      nix-switch  = "sudo nixos-rebuild switch";
-      nix-upgrade = "sudo nixos-rebuild switch --upgrade";
+      nix-switch  = "nh os switch --specialisation 00-main-system";
+      nix-upgrade = "(cd ~/nixos-dots && nix flake update) && echo 'flake.lock updated'";
       nix-edit    = "sudo vim /etc/nixos/configuration.nix";
 
       ls      = "exa -lag --icons";

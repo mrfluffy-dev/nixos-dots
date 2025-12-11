@@ -23,7 +23,6 @@ in
 {
   imports = [
     ./hardware-configuration.nix
-    ./system/hardware.nix
     ./system/boot.nix
     ./system/network.nix
     ./system/inputMethods.nix
@@ -147,8 +146,74 @@ in
   system.stateVersion = "24.11"; # Did you read the comment?
 
   specialisation = {
-    steam = {
+    "01-steam" = {
       configuration = {
+        # ── HDMI-CEC: Turn on TV when Steam specialisation starts ─────────────────────
+        services.udev.packages = [ pkgs.libcec ]; # ensures cec-utils is in PATH
+
+        # A user service that runs once the graphical session (Steam/GameScope) is ready
+        systemd.user.services.cec-tv-on = {
+          description = "Turn on TV via HDMI-CEC when entering Steam specialisation";
+          wantedBy = [ "graphical-session.target" ];
+          after = [ "graphical-session.target" ];
+          serviceConfig = {
+            Type = "oneshot";
+            RemainAfterExit = true;
+            ExecStart = toString (
+              pkgs.writeShellScript "cec-tv-on.sh" ''
+                # Wait a moment for the HDMI link to settle
+                sleep 3
+
+                # Turn on the TV and set it as active source (most TVs understand this)
+                ${pkgs.libcec}/bin/cec-client -s -d 1 <<EOF
+                on 0
+                as
+                EOF
+
+                # Alternative one-liner if the above somehow fails:
+                # echo 'on 0' | ${pkgs.libcec}/bin/cec-client -s -d 1
+                # echo 'as'  | ${pkgs.libcec}/bin/cec-client -s -d 1
+              ''
+            );
+          };
+        };
+
+        # Make sure the user service starts automatically
+        systemd.user.targets.graphical-session = {
+          # This target already exists, we just ensure it’s active
+          unitConfig = {
+            RefuseManualStart = false;
+            RefuseManualStop = false;
+          };
+        };
+
+        #boot.loader.systemd-boot.sortKey = lib.mkForce "00000000001-steam";
+        hardware.graphics = {
+          enable = true;
+          enable32Bit = true;
+          extraPackages = with pkgs; [
+            libva
+            libva-vdpau-driver
+            libvdpau-va-gl
+
+          ];
+        };
+        # ── Bluetooth ────────────────────────────────────────────────────────────────
+        hardware.bluetooth = {
+          enable = true; # Enable Bluetooth support
+          powerOnBoot = true; # Power up controller on boot
+          settings.General = {
+            #Enable = "Source,Sink,Media,Socket";
+            # Experimental = true;
+          };
+        };
+
+        # ── Tablets ─────────────────────────────────────────────────────────────────
+        hardware.enableRedistributableFirmware = true;
+        hardware.firmware = [
+          pkgs.linux-firmware
+        ];
+
         environment = {
           systemPackages = with pkgs; [
             mangohud
@@ -159,22 +224,11 @@ in
           };
 
         };
-        services.ananicy = {
-          enable = true;
-          package = pkgs.ananicy-cpp;
-          rulesProvider = pkgs.ananicy-cpp;
-          extraRules = [
-            {
-              "name" = "gamescope";
-              "nice" = -20;
-            }
-          ];
-        };
 
         programs = {
           gamescope = {
             enable = true;
-            capSysNice = false;
+            capSysNice = true;
           };
 
           steam = {
@@ -186,20 +240,28 @@ in
               mangohud
               gamemode
             ];
-            gamescopeSession.enable = true;
+            gamescopeSession = {
+              enable = true;
+              args = [
+                "--prefer-output"
+                "HDMI-A-2"
+                "--hdr-enabled"
+              ];
+            };
           };
         };
       };
     };
 
-    main-system = {
+    "00-main-system" = {
       configuration = {
+        #boot.loader.systemd-boot.sortKey = lib.mkDefault "00000000000-main";
         ##############################################################################
         # Imports
         ##############################################################################
         imports = [
           ./system/services.nix
-
+          ./system/hardware.nix
           ./system/nixOSPkgs.nix
           #inputs.niri.nixosModules.niri
         ];

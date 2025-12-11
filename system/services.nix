@@ -1,4 +1,10 @@
-{ config, lib, pkgs, systemName, ... }:
+{
+  config,
+  lib,
+  pkgs,
+  systemName,
+  ...
+}:
 
 {
   ###############################################
@@ -54,12 +60,31 @@
         "92-low-latency" = {
           "context.properties" = {
             "default.clock.rate" = 96000;
-            "default.clock.allowed-rates" = [ 44100 48000 96000 ];
+            "default.clock.allowed-rates" = [
+              44100
+              48000
+              96000
+            ];
           };
         };
       };
     })
   ];
+
+  ###############################################
+  # nice shit
+  ###############################################
+  services.ananicy = {
+    enable = true;
+    package = pkgs.ananicy-cpp;
+    rulesProvider = pkgs.ananicy-cpp;
+    extraRules = [
+      {
+        "name" = "gamescope";
+        "nice" = -20;
+      }
+    ];
+  };
 
   services.blueman.enable = true;
 
@@ -154,7 +179,7 @@
       OLLAMA_MMAP = "0";
       OLLAMA_NUM_CTX = "40000";
       OLLAMA_NUM_GPU = "20";
-      OLLAMA_FLASH_ATTENTION="true";
+      OLLAMA_FLASH_ATTENTION = "true";
       # HSA_OVERRIDE_GFX_VERSION = "11.0.0";
       OLLAMA_KV_CACHE_TYPE = "f16";
     };
@@ -167,24 +192,26 @@
     description = "Service to launch Steam URLs via FIFO";
     wantedBy = [ "default.target" ];
     serviceConfig = {
-      ExecStart = let
-        script = pkgs.writeShellScript "steam-run-url-service.sh" ''
-          #!/usr/bin/env bash
-          FIFO="/run/user/$(id --user)/steam-run-url.fifo"
-          if [ ! -p "$FIFO" ]; then
-            mkfifo "$FIFO"
-          fi
-          while true; do
-            if read line <"$FIFO"; then
-              steam_env=();
-              if [ "$XDG_SESSION_DESKTOP" = "sway" ] || [ "$XDG_SESSION_DESKTOP" = "Hyprland" ] || [ "$DESKTOP_SESSION" = "sway" ] || [ "$DESKTOP_SESSION" = "Hyprland" ]; then
-                steam_env+=("QT_QPA_PLATFORM=wayland");
-              fi
-              steam "$line"
+      ExecStart =
+        let
+          script = pkgs.writeShellScript "steam-run-url-service.sh" ''
+            #!/usr/bin/env bash
+            FIFO="/run/user/$(id --user)/steam-run-url.fifo"
+            if [ ! -p "$FIFO" ]; then
+              mkfifo "$FIFO"
             fi
-          done
-        '';
-      in "${script}";
+            while true; do
+              if read line <"$FIFO"; then
+                steam_env=();
+                if [ "$XDG_SESSION_DESKTOP" = "sway" ] || [ "$XDG_SESSION_DESKTOP" = "Hyprland" ] || [ "$DESKTOP_SESSION" = "sway" ] || [ "$DESKTOP_SESSION" = "Hyprland" ]; then
+                  steam_env+=("QT_QPA_PLATFORM=wayland");
+                fi
+                steam "$line"
+              fi
+            done
+          '';
+        in
+        "${script}";
       Restart = "always";
     };
     path = [ pkgs.steam ];

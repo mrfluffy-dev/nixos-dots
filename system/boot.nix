@@ -8,22 +8,28 @@
 
 let
   isLaptop = systemName == "laptop";
-  isPc     = systemName == "pc";
+  isPc = systemName == "pc";
 
   initrdBaseModules = [ "btusb" ];
-  initrdLPModules   = [ "kvm" ];                # for laptop & pc
+  initrdLPModules = [ "kvm" ]; # for laptop & pc
 
   kernelBaseModules = [ "v4l2loopback" ];
 
-  kernelBaseParams  = [ ];
-  kernelLPParams    = [ "ipv6e=1" ];            # for laptop & pc
-  kernelLaptopOnly  = [ "i915.force_probe=46a6" ];
-  kernelPcOnly      = [ "video=2560x1440x32" ];
+  kernelBaseParams = [ ];
+  kernelLPParams = [ "ipv6e=1" ]; # for laptop & pc
+  kernelLaptopOnly = [ "i915.force_probe=46a6" ];
+  kernelPcOnly = [ "video=2560x1440x32" ];
 in
 {
   boot = {
     loader = {
-      systemd-boot.enable = true;
+      systemd-boot = {
+        enable = true;
+extraInstallCommands = ''
+    ${lib.getExe pkgs.gnused} -i 's/default .*/default *-specialisation-00-main-system.conf/' /boot/loader/loader.conf
+  '';
+        #sortKey = "z-normal";
+      };
       efi.canTouchEfiVariables = true;
     };
 
@@ -33,7 +39,7 @@ in
     ];
 
     kernelPackages = pkgs.linuxPackages_latest;
-    kernelModules  = kernelBaseModules;
+    kernelModules = kernelBaseModules;
 
     extraModulePackages = [
       pkgs.linuxPackages_latest.v4l2loopback
@@ -42,7 +48,7 @@ in
     kernelParams = lib.mkMerge [
       (lib.mkIf (isLaptop || isPc) kernelLPParams)
       (lib.mkIf isLaptop kernelLaptopOnly)
-      (lib.mkIf isPc     kernelPcOnly)
+      (lib.mkIf isPc kernelPcOnly)
     ];
 
     extraModprobeConfig = ''

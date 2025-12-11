@@ -70,6 +70,7 @@ in
   # Core programs
   ############################
   programs = {
+    dconf.enable = true;
 
     appimage = {
       enable = true;
@@ -84,7 +85,7 @@ in
     };
     gamescope = {
       enable = true;
-      capSysNice = true;
+      capSysNice = false;
     };
 
     nix-index-database = {

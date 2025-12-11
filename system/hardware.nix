@@ -33,17 +33,17 @@ in
       enable = true;
       enable32Bit = true;
       extraPackages = with pkgs; [
-        rocmPackages.rocm-core
-        rocmPackages.rocminfo
-        rocmPackages.rocm-runtime
-        rocmPackages.clr.icd
-        rocmPackages.rocm-smi
-        rocmPackages.clr
-        #rocmPackages.hipblas
-        rocmPackages.rocblas
-        rocmPackages.rocsolver
-        rocmPackages.rocm-comgr
-        rocmPackages.rocsparse
+        #rocmPackages.rocm-core
+        #rocmPackages.rocminfo
+        #rocmPackages.rocm-runtime
+        #rocmPackages.clr.icd
+        #rocmPackages.rocm-smi
+        #rocmPackages.clr
+        ##rocmPackages.hipblas
+        #rocmPackages.rocblas
+        #rocmPackages.rocsolver
+        #rocmPackages.rocm-comgr
+        #rocmPackages.rocsparse
         # amdvlk
         # driversi686Linux.amdvlk
         # mesa

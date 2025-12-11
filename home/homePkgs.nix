@@ -247,6 +247,7 @@ in
     wineWowPackages.stable
     mangayomi
     rink
+    protontricks
 
     ############################
     # KDE / File Management

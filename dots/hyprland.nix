@@ -39,14 +39,12 @@ in
       ##########################################################################
 
       # See https://wiki.hyprland.org/Configuring/Monitors/
-      # monitor = lib.mkMerge [
-      #   (lib.mkIf (systemName == "laptop") [ "eDP-1,1920x1080@59.99700,0x0,1" ])
-      #   (lib.mkIf (systemName == "pc") [
-      #     "DP-2,2560x1440@144,0x0,1"
-      #     "DP-1,2560x1440@239.97,2569x0,1"
-      #     #"DP-1,2560x1440@144,1920x0,1,bitdepth,10,cm,hdr"
-      #   ])
-      # ];
+      monitor = lib.mkMerge [
+        #(lib.mkIf (systemName == "laptop") [ "eDP-1,1920x1080@59.99700,0x0,1" ])
+        (lib.mkIf (systemName == "pc") [
+          "HDMI-A-2, disable"
+        ])
+      ];
 
       monitorv2 =
         [ ]
@@ -227,8 +225,8 @@ in
       # See https://wiki.hyprland.org/Configuring/Master-Layout/ for more
       master = {
         new_status = "master";
-	mfact = 0.5;
-	new_on_top = true;
+        mfact = 0.5;
+        new_on_top = true;
       };
 
       ##########################################################################
