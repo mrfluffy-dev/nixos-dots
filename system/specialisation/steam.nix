@@ -17,7 +17,6 @@
       themePackages = [ pkgs.adi1090x-plymouth-themes ];
       theme = "abstract_ring_alt";
     };
-
   };
 
   # ── HDMI-CEC: Turn on TV when Steam specialisation starts ─────────────────────
@@ -59,7 +58,7 @@
     settings = {
       # Tell greetd to auto-start the official gamescope steam session immediately
       default_session = {
-        command = "${pkgs.gamescope}/bin/gamescope --prefer-outpu HDMI-A-2 --hdr-enabled --steam --mangoapp  -- steam -pipewire-dmabuf -gamepadui -steamos3 > /dev/null 2>&1";
+        command = "${pkgs.gamescope}/bin/gamescope --prefer-output HDMI-A-2 --hdr-enabled --steam --mangoapp  -- steam -pipewire-dmabuf -gamepadui -steamos3 > /dev/null 2>&1";
         user = "game";
       };
     };
@@ -86,6 +85,14 @@
       #LIBSEAT_BACKEND = "logind";
     };
 
+  };
+  jovian.decky-loader = {
+    enable = true;
+    user = "game"; # Run as your gaming user
+    stateDir = "/home/game/.local/share/decky"; # Store plugins/data in user's home (adjust if preferred)
+    # Optional: Add extra packages if needed for specific plugins
+    # extraPackages = with pkgs; [ some-package ];
+    # extraPythonPackages = ps: with ps; [ some-python-package ];
   };
 
   programs = {
