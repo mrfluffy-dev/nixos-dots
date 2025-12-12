@@ -7,7 +7,7 @@
   ...
 }:
 let
-  #quickshellPackage = inputs.caelestia.packages.${pkgs.system}.caelestia-shell;
+  #quickshellPackage = inputs.caelestia.packages.${pkgs.stdenv.hostPlatform.system}.caelestia-shell;
 in
 {
   #systemd.user.services.quickshell = lib.mkIf (window_manager == "hyprland") {

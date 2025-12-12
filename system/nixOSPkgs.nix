@@ -173,7 +173,7 @@ in
     # --- Nix tooling ---
     nil
     nixfmt-rfc-style
-    inputs.nix-alien.packages.${pkgs.system}.nix-alien
+    inputs.nix-alien.packages.${pkgs.stdenv.hostPlatform.system}.nix-alien
 
     # --- Wayland / Desktop ---
     foot

@@ -86,7 +86,7 @@ in
     #  };
     #};
     #extensions = [
-    #  (inputs.vicinae.mkVicinaeExtension.${pkgs.system} {
+    #  (inputs.vicinae.mkVicinaeExtension.${pkgs.stdenv.hostPlatform.system} {
     #    inherit pkgs;
     #    name = "extension-name";
     #    src = pkgs.fetchFromGitHub {
@@ -211,8 +211,8 @@ in
     zed-editor
 
     # Language tooling from inputs
-    #inputs.qs-qml.packages.${pkgs.system}.qml-ts-mode
-    #inputs.qs-qml.packages.${pkgs.system}.tree-sitter-qmljs
+    #inputs.qs-qml.packages.${pkgs.stdenv.hostPlatform.system}.qml-ts-mode
+    #inputs.qs-qml.packages.${pkgs.stdenv.hostPlatform.system}.tree-sitter-qmljs
 
     ############################
     # Game Dev / Engines
@@ -273,13 +273,13 @@ in
     ############################
     # Experimental (inputs)
     ############################
-    #inputs.ladybird.packages."${pkgs.system}".ladybird
-    #inputs.hyprlauncher.packages.${pkgs.system}.default
+    #inputs.ladybird.packages."${pkgs.stdenv.hostPlatform.system}".ladybird
+    #inputs.hyprlauncher.packages.${pkgs.stdenv.hostPlatform.system}.default
 
     ############################
     # Blockchain (inputs)
     ############################
-    #inputs.caelestia-cli.packages.${pkgs.system}.caelestia-cli
-    #inputs.caelestia.packages.${pkgs.system}.caelestia-shell
+    #inputs.caelestia-cli.packages.${pkgs.stdenv.hostPlatform.system}.caelestia-cli
+    #inputs.caelestia.packages.${pkgs.stdenv.hostPlatform.system}.caelestia-shell
   ];
 }

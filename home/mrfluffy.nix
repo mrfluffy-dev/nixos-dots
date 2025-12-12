@@ -67,7 +67,7 @@ in
     ############################
     # Experimental (inputs)
     ############################
-    # inputs.ladybird.packages."${pkgs.system}".ladybird
+    # inputs.ladybird.packages."${pkgs.stdenv.hostPlatform.system}".ladybird
 
     # ##########################
     # Examples (disabled)

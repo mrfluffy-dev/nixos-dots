@@ -76,7 +76,7 @@ in
     
 
     # swaynotificationcenter
-    # inputs.ladybird.packages."${pkgs.system}".ladybird
+    # inputs.ladybird.packages."${pkgs.stdenv.hostPlatform.system}".ladybird
 
     # pkgs.hello
     # (pkgs.nerdfonts.override { fonts = [ "FantasqueSansMono" ]; })

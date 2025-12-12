@@ -8,11 +8,11 @@
   ...
 }:
 let
-  caelestia-cli = inputs.caelestia-cli.packages.${pkgs.system}.caelestia-cli;
-  hypr-package = inputs.hyprland.packages.${pkgs.system}.hyprland;
-  hypr-portal = inputs.hyprland.packages.${pkgs.system}.xdg-desktop-portal-hyprland;
-  hypr-split = inputs.hyprland-hyprsplit.packages.${pkgs.system}.split-monitor-workspaces;
-  #hyprscrolling = inputs.hyprland-plugins.packages.${pkgs.system}.hyprscrolling;
+  caelestia-cli = inputs.caelestia-cli.packages.${pkgs.stdenv.hostPlatform.system}.caelestia-cli;
+  hypr-package = inputs.hyprland.packages.${pkgs.stdenv.hostPlatform.system}.hyprland;
+  hypr-portal = inputs.hyprland.packages.${pkgs.stdenv.hostPlatform.system}.xdg-desktop-portal-hyprland;
+  hypr-split = inputs.hyprland-hyprsplit.packages.${pkgs.stdenv.hostPlatform.system}.split-monitor-workspaces;
+  #hyprscrolling = inputs.hyprland-plugins.packages.${pkgs.stdenv.hostPlatform.system}.hyprscrolling;
   mod = "Alt";
   terminal = "footclient";
   fileManager = "dolphin";

@@ -42,7 +42,7 @@
         biggerStreamPreview = {
           enable = true;
         };
-        clearURLs = {
+        clearUrLs = {
           enable = true;
         };
         copyFileContents = {

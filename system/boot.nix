@@ -55,10 +55,5 @@ extraInstallCommands = ''
       options v4l2loopback devices=2 video_nr=1,0 card_label="OBS Cam","phone cam" exclusive_caps=1,1
     '';
 
-    plymouth = {
-      enable = false;
-      themePackages = [ pkgs.plymouth-matrix-theme ];
-      theme = "matrix";
-    };
   };
 }
