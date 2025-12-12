@@ -1,6 +1,6 @@
 {
   description = "Nixos config flake";
-inputs = {
+  inputs = {
     nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
     nix-index-database.url = "github:nix-community/nix-index-database";
     nix-index-database.inputs.nixpkgs.follows = "nixpkgs";
@@ -54,6 +54,11 @@ inputs = {
     vicinae = {
       url = "github:vicinaehq/vicinae";
       #inputs.nixpkgs.follows = "nixpkgs";
+    };
+      # ... your existing inputs ...
+    jovian = {
+      url = "github:Jovian-Experiments/Jovian-NixOS";
+      inputs.nixpkgs.follows = "nixpkgs";
     };
   };
   outputs =

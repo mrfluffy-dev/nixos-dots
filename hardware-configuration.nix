@@ -76,7 +76,7 @@
       fsType = "btrfs";
     })
   ];
-  fileSystems."/home/mrfluffy/Games" = lib.mkMerge [
+  fileSystems."/home/game/Games" = lib.mkMerge [
     (lib.mkIf (systemName == "pc") {
       device = "/dev/disk/by-uuid/54188f21-d525-4681-a9d4-b798363eef17";
       fsType = "ext4";
