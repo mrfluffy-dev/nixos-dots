@@ -11,15 +11,6 @@
   ...
 }:
 
-let
-  oreo = pkgs.callPackage ./personalPKGS/oreo.nix { };
-
-  # Window manager toggles
-  wmAll = window_manager == "all";
-  useRiver = window_manager == "river" || wmAll;
-  useNiri = window_manager == "niri" || wmAll;
-  useHypr = window_manager == "hyprland" || wmAll;
-in
 {
   imports = [
     ./hardware-configuration.nix
@@ -50,59 +41,62 @@ in
   ##############################################################################
   programs.zsh.enable = true;
   users = {
-    users.mrfluffy = {
-      isNormalUser = true;
-      shell = pkgs.zsh;
-      createHome = true;
-      extraGroups = [
-        "wheel"
-        "networkmanager"
-        "video"
-        "render"
-        "docker"
-        "libvirt"
-        "input"
-        "seat"
-      ];
-      packages = with pkgs; [ ];
-    };
+    users = {
+      mrfluffy = {
+        isNormalUser = true;
+        shell = pkgs.zsh;
+        createHome = true;
+        extraGroups = [
+          "wheel"
+          "networkmanager"
+          "video"
+          "render"
+          "docker"
+          "libvirt"
+          "input"
+          "seat"
+        ];
+        packages = with pkgs; [ ];
+      };
 
-    users.work = {
-      isNormalUser = true;
-      shell = pkgs.zsh;
-      createHome = true;
-      extraGroups = [
-        "wheel"
-        "networkmanager"
-        "video"
-        "render"
-        "docker"
-        "libvirt"
-        "input"
-        "seat"
-      ];
-      packages = with pkgs; [ ];
+      work = {
+        isNormalUser = true;
+        shell = pkgs.zsh;
+        createHome = true;
+        extraGroups = [
+          "wheel"
+          "networkmanager"
+          "video"
+          "render"
+          "docker"
+          "libvirt"
+          "input"
+          "seat"
+        ];
+        packages = with pkgs; [ ];
+      };
+      game = {
+        isNormalUser = true;
+        description = "Dedicated gaming user (auto-login in Steam specialisation)";
+        shell = pkgs.bash;
+        createHome = true;
+        password = ""; # no password
+        extraGroups = [
+          "wheel"
+          "video"
+          "render"
+          "input"
+          "seat"
+          "networkmanager"
+        ];
+        home = "/home/game";
+      };
     };
-    users.game = {
-      isNormalUser = true;
-      description = "Dedicated gaming user (auto-login in Steam specialisation)";
-      shell = pkgs.bash;
-      createHome = true;
-      password = ""; # no password
-      extraGroups = [
-        "wheel"
-        "video"
-        "render"
-        "input"
-        "seat"
-        "networkmanager"
+      groups.libvirtd.members = [
+        "mrfluffy"
+        "work"
       ];
-      home = "/home/game";
-    };
-    groups.libvirtd.members = [
-      "mrfluffy"
-      "work"
-    ];
+
   };
   ##############################################################################
   # Home-Manager
@@ -173,106 +167,9 @@ in
   specialisation = {
     "01-steam" = {
       configuration = {
-
-        boot = {
-          kernelParams = lib.mkForce [ "ipv6e=1" "quiet" "splash"];
-          plymouth = {
-            enable = true;
-            themePackages = [ pkgs.adi1090x-plymouth-themes ];
-            theme = "abstract_ring_alt"; 
-          };
-
-        };
-
-        # ── HDMI-CEC: Turn on TV when Steam specialisation starts ─────────────────────
-        services.udev.packages = [ pkgs.libcec ]; # ensures cec-utils is in PATH
-        services.blueman.enable = true;
-        services.seatd.enable = true;
-
-        # A user service that runs once the graphical session (Steam/GameScope) is ready
-        #systemd.user.services.cec-tv-on = {
-        #  description = "Turn on TV via HDMI-CEC when entering Steam specialisation";
-        #  wantedBy = [ "graphical-session.target" ];
-        #  after = [ "graphical-session.target" ];
-        #  serviceConfig = {
-        #    Type = "oneshot";
-        #    RemainAfterExit = true;
-        #    ExecStart = toString (
-        #      pkgs.writeShellScript "cec-tv-on.sh" ''
-        #        # Wait a moment for the HDMI link to settle
-        #        sleep 3
-
-        #        # Turn on the TV and set it as active source (most TVs understand this)
-        #        ${pkgs.libcec}/bin/cec-client -s -d 1 <<EOF
-        #        on 0
-        #        as
-        #        EOF
-
-        #        # Alternative one-liner if the above somehow fails:
-        #        # echo 'on 0' | ${pkgs.libcec}/bin/cec-client -s -d 1
-        #        # echo 'as'  | ${pkgs.libcec}/bin/cec-client -s -d 1
-        #      ''
-        #    );
-        #  };
-        #};
-
-        # THIS is the important part – direct boot into the Gamescope Steam session
-        services.greetd = {
-          enable = true;
-          restart = true;
-          settings = {
-            # Tell greetd to auto-start the official gamescope steam session immediately
-            default_session = {
-              command = "${pkgs.gamescope}/bin/gamescope --prefer-outpu HDMI-A-2 --hdr-enabled --steam --mangoapp  -- steam -pipewire-dmabuf -gamepadui -steamos3 > /dev/null 2>&1";
-              user = "game";
-            };
-          };
-        };
-
-        # Auto-login the game user (no password prompt ever)
-        services.getty.autologinUser = "game";
-        # Make sure the user service starts automatically
-        systemd.user.targets.graphical-session = {
-          # This target already exists, we just ensure it’s active
-          unitConfig = {
-            RefuseManualStart = false;
-            RefuseManualStop = false;
-          };
-        };
-
-        environment = {
-          systemPackages = with pkgs; [
-            mangohud
-            gamemode
-            gamescope-wsi
-          ];
-          variables = {
-            #LIBSEAT_BACKEND = "logind";
-          };
-
-        };
-
-        programs = {
-          gamescope = {
-            enable = true;
-            capSysNice = true;
-          };
-
-          steam = {
-            enable = true;
-            remotePlay.openFirewall = true;
-            dedicatedServer.openFirewall = true;
-            extraCompatPackages = with pkgs; [
-              gamescope
-              mangohud
-              gamemode
-              gamescope-wsi
-            ];
-            gamescopeSession = {
-              enable = true;
-            };
-          };
-        };
+        imports = [
+          ./system/specialisation/steam.nix
+        ];
       };
     };
 
@@ -285,95 +182,9 @@ in
         imports = [
           ./system/services.nix
           ./system/nixOSPkgs.nix
+          ./system/specialisation/main-system.nix
           #inputs.niri.nixosModules.niri
         ];
-
-        # greetd + tuigreet
-        services.greetd = {
-          enable = true;
-          restart = true;
-          useTextGreeter = true;
-          settings.default_session = {
-            command = "${lib.getExe pkgs.tuigreet} --window-padding 1 --time --time-format '%R - %F' --remember --remember-session --asterisks";
-            user = "greeter";
-          };
-        };
-
-        ##############################################################################
-        # Desktop / WM
-        ##############################################################################
-        programs.river-classic.enable = useRiver;
-
-        qt = {
-          enable = true;
-          # style = "gtk2";
-          platformTheme = "qt5ct";
-        };
-
-        xdg.menus.enable = true;
-
-        # Work around Dolphin menu oddities: force Plasma menu definition
-        environment.etc."/xdg/menus/applications.menu".text =
-          builtins.readFile "${pkgs.kdePackages.plasma-workspace}/etc/xdg/menus/plasma-applications.menu";
-
-        # Niri (via overlay)
-        #nixpkgs.overlays = [ inputs.niri.overlays.niri ];
-        #programs.niri = {
-        #  enable = useNiri;
-        #  package = pkgs.niri-stable; # Only needed if not provided by the overlay
-        #};
-
-        # Hyprland
-        programs.hyprland = {
-          enable = useHypr;
-          package = inputs.hyprland.packages.${pkgs.stdenv.hostPlatform.system}.hyprland;
-        };
-
-        # X11 base (kept enabled for keymap + DM if needed)
-        services.xserver = {
-          enable = true;
-          xkb = {
-            layout = "ie";
-            variant = "";
-          };
-
-          # displayManager.lightdm = {
-          #   enable = true;
-          #   greeters.gtk = {
-          #     enable = true;
-          #     theme.package = pkgs.amarena-theme;
-          #     theme.name = "amarena";
-          #     cursorTheme.package = oreo.override { colors = [ "oreo_spark_pink_cursors" ]; };
-          #     cursorTheme.name = "oreo_spark_pink_cursors";
-          #     extraConfig = "background=${./assets/Wallpapers/138.png}";
-          #   };
-          # };
-        };
-
-        ##############################################################################
-        # Security / PolicyKit / PAM
-        ##############################################################################
-        security = {
-          rtkit.enable = true;
-          polkit.enable = true;
-          pam.services = {
-            swaylock = { };
-            greetd.enableGnomeKeyring = true;
-            greetd.kwallet.enable = true;
-          };
-        };
-
-        ##############################################################################
-        # Virtualisation
-        ##############################################################################
-        virtualisation = {
-          docker = {
-            enable = true;
-            storageDriver = lib.mkIf (systemName == "pc") "btrfs";
-          };
-          libvirtd.enable = true;
-        };
-
       };
     };
   };

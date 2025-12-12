@@ -31,7 +31,7 @@
       GNUPGHOME           = "$XDG_DATA_HOME/gnupg";
       GOPATH              = "$XDG_DATA_HOME/go";
       GRADLE_USER_HOME    = "$XDG_DATA_HOME/gradle";
-      IPYTHONDIR          = "$XDG_CONFIG_HOMEipython";
+      IPYTHONDIR          = "$XDG_CONFIG_HOME/ipython";
       JUPYTER_CONFIG_DIR  = "$XDG_CONFIG_HOME/jupyter";
       LESSHISTFILE        = "$XDG_CACHE_HOME/less/history";
       NUGET_PACKAGES      = "$XDG_CACHE_HOME/NuGetPackages";
@@ -44,9 +44,9 @@
     };
 
     shellAliases = {
-      nix-switch  = "nh os switch --specialisation 00-main-system";
-      nix-upgrade = "(cd ~/nixos-dots && nix flake update) && echo 'flake.lock updated'";
-      nix-edit    = "sudo vim /etc/nixos/configuration.nix";
+      ns  = "nh os switch --specialisation 00-main-system";
+      nu = "(cd ~/nixos-dots && nix flake update) && echo 'flake.lock updated'";
+      ne    = "emacsclient -c ~/nixos-dots/configuration.nix";
 
       ls      = "exa -lag --icons";
       upload  = "~/.config/script/upload.sh";
