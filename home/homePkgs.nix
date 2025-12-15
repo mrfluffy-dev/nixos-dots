@@ -215,10 +215,11 @@ in
     #inputs.qs-qml.packages.${pkgs.stdenv.hostPlatform.system}.tree-sitter-qmljs
 
     ############################
-    # Game Dev / Engines
+    # Game Dev / Engines / Creative
     ############################
     blender-hip
     godot_4
+    freecad
 
     ############################
     # Emulation
