@@ -22,6 +22,15 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
     #niri.url = "github:sodiboo/niri-flake";
+    dgop = {
+      url = "github:AvengeMedia/dgop";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+    dms  = {
+      url = "github:AvengeMedia/DankMaterialShell"; 
+      inputs.nixpkgs.follows = "nixpkgs";
+      inputs.dgop.follows = "dgop";
+    };
     caelestia.url = "github:caelestia-dots/shell";
     caelestia-cli.url = "github:caelestia-dots/cli";
     quickshell = {

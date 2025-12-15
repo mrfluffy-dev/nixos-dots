@@ -205,6 +205,50 @@
         "type": "github"
       }
     },
+    "dgop": {
+      "inputs": {
+        "nixpkgs": [
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1765583951,
+        "narHash": "sha256-QDCrQorCAesnsOQJk+cTszazGitf9NDqIEMxzUEtotE=",
+        "owner": "AvengeMedia",
+        "repo": "dgop",
+        "rev": "57279532bc932b93df79d866b0663b1753cefda1",
+        "type": "github"
+      },
+      "original": {
+        "owner": "AvengeMedia",
+        "repo": "dgop",
+        "type": "github"
+      }
+    },
+    "dms": {
+      "inputs": {
+        "dgop": [
+          "dgop"
+        ],
+        "nixpkgs": [
+          "nixpkgs"
+        ],
+        "quickshell": "quickshell_3"
+      },
+      "locked": {
+        "lastModified": 1765804469,
+        "narHash": "sha256-cYCzFgYax1Cu/qdao5TEpB4ep/yOxZ14W/Dvj9zfovs=",
+        "owner": "AvengeMedia",
+        "repo": "DankMaterialShell",
+        "rev": "42a2835929e346e65226876ce3032eef23953eaf",
+        "type": "github"
+      },
+      "original": {
+        "owner": "AvengeMedia",
+        "repo": "DankMaterialShell",
+        "type": "github"
+      }
+    },
     "firefox-gnome-theme": {
       "flake": false,
       "locked": {
@@ -1140,6 +1184,28 @@
     "quickshell_3": {
       "inputs": {
         "nixpkgs": [
+          "dms",
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1764663772,
+        "narHash": "sha256-sHqLmm0wAt3PC4vczJeBozI1/f4rv9yp3IjkClHDXDs=",
+        "ref": "refs/heads/master",
+        "rev": "26531fc46ef17e9365b03770edd3fb9206fcb460",
+        "revCount": 713,
+        "type": "git",
+        "url": "https://git.outfoxxed.me/quickshell/quickshell"
+      },
+      "original": {
+        "rev": "26531fc46ef17e9365b03770edd3fb9206fcb460",
+        "type": "git",
+        "url": "https://git.outfoxxed.me/quickshell/quickshell"
+      }
+    },
+    "quickshell_4": {
+      "inputs": {
+        "nixpkgs": [
           "nixpkgs"
         ]
       },
@@ -1161,6 +1227,8 @@
       "inputs": {
         "caelestia": "caelestia",
         "caelestia-cli": "caelestia-cli_2",
+        "dgop": "dgop",
+        "dms": "dms",
         "home-manager": "home-manager",
         "hyprland": "hyprland",
         "hyprland-hyprsplit": "hyprland-hyprsplit",
@@ -1172,7 +1240,7 @@
         "nixcord": "nixcord",
         "nixpkgs": "nixpkgs_3",
         "qs-qml": "qs-qml",
-        "quickshell": "quickshell_3",
+        "quickshell": "quickshell_4",
         "stylix": "stylix",
         "vicinae": "vicinae",
         "zen-browser": "zen-browser"

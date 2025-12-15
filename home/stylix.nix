@@ -21,16 +21,16 @@ in
       font-packages.enable = true;
       # fontconfig.enable = true;
 
-      gtk = {
-        enable = true;
-        flatpakSupport.enable = true;
-      };
-      kde.enable = true;
+      #gtk = {
+      #  enable = true;
+      #  flatpakSupport.enable = true;
+      #};
+      #kde.enable = true;
 
-      qt.enable = true;
-      vscode.enable = true;
+      #qt.enable = true;
+      #vscode.enable = true;
       lazygit.enable = true;
-      foot.enable = true;
+      #foot.enable = true;
       river.enable = true;
       hyprland.enable = true;
       waybar.enable = true;
@@ -46,12 +46,12 @@ in
       };
     };
 
-    iconTheme = {
-      enable = true;
-      package = lib.mkForce (pkgs.reversal-icon-theme.override { allColorVariants = true; });
-      light = "Reversal-black";
-      dark  = "Reversal-black-dark";
-    };
+    #iconTheme = {
+    #  enable = true;
+    #  #package = lib.mkForce (pkgs.reversal-icon-theme.override { allColorVariants = true; });
+    #  light = "Reversal-black";
+    #  dark  = "Reversal-black-dark";
+    #};
 
     polarity = "dark";
     image = ../assets/Wallpapers/001.jpg;

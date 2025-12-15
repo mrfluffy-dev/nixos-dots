@@ -145,9 +145,18 @@ in
 
     # NetworkManager applet
     nm-applet = {
-      enable = true;
+      enable = false;
       indicator = false;
     };
+    thunar = {
+      enable = true;
+      plugins = with pkgs.xfce; [
+        thunar-archive-plugin
+        thunar-volman
+      ];
+    };
+    xfconf.enable = true;
+
   };
 
   ############################

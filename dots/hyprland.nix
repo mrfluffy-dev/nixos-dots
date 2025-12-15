@@ -15,7 +15,7 @@ let
   #hyprscrolling = inputs.hyprland-plugins.packages.${pkgs.stdenv.hostPlatform.system}.hyprscrolling;
   mod = "Alt";
   terminal = "footclient";
-  fileManager = "dolphin";
+  fileManager = "thunar";
   #runner = "${lib.getExe caelestia-cli} shell drawers toggle launcher";
   runner = "vicinae toggle";
   # runner     = "anyrun";

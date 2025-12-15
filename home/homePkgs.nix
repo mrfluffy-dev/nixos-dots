@@ -64,8 +64,8 @@ in
       # enableUpdateCheck = false;
       # enableExtensionUpdateCheck = false;
     };
-  };
 
+  };
 
   services.vicinae = {
     enable = true; # default: false
@@ -241,7 +241,7 @@ in
     gamemode
     goverlay
     (pkgs.heroic.override {
-      extraPkgs = pkgs: [ pkgs.gamescope ];  # pulls in the real package
+      extraPkgs = pkgs: [ pkgs.gamescope ]; # pulls in the real package
     })
     prismlauncher
     protonup-qt
@@ -253,6 +253,7 @@ in
     ############################
     # KDE / File Management
     ############################
+    kdePackages.qt6ct
     kdePackages.baloo # new
     kdePackages.baloo-widgets # new
     kdePackages.dolphin
@@ -270,6 +271,9 @@ in
     adwaita-icon-theme
     hicolor-icon-theme
     qt6.qtsvg
+
+    adw-gtk3
+    pywalfox-native
 
     ############################
     # Experimental (inputs)

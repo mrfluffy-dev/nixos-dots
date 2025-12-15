@@ -92,10 +92,10 @@
         home = "/home/game";
       };
     };
-      groups.libvirtd.members = [
-        "mrfluffy"
-        "work"
-      ];
+    groups.libvirtd.members = [
+      "mrfluffy"
+      "work"
+    ];
 
   };
   ##############################################################################
@@ -126,7 +126,8 @@
       # AMD_VULKAN_ICD = "RADV";
       # VK_ICD_FILENAMES = "/run/opengl-driver/share/vulkan/icd.d/radeon_icd.x86_64.json";
       # XDG_CURRENT_DESKTOP = "hyprland";
-      # QT_QPA_PLATFORMTHEME = "qt6ct";
+      #QT_QPA_PLATFORMTHEME = "gtk3";
+      #QT_QPA_PLATFORMTHEME_QT6 = "gtk3";
     };
 
     systemPackages = with pkgs; [

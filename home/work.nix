@@ -34,6 +34,8 @@ in
     ../dots/hyprland.nix
     ../dots/hyprpaper.nix
     ../dots/caelestia.nix
+    ../dots/dankMeterialShell.nix
+    
   ];
 
   # You can find color schemes at: https://github.com/tinted-theming/schemes
@@ -48,13 +50,13 @@ in
   home.stateVersion = "23.11"; # Please read the comment before changing.
 
   # Example GTK block (disabled)
-  # gtk = {
-  #   enable = true;
-  #   iconTheme = {
-  #     name = "Dracula";
-  #     # package = pkgs.dracula-icon-theme;
-  #   };
-  # };
+  gtk = {
+    enable = true;
+    iconTheme = {
+      name = "Reversal-black-dark";
+      package = pkgs.reversal-icon-theme.override { allColorVariants = true; };
+    };
+  };
 
   home.packages = with pkgs; [
     ############################
