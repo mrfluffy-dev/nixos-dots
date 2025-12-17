@@ -8,7 +8,6 @@
   ...
 }:
 let
-  caelestia-cli = inputs.caelestia-cli.packages.${pkgs.stdenv.hostPlatform.system}.caelestia-cli;
   hypr-package = inputs.hyprland.packages.${pkgs.stdenv.hostPlatform.system}.hyprland;
   hypr-portal = inputs.hyprland.packages.${pkgs.stdenv.hostPlatform.system}.xdg-desktop-portal-hyprland;
   hypr-split = inputs.hyprland-hyprsplit.packages.${pkgs.stdenv.hostPlatform.system}.split-monitor-workspaces;
@@ -292,7 +291,9 @@ in
         "${mod}, V, togglefloating,"
         "${mod}, T, fullscreen"
         # ",Print, exec, grim -g \"$(slurp)\" - | swappy -f -"
-        ",Print, exec, ${lib.getExe caelestia-cli} screenshot -r -f"
+        ",Print, exec, dms screenshot"
+        "${mod}, f1, exec, dms ipc call keybinds toggle hyprland"
+        
 
         # Dwindle
         "${mod}, P, pseudo, "
@@ -373,8 +374,8 @@ in
         # ",XF86MonBrightnessDown, exec, light -U 5"
 
         # Brightness
-        ",XF86MonBrightnessUp, global, caelestia:brightnessUp"
-        ",XF86MonBrightnessDown, global, caelestia:brightnessDown"
+        ",XF86MonBrightnessUp, global, dms ipc call brightness increment 5"
+        ",XF86MonBrightnessDown, global, dms ipc call brightness decrement 5"
       ];
 
       bindl = [
