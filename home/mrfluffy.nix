@@ -51,6 +51,18 @@ in
   # Example GTK block (disabled)
   gtk = {
     enable = true;
+    gtk3 = {
+      theme = {
+        name = "adw-gtk3";
+        package = pkgs.adw-gtk3;
+      };
+    };
+    #gtk4 = {
+    #  theme = {
+    #    name = "adw-gtk3";
+    #    package = pkgs.adw-gtk3;
+    #  };
+    #};
     iconTheme = {
       name = "Reversal-black-dark";
       package = pkgs.reversal-icon-theme.override { allColorVariants = true; };
