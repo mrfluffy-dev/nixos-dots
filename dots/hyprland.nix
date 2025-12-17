@@ -36,49 +36,50 @@ in
       ##########################################################################
       # Monitors
       ##########################################################################
+      source = "./dms/outputs.conf";
 
       # See https://wiki.hyprland.org/Configuring/Monitors/
-      monitor = lib.mkMerge [
-        #(lib.mkIf (systemName == "laptop") [ "eDP-1,1920x1080@59.99700,0x0,1" ])
-        (lib.mkIf (systemName == "pc") [
-          "HDMI-A-2, disable"
-        ])
-      ];
+      #monitor = lib.mkMerge [
+      #  #(lib.mkIf (systemName == "laptop") [ "eDP-1,1920x1080@59.99700,0x0,1" ])
+      #  (lib.mkIf (systemName == "pc") [
+      #    "HDMI-A-2, disable"
+      #  ])
+      #];
 
-      monitorv2 =
-        [ ]
-        ++ lib.optional (systemName == "laptop") {
-          output = "eDP-1";
-          mode = "1920x1080@59.99700";
-          scale = 1;
-          position = "0x0";
-        }
-        ++ lib.optional (systemName == "pc") {
-          output = "DP-1";
-          mode = "2560x1440@239.97";
-          position = "2560x0"; # "1440x750";  # Corrected from 2569x0 for seamless alignment
-          scale = 1;
-          #supports_wide_color = 1;
-          bitdepth = 10;
-          cm = "hdr";
-          supports_hdr = true;
-          supports_wide_color = true;
-          sdr_min_luminance = 0; # For true black on OLED
-          sdr_max_luminance = 275; # Matches typical SDR brightness
-          min_luminance = 0;
-          max_luminance = 1000; # HDR peak
-          max_avg_luminance = 400; # Average frame luminance
-          sdrbrightness = 1.2; # Slight boost to avoid washed out look
-          sdrsaturation = 1.0;
-          #transform          = 2;    # Uncomment if needed
-        }
-        ++ lib.optional (systemName == "pc") {
-          output = "DP-2";
-          mode = "2560x1440@144";
-          scale = 1;
-          position = "0x0";
-          transform = 0;
-        };
+      #monitorv2 =
+      #  [ ]
+      #  ++ lib.optional (systemName == "laptop") {
+      #    output = "eDP-1";
+      #    mode = "1920x1080@59.99700";
+      #    scale = 1;
+      #    position = "0x0";
+      #  }
+      #  ++ lib.optional (systemName == "pc") {
+      #    output = "DP-1";
+      #    mode = "2560x1440@239.97";
+      #    position = "2560x0"; # "1440x750";  # Corrected from 2569x0 for seamless alignment
+      #    scale = 1;
+      #    #supports_wide_color = 1;
+      #    bitdepth = 10;
+      #    cm = "hdr";
+      #    supports_hdr = true;
+      #    supports_wide_color = true;
+      #    sdr_min_luminance = 0; # For true black on OLED
+      #    sdr_max_luminance = 275; # Matches typical SDR brightness
+      #    min_luminance = 0;
+      #    max_luminance = 1000; # HDR peak
+      #    max_avg_luminance = 400; # Average frame luminance
+      #    sdrbrightness = 1.2; # Slight boost to avoid washed out look
+      #    sdrsaturation = 1.0;
+      #    #transform          = 2;    # Uncomment if needed
+      #  }
+      #  ++ lib.optional (systemName == "pc") {
+      #    output = "DP-2";
+      #    mode = "2560x1440@144";
+      #    scale = 1;
+      #    position = "0x0";
+      #    transform = 0;
+      #  };
 
       ##########################################################################
       # Autostart
