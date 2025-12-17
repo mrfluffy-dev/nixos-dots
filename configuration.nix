@@ -42,6 +42,16 @@
   programs.zsh.enable = true;
   users = {
     users = {
+      root = {
+        openssh = {
+          authorizedKeys = {
+            keys = [
+              "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIDwjTCq2GXRuqVXf1CeyntkOIFYNu0+tW1lurW8PNtK1 zastian00@gmail.com"
+            ];
+          };
+        };
+      };
+
       mrfluffy = {
         isNormalUser = true;
         shell = pkgs.zsh;
