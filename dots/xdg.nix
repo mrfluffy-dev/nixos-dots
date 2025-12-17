@@ -38,7 +38,7 @@
 
       defaultApplications =
         let
-          browser     = [ "zen-beta.desktop" ];
+          browser     = [ "firefox.desktop" ];
           fileManager = [ "pcmanfm.desktop" ];
           editor      = [ "emacs.desktop" ];
           player      = [ "mpv.desktop" ];

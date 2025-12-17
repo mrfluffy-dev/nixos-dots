@@ -10,7 +10,8 @@
     settings = {
       main = {
         pad = "5x5";
-        include="/home/${config.home.username}/.config/foot/dank-colors.ini";
+        font = "${config.stylix.fonts.monospace.name}:size=${toString config.stylix.fonts.sizes.terminal}";
+        include = "/home/${config.home.username}/.config/foot/dank-colors.ini";
       };
       colors = {
         alpha = lib.mkForce (0.9);
@@ -18,4 +19,3 @@
     };
   };
 }
-

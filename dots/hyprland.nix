@@ -19,7 +19,7 @@ let
   #runner = "${lib.getExe caelestia-cli} shell drawers toggle launcher";
   runner = "vicinae toggle";
   # runner     = "anyrun";
-  browser = "zen-beta";
+  browser = "firefox";
   editor = "emacsclient -c";
 in
 {
@@ -158,8 +158,8 @@ in
 
       # https://wiki.hyprland.org/Configuring/Variables/#decoration
       decoration = {
-        rounding = 10;
-        rounding_power = 2;
+        rounding = 0;
+        rounding_power = 0;
         active_opacity = 1.0;
         inactive_opacity = 1.0;
 

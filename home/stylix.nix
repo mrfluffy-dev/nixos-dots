@@ -36,14 +36,14 @@ in
       waybar.enable = true;
       nixcord.enable = true;
 
-      zen-browser = {
-        enable = true;
-        profileNames = [ "default" ];
-      };
-      firefox = {
-        enable = true;
-        profileNames = [ "default" ];
-      };
+      #zen-browser = {
+      #  enable = true;
+      #  profileNames = [ "default" ];
+      #};
+      #firefox = {
+      #  enable = true;
+      #  profileNames = [ "default" ];
+      #};
     };
 
     #iconTheme = {
