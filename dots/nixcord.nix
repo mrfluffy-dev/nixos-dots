@@ -10,12 +10,12 @@
     enable = true;
     discord = {
       enable = false;
-      package = pkgs.vencord;
+      #package = pkgs.vencord;
     };
     vesktop = {
       enable = true;
-      package = pkgs.vesktop;
-      useSystemVencord = false;
+      #package = pkgs.vesktop;
+      #useSystemVencord = false;
     };
     config = {
       plugins = {
@@ -40,9 +40,6 @@
           enable = true;
         };
         biggerStreamPreview = {
-          enable = true;
-        };
-        clearUrLs = {
           enable = true;
         };
         copyFileContents = {

@@ -34,6 +34,7 @@ in
     compositor.name = "hyprland"; # Or "hyprland" or "sway"
     configHome = "${config.users.users.mrfluffy.home}";
   };
+  #services.displayManager.cosmic-greeter.enable = true;
 
   ##############################################################################
   # Desktop / WM
@@ -42,7 +43,6 @@ in
 
   qt = {
     enable = true;
-    # style = "gtk2";
     platformTheme = "qt5ct";
   };
 
@@ -64,6 +64,9 @@ in
     enable = useHypr;
     package = inputs.hyprland.packages.${pkgs.stdenv.hostPlatform.system}.hyprland;
   };
+  #services.desktopManager.cosmic = {
+  #  enable = true;
+  #};
 
   # X11 base (kept enabled for keymap + DM if needed)
   services.xserver = {

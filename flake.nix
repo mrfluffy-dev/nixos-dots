@@ -26,8 +26,8 @@
       url = "github:AvengeMedia/dgop";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    dms  = {
-      url = "github:AvengeMedia/DankMaterialShell"; 
+    dms = {
+      url = "github:AvengeMedia/DankMaterialShell";
       inputs.nixpkgs.follows = "nixpkgs";
       inputs.dgop.follows = "dgop";
     };
@@ -64,7 +64,7 @@
       url = "github:vicinaehq/vicinae";
       #inputs.nixpkgs.follows = "nixpkgs";
     };
-      # ... your existing inputs ...
+    # ... your existing inputs ...
     jovian = {
       url = "github:Jovian-Experiments/Jovian-NixOS";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -78,7 +78,13 @@
     }@inputs:
     let
       system = "x86_64-linux";
-      pkgs = nixpkgs.legacyPackages.${system};
+      #pkgs = nixpkgs.legacyPackages.${system};
+      pkgs = import nixpkgs {
+        system = "x86_64-linux"; # or your system
+        config = {
+          allowUnfree = true;
+        };
+      };
       #Avalable options are ["niri" "river" "hyprland" "all"]
       window_manager = "hyprland";
     in

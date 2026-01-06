@@ -112,7 +112,6 @@ in
   nixpkgs = {
     config = {
       allowUnfree = true;
-      android_sdk.accept_license = true;
       permittedInsecurePackages = [
         "freeimage-unstable-2021-11-01"
         "qtwebengine-5.15.19"
@@ -121,6 +120,12 @@ in
   };
 
   services.kdeconnect.enable = true;
+            pkgs = import inputs.nixpkgs {
+              config = {
+                android_sdk.accept_license = true;  # Accept Android SDK license
+                # allowUnfree = true;  # Uncomment if you encounter unfree issues with android-studio-full
+              };
+            };
 
   home.packages = with pkgs; [
     ############################
@@ -215,6 +220,7 @@ in
     rustup
     zed-editor
     android-studio-full
+
     # Language tooling from inputs
     #inputs.qs-qml.packages.${pkgs.stdenv.hostPlatform.system}.qml-ts-mode
     #inputs.qs-qml.packages.${pkgs.stdenv.hostPlatform.system}.tree-sitter-qmljs

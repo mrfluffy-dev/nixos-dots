@@ -38,7 +38,7 @@
 
       defaultApplications =
         let
-          browser     = [ "firefox.desktop" ];
+          browser     = [ "brave.desktop" ];
           fileManager = [ "pcmanfm.desktop" ];
           editor      = [ "emacs.desktop" ];
           player      = [ "mpv.desktop" ];

@@ -45,7 +45,7 @@
 
     shellAliases = {
       ns  = "nh os switch --specialisation 00-main-system";
-      nu = "(cd ~/nixos-dots && nix flake update) && echo 'flake.lock updated'";
+      nu = "(cd ~/nixos-dots && nix flake update --commit-lock-file) && echo 'flake.lock updated'";
       ne    = "emacsclient -c ~/nixos-dots/configuration.nix";
 
       ls      = "exa -lag --icons";

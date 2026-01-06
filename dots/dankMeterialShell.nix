@@ -8,19 +8,19 @@
 
 {
   imports = [
-    inputs.dms.homeModules.dankMaterialShell.default
+    inputs.dms.homeModules.dank-material-shell
   ];
 
-  programs.dankMaterialShell = {
+  programs.dank-material-shell = {
     enable = true;
     systemd = {
       enable = true; # if you prefer starting from your compositor
     };
 
-    default.settings = {
-      theme = "dark";
-      dynamicTheming = true;
-      # Add any other settings here
-    };
+    #settings = {
+    #  theme = "dark";
+    #  dynamicTheming = true;
+    #  # Add any other settings here
+    #};
   };
 }

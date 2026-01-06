@@ -7,6 +7,9 @@
 
 {
   boot = {
+    kernelModules = lib.mkForce [
+      "cec"
+    ];
     kernelParams = lib.mkForce [
       "ipv6e=1"
       "quiet"
@@ -25,40 +28,62 @@
   services.seatd.enable = true;
 
   # A user service that runs once the graphical session (Steam/GameScope) is ready
-  #systemd.user.services.cec-tv-on = {
-  #  description = "Turn on TV via HDMI-CEC when entering Steam specialisation";
-  #  wantedBy = [ "graphical-session.target" ];
-  #  after = [ "graphical-session.target" ];
-  #  serviceConfig = {
-  #    Type = "oneshot";
-  #    RemainAfterExit = true;
-  #    ExecStart = toString (
-  #      pkgs.writeShellScript "cec-tv-on.sh" ''
-  #        # Wait a moment for the HDMI link to settle
-  #        sleep 3
+  systemd.services.cec-tv-control = {
+    description = "Control TV via HDMI-CEC (turn on early, turn off on shutdown)";
+    wantedBy = [ "multi-user.target" ];
 
-  #        # Turn on the TV and set it as active source (most TVs understand this)
-  #        ${pkgs.libcec}/bin/cec-client -s -d 1 <<EOF
-  #        on 0
-  #        as
-  #        EOF
+    # Run very early: after modules load and local filesystems are available,
+    # but before Plymouth boot splash quits and before the display manager
+    after = [
+      "systemd-modules-load.service"
+      "local-fs.target"
+      "systemd-udev-settle.service"
+    ];
+    before = [
+      "plymouth-quit-wait.service"
+      "greetd.service"
+    ];
 
-  #        # Alternative one-liner if the above somehow fails:
-  #        # echo 'on 0' | ${pkgs.libcec}/bin/cec-client -s -d 1
-  #        # echo 'as'  | ${pkgs.libcec}/bin/cec-client -s -d 1
-  #      ''
-  #    );
-  #  };
-  #};
+    # Ensure the /dev/cec* device exists (udev settles early)
+    requires = [ "systemd-udev-settle.service" ];
 
+    serviceConfig = {
+      Type = "oneshot";
+      RemainAfterExit = true;
+
+      # Turn TV on during boot
+      ExecStart = toString (
+        pkgs.writeShellScript "cec-tv-on.sh" ''
+          sleep 3  # Give CEC time to initialize
+          ${pkgs.libcec}/bin/cec-client -s -d 1 <<EOF
+          on 0
+          EOF
+          sleep 2
+          ${pkgs.libcec}/bin/cec-client -s -d 1 <<EOF
+          as
+          EOF
+        ''
+      );
+
+      # Turn TV off on shutdown/reboot (ExecStop runs when the service stops)
+      ExecStop = toString (
+        pkgs.writeShellScript "cec-tv-off.sh" ''
+          ${pkgs.libcec}/bin/cec-client -s -d 1 <<EOF
+          standby 0
+          EOF
+        ''
+      );
+    };
+  };
   # THIS is the important part – direct boot into the Gamescope Steam session
   services.greetd = {
     enable = true;
     restart = true;
     settings = {
       # Tell greetd to auto-start the official gamescope steam session immediately
+      # HDMI-A-2
       default_session = {
-        command = "${pkgs.gamescope}/bin/gamescope --prefer-output HDMI-A-2 --hdr-enabled --steam --mangoapp  -- steam -pipewire-dmabuf -gamepadui -steamos3 > /dev/null 2>&1";
+        command = "${pkgs.gamescope}/bin/gamescope --prefer-output HDMI-A-2  --hdr-enabled --steam --mangoapp  -- steam -pipewire-dmabuf -gamepadui -steamos3 > /dev/null 2>&1";
         user = "game";
       };
     };

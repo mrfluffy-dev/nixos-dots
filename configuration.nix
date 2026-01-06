@@ -65,6 +65,7 @@
           "libvirt"
           "input"
           "seat"
+"dialout"
         ];
         packages = with pkgs; [ ];
       };
@@ -82,6 +83,7 @@
           "libvirt"
           "input"
           "seat"
+"dialout"
         ];
         packages = with pkgs; [ ];
       };
@@ -98,6 +100,7 @@
           "input"
           "seat"
           "networkmanager"
+          "dialout"
         ];
         home = "/home/game";
       };

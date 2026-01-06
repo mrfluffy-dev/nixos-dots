@@ -136,7 +136,7 @@
 
   # Sunshine (only on PC)
   services.sunshine = lib.mkIf (systemName == "pc") {
-    enable = true;
+    enable = false;
     settings = {
       sunshine_name = "nixos";
       port = 47989;
