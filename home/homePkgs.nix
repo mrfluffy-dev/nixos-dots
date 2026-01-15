@@ -51,6 +51,7 @@ in
       profiles.default = {
         extensions = with pkgs.vscode-extensions; [
           platformio.platformio-vscode-ide
+	  ms-vscode.cpptools
         ];
 
         # Optional: keep Code from trying to self-update
@@ -117,6 +118,7 @@ in
         "freeimage-unstable-2021-11-01"
         "qtwebengine-5.15.19"
       ];
+      rocmSupport = true;
     };
   };
 
@@ -202,7 +204,7 @@ in
     imv
     mpv
     #upscaler
-    youtube-music
+    pear-desktop
     libsixel
 
     ############################
@@ -215,6 +217,7 @@ in
     rustup
     zed-editor
     android-studio-full
+    claude-code
     # Language tooling from inputs
     #inputs.qs-qml.packages.${pkgs.stdenv.hostPlatform.system}.qml-ts-mode
     #inputs.qs-qml.packages.${pkgs.stdenv.hostPlatform.system}.tree-sitter-qmljs
@@ -222,7 +225,7 @@ in
     ############################
     # Game Dev / Engines / Creative
     ############################
-    blender-hip
+    blender
     godot_4
     freecad
 

@@ -29,7 +29,6 @@
     dms = {
       url = "github:AvengeMedia/DankMaterialShell";
       inputs.nixpkgs.follows = "nixpkgs";
-      inputs.dgop.follows = "dgop";
     };
     caelestia.url = "github:caelestia-dots/shell";
     caelestia-cli.url = "github:caelestia-dots/cli";

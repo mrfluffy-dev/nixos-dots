@@ -243,7 +243,7 @@
     pkgs.platformio-core
     pkgs.platformio
     pkgs.openocd
-    pkgs.brave
+    #pkgs.brave
   ];
 
   # services.udev.extraRules = ''

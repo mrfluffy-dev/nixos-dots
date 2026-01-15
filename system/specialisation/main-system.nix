@@ -20,20 +20,20 @@ in
 
 {
   # greetd + tuigreet
-  #services.greetd = {
-  #  enable = true;
-  #  restart = true;
-  #  useTextGreeter = true;
-  #  settings.default_session = {
-  #    command = "${lib.getExe pkgs.tuigreet} --window-padding 1 --time --time-format '%R - %F' --remember --remember-session --asterisks";
-  #    user = "greeter";
-  #  };
-  #};
-  services.displayManager.dms-greeter = {
+  services.greetd = {
     enable = true;
-    compositor.name = "hyprland"; # Or "hyprland" or "sway"
-    configHome = "${config.users.users.mrfluffy.home}";
+    restart = true;
+    useTextGreeter = true;
+    settings.default_session = {
+      command = "${lib.getExe pkgs.tuigreet} --window-padding 1 --time --time-format '%R - %F' --remember --remember-session --asterisks";
+      user = "greeter";
+    };
   };
+  #services.displayManager.dms-greeter = {
+  #  enable = true;
+  #  compositor.name = "hyprland"; # Or "hyprland" or "sway"
+  #  configHome = "${config.users.users.mrfluffy.home}";
+  #};
   #services.displayManager.cosmic-greeter.enable = true;
 
   ##############################################################################

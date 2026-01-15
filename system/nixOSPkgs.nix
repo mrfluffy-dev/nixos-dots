@@ -150,7 +150,7 @@ in
     };
     thunar = {
       enable = true;
-      plugins = with pkgs.xfce; [
+      plugins = with pkgs; [
         thunar-archive-plugin
         thunar-volman
       ];
@@ -181,7 +181,7 @@ in
 
     # --- Nix tooling ---
     nil
-    nixfmt-rfc-style
+    nixfmt
     inputs.nix-alien.packages.${pkgs.stdenv.hostPlatform.system}.nix-alien
 
     # --- Wayland / Desktop ---
