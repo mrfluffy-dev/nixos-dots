@@ -17,7 +17,7 @@
     WLR_DRM_NO_ATOMIC = 1;
     VDPAU_DRIVER = "radeonsi";
     LIBVA_DRIVER_NAME = "radeonsi";
-    OLLAMA_HOST = "0.0.0.0";
+    OLLAMA_HOST = "127.0.0.1";
     PATH = "$HOME/.config/emacs/bin:$PATH";
     FZF_DEFAULT_COMMAND = "${lib.getExe pkgs.ripgrep} ~ --files --hidden";
     FZF_DEFAULT_OPTS = "--height 30% --reverse";
@@ -29,7 +29,7 @@
     GNUPGHOME = "$XDG_DATA_HOME/gnupg";
     GOPATH = "$XDG_DATA_HOME/go";
     GRADLE_USER_HOME = "$XDG_DATA_HOME/gradle";
-    IPYTHONDIR = "$XDG_CONFIG_HOMEipython";
+    IPYTHONDIR = "$XDG_CONFIG_HOME/ipython";
     JUPYTER_CONFIG_DIR = "$XDG_CONFIG_HOME/jupyter";
     LESSHISTFILE = "$XDG_CACHE_HOME/less/history";
     NUGET_PACKAGES = "$XDG_CACHE_HOME/NuGetPackages";

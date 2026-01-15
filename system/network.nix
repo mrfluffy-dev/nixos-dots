@@ -7,13 +7,13 @@
 }:
 let
   isLaptop = systemName == "laptop";
-  isPc     = systemName == "pc";
+  isPc = systemName == "pc";
 in
 {
   networking = lib.mkMerge [
     # Hostname per system type
     (lib.mkIf isLaptop { hostName = "mrfluffyLaptop"; })
-    (lib.mkIf isPc     { hostName = "mrfluffyPC";     })
+    (lib.mkIf isPc { hostName = "mrfluffyPC"; })
 
     # Common networking config
     {

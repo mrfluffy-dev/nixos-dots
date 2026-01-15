@@ -7,6 +7,9 @@
 }:
 
 let
+  isLaptop = systemName == "laptop";
+  isPc = systemName == "pc";
+
   # Shared VA-API / VDPAU bits across both machines
   commonVA = with pkgs; [
     libva
@@ -18,7 +21,7 @@ in
   # ── Graphics ─────────────────────────────────────────────────────────────────
   hardware.graphics = lib.mkMerge [
     # Laptop: Intel stack
-    (lib.mkIf (systemName == "laptop") {
+    (lib.mkIf isLaptop {
       enable = true;
       enable32Bit = true;
       extraPackages = with pkgs; [
@@ -29,7 +32,7 @@ in
     })
 
     # PC: AMD/ROCm stack
-    (lib.mkIf (systemName == "pc") {
+    (lib.mkIf isPc {
       enable = true;
       enable32Bit = true;
       extraPackages = with pkgs; [

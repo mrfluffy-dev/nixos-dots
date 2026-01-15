@@ -1,11 +1,16 @@
 {
-  pkgs,
-  lib,
   config,
+  lib,
+  pkgs,
   window_manager,
   systemName,
   ...
 }:
+
+let
+  isLaptop = systemName == "laptop";
+  isPc = systemName == "pc";
+in
 {
   wayland.windowManager.river = {
     enable = window_manager == "river" || window_manager == "all";
@@ -26,21 +31,19 @@
       editor="emacs"
 
       riverctl input "pointer-2362-8197-ASUP1204:00_093A:2005_Touchpad" tap enabled
-      riverctl keyboard-layout  -options "grp:ctrl_space_toggle" ${
-        if systemName == "laptop" then "ie,us" else "us"
+      riverctl keyboard-layout -options "grp:ctrl_space_toggle" ${
+        if isLaptop
+        then "ie,us"
+        else "us"
       }
 
       #riverctl spawn 'export XDG_CURRENT_DESKTOP=river'
       #riverctl spawn 'systemctl --user restart xdg-desktop-portal'
       riverctl spawn 'dbus-update-activation-environment --systemd WAYLAND_DISPLAY XDG_CURRENT_DESKTOP'
       riverctl spawn 'swaybg ${
-        # Handle laptop case
-        lib.optionalString (systemName == "laptop") "-o eDP-1 -i ${../assets/Wallpapers/138.png}"
+        lib.optionalString isLaptop "-o eDP-1 -i ${../assets/Wallpapers/138.png}"
       }${
-        # Handle PC case (appends to laptop case if needed, but conditions should be mutually exclusive)
-        lib.optionalString (
-          systemName == "pc"
-        ) "-o HDMI-A-1 -i ${../assets/Wallpapers/138.png} -o DP-1 -i ${../assets/Wallpapers/138.png}"
+        lib.optionalString isPc "-o HDMI-A-1 -i ${../assets/Wallpapers/138.png} -o DP-1 -i ${../assets/Wallpapers/138.png}"
       }'
       #riverctl spawn '/home/mrfluffy/.config/script/mic-gain-fix.sh'
       riverctl spawn 'waybar &'
@@ -57,12 +60,9 @@
       riverctl set-cursor-warp on-focus-change
       #riverctl xcursor-theme oreo_spark_pink_cursors
       riverctl spawn '${
-        # Handle laptop case
-        lib.optionalString (systemName == "laptop") "wlr-randr --output eDP-1 --mode 1920x1080@60"
+        lib.optionalString isLaptop "wlr-randr --output eDP-1 --mode 1920x1080@60"
       }${
-        # Handle PC case (appends to laptop case if needed, but conditions should be mutually exclusive)
-        lib.optionalString (systemName == "pc")
-          "wlr-randr --output DP-1 --mode 2560x1440@144 --pos 1920,0 --output HDMI-A-1 --mode 1920x1080@60 --pos 0,0"
+        lib.optionalString isPc "wlr-randr --output DP-1 --mode 2560x1440@144 --pos 1920,0 --output HDMI-A-1 --mode 1920x1080@60 --pos 0,0"
       }'
 
       # This is the example configuration file for river.

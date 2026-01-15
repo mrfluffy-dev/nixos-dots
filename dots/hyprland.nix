@@ -8,6 +8,9 @@
   ...
 }:
 let
+  isLaptop = systemName == "laptop";
+  isPc = systemName == "pc";
+
   hypr-package = inputs.hyprland.packages.${pkgs.stdenv.hostPlatform.system}.hyprland;
   hypr-portal =
     inputs.hyprland.packages.${pkgs.stdenv.hostPlatform.system}.xdg-desktop-portal-hyprland;
@@ -35,9 +38,7 @@ in
     ];
 
     settings = {
-      ##########################################################################
-      # Monitors
-      ##########################################################################
+      # ─── Monitors ────────────────────────────────────────────────────────────────
       source = [
         "./dms/outputs.conf"
         #"./dms/cursor.conf"
@@ -86,9 +87,7 @@ in
       #    transform = 0;
       #  };
 
-      ##########################################################################
-      # Autostart
-      ##########################################################################
+      # ─── Autostart ───────────────────────────────────────────────────────────────
 
       # Autostart necessary processes (like notifications daemons, status bars, etc.)
       # Or execute your favorite apps at launch like this:
@@ -113,9 +112,7 @@ in
       # ++ lib.optional (systemName == "pc")
       #   "swaybg -o HDMI-A-1 -i ${../assets/Wallpapers/138.png} -o DP-1 -i ${../assets/Wallpapers/138.png}";
 
-      ##########################################################################
-      # Plugins
-      ##########################################################################
+      # ─── Plugins ─────────────────────────────────────────────────────────────────
 
       plugin = {
         split-monitor-workspaces = {
@@ -129,18 +126,14 @@ in
         };
       };
 
-      ##########################################################################
-      # Environment
-      ##########################################################################
+      # ─── Environment ─────────────────────────────────────────────────────────────
 
       env = [
         "XCURSOR_SIZE, 24"
         "HYPRCURSOR_SIZE, 24"
       ];
 
-      ##########################################################################
-      # General / Render / Decoration / Animations
-      ##########################################################################
+      # ─── General / Render / Decoration / Animations ─────────────────────────────
 
       # https://wiki.hyprland.org/Configuring/Variables/
       # https://wiki.hyprland.org/Configuring/Variables/#general
@@ -218,9 +211,7 @@ in
         ];
       };
 
-      ##########################################################################
-      # Layouts
-      ##########################################################################
+      # ─── Layouts ─────────────────────────────────────────────────────────────────
 
       # See https://wiki.hyprland.org/Configuring/Dwindle-Layout/ for more
       dwindle = {
@@ -236,9 +227,7 @@ in
         new_on_top = true;
       };
 
-      ##########################################################################
-      # Misc / Input / Gestures / Devices
-      ##########################################################################
+      # ─── Misc / Input / Gestures / Devices ───────────────────────────────────────
 
       # https://wiki.hyprland.org/Configuring/Variables/#misc
       misc = {
@@ -251,8 +240,8 @@ in
       # https://wiki.hyprland.org/Configuring/Variables/#input
       input = {
         kb_layout = lib.mkMerge [
-          (lib.mkIf (systemName == "laptop") "ie")
-          (lib.mkIf (systemName == "pc") "us")
+          (lib.mkIf isLaptop "ie")
+          (lib.mkIf isPc "us")
         ];
         repeat_rate = 40;
         repeat_delay = 500;
@@ -281,9 +270,7 @@ in
         sensitivity = -0.5;
       };
 
-      ##########################################################################
-      # Binds
-      ##########################################################################
+      # ─── Binds ───────────────────────────────────────────────────────────────────
 
       bind = [
         # Launcher / apps
@@ -394,9 +381,7 @@ in
 
       binds = [ ];
 
-      ##########################################################################
-      # Rules (windows / workspaces)
-      ##########################################################################
+      # ─── Rules (windows / workspaces) ────────────────────────────────────────────
 
       # See https://wiki.hyprland.org/Configuring/Window-Rules/ for more
       # See https://wiki.hyprland.org/Configuring/Workspace-Rules/ for workspace rules

@@ -162,7 +162,7 @@
 
           # You can change how the focus ring looks.
           focus-ring = {
-            #omment this line to disable the focus ring.
+            # Uncomment this line to disable the focus ring.
             # off
 
             # How many logical pixels the ring extends out from the windows.

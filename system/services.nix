@@ -6,10 +6,12 @@
   ...
 }:
 
+let
+  isLaptop = systemName == "laptop";
+  isPc = systemName == "pc";
+in
 {
-  ###############################################
-  # Desktop & Input
-  ###############################################
+  # ─── Desktop & Input ───────────────────────────────────────────────────────
   services.xserver.windowManager.fvwm2.gestures = true;
 
   # Enable touchpad support (enabled by default in most desktop managers).
@@ -31,49 +33,26 @@
   # services.xserver.displayManager.gdm.enable = true;
   # services.xserver.desktopManager.gnome.enable = true;
 
-  ###############################################
-  # Audio / Bluetooth
-  ###############################################
-  services.pipewire = lib.mkMerge [
-    (lib.mkIf (systemName == "laptop") {
-      enable = true;
-      alsa.enable = true;
-      alsa.support32Bit = true;
-      pulse.enable = true;
-      jack.enable = true;
-      extraConfig.pipewire = {
-        "92-low-latency" = {
-          "context.properties" = {
-            "default.clock.rate" = 48000;
-            "default.clock.allowed-rates" = [ 48000 ];
-          };
-        };
+  # ─── Audio / Bluetooth ──────────────────────────────────────────────────────
+  services.pipewire = {
+    enable = true;
+    alsa.enable = true;
+    alsa.support32Bit = true;
+    pulse.enable = true;
+    jack.enable = true;
+    extraConfig.pipewire."92-low-latency"."context.properties" =
+      if isLaptop
+      then {
+        "default.clock.rate" = 48000;
+        "default.clock.allowed-rates" = [ 48000 ];
+      }
+      else {
+        "default.clock.rate" = 96000;
+        "default.clock.allowed-rates" = [ 44100 48000 96000 ];
       };
-    })
-    (lib.mkIf (systemName == "pc") {
-      enable = true;
-      alsa.enable = true;
-      alsa.support32Bit = true;
-      pulse.enable = true;
-      jack.enable = true;
-      extraConfig.pipewire = {
-        "92-low-latency" = {
-          "context.properties" = {
-            "default.clock.rate" = 96000;
-            "default.clock.allowed-rates" = [
-              44100
-              48000
-              96000
-            ];
-          };
-        };
-      };
-    })
-  ];
+  };
 
-  ###############################################
-  # nice shit
-  ###############################################
+  # ─── Nice Shit ──────────────────────────────────────────────────────────────
   services.ananicy = {
     enable = true;
     package = pkgs.ananicy-cpp;
@@ -88,18 +67,14 @@
 
   services.blueman.enable = true;
 
-  ###############################################
-  # Printing & Files
-  ###############################################
+  # ─── Printing & Files ───────────────────────────────────────────────────────
   # Enable CUPS to print documents.
   services.printing.enable = true;
 
   services.gvfs.enable = true;
   services.tumbler.enable = true;
 
-  ###############################################
-  # Time & Power
-  ###############################################
+  # ─── Time & Power ───────────────────────────────────────────────────────────
   services.automatic-timezoned.enable = true;
 
   # Power management
@@ -109,20 +84,18 @@
   };
 
   # Laptop-specific lid and sleep behavior
-  services.logind.settings.Login = lib.mkIf (systemName == "laptop") {
+  services.logind.settings.Login = lib.mkIf isLaptop {
     HandleLidSwitch = "suspend-then-hibernate";
     HandleLidSwitchExternalPower = "suspend-then-hibernate";
     HandleLidSwitchDocked = "suspend-then-hibernate";
   };
 
-  systemd.sleep.extraConfig = lib.mkIf (systemName == "laptop") ''
+  systemd.sleep.extraConfig = lib.mkIf isLaptop ''
     HibernateDelaySec=120min
     SuspendState=mem
   '';
 
-  ###############################################
-  # Developer Tools & Services
-  ###############################################
+  # ─── Developer Tools & Services ─────────────────────────────────────────────
   # direnv speedup
   services.lorri.enable = true;
 
@@ -135,7 +108,7 @@
   #services.flatpak.enable = true;
 
   # Sunshine (only on PC)
-  services.sunshine = lib.mkIf (systemName == "pc") {
+  services.sunshine = lib.mkIf isPc {
     enable = false;
     settings = {
       sunshine_name = "nixos";
@@ -168,11 +141,11 @@
   };
 
   # Ollama (only on PC)
-  services.ollama = lib.mkIf (systemName == "pc") {
+  services.ollama = lib.mkIf isPc {
     enable = true;
     package = pkgs.ollama-rocm;
     port = 11434;
-    host = "0.0.0.0";
+    host = "127.0.0.1"; # Bind to localhost only for security
     rocmOverrideGfx = "11.0.0";
     environmentVariables = {
       OLLAMA_DEBUG = "1";
@@ -180,14 +153,11 @@
       OLLAMA_NUM_CTX = "40000";
       OLLAMA_NUM_GPU = "20";
       OLLAMA_FLASH_ATTENTION = "true";
-      # HSA_OVERRIDE_GFX_VERSION = "11.0.0";
       OLLAMA_KV_CACHE_TYPE = "f16";
     };
   };
 
-  ###############################################
-  # Systemd User Services
-  ###############################################
+  # ─── Systemd User Services ──────────────────────────────────────────────────
   systemd.user.services.steam-run-url-service = {
     description = "Service to launch Steam URLs via FIFO";
     wantedBy = [ "default.target" ];
@@ -217,9 +187,7 @@
     path = [ pkgs.steam ];
   };
 
-  ###############################################
-  # Networking & Remote
-  ###############################################
+  # ─── Networking & Remote ────────────────────────────────────────────────────
   # services.resolved = {
   #   enable = true;
   #   dnssec = "true";
@@ -231,14 +199,10 @@
   # Enable the OpenSSH daemon.
   services.openssh.enable = true;
 
-  ###############################################
-  # Virtualization
-  ###############################################
+  # ─── Virtualization ─────────────────────────────────────────────────────────
   virtualisation.libvirtd.enable = true;
 
-  ###############################################
-  # Udev Rules
-  ###############################################
+  # ─── Udev Rules ─────────────────────────────────────────────────────────────
   services.udev.packages = [
     pkgs.platformio-core
     pkgs.platformio

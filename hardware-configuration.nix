@@ -10,33 +10,40 @@
   ...
 }:
 
+let
+  isLaptop = systemName == "laptop";
+  isPc = systemName == "pc";
+in
 {
   imports = [
     (modulesPath + "/installer/scan/not-detected.nix")
   ];
 
-  boot.initrd.availableKernelModules =
-    [ ]
-    ++ (lib.optionals (systemName == "pc") [
+  assertions = [{
+    assertion = builtins.elem systemName [ "laptop" "pc" ];
+    message = "systemName must be either 'laptop' or 'pc', got: ${systemName}";
+  }];
+
+  boot.initrd.availableKernelModules = [ ]
+    ++ lib.optionals isPc [
       "xhci_pci"
       "ahci"
       "nvme"
       "usb_storage"
       "usbhid"
       "sd_mod"
-    ])
-    ++ (lib.optionals (systemName == "laptop") [
+    ]
+    ++ lib.optionals isLaptop [
       "vmd"
       "xhci_pci"
       "nvme"
       "usb_storage"
       "sd_mod"
-    ]);
+    ];
   boot.initrd.kernelModules = [ ];
-  boot.kernelModules =
-    [ ]
-    ++ (lib.optionals (systemName == "pc") [ "kvm-amd" "btusb"])
-    ++ (lib.optionals (systemName == "laptop") [ "kvm-intel" ]);
+  boot.kernelModules = [ ]
+    ++ lib.optionals isPc [ "kvm-amd" "btusb" ]
+    ++ lib.optionals isLaptop [ "kvm-intel" ];
   boot.extraModulePackages = [ ];
   boot.kernelParams = [
   # Most common working combination in 2024/2025
@@ -45,22 +52,22 @@
 ];
 
   fileSystems."/" = lib.mkMerge [
-    (lib.mkIf (systemName == "pc") {
+    (lib.mkIf isPc {
       device = "/dev/disk/by-uuid/fdcbb840-4b35-4023-a048-599b0c5161d6";
       fsType = "btrfs";
     })
-    (lib.mkIf (systemName == "laptop") {
+    (lib.mkIf isLaptop {
       device = "/dev/disk/by-uuid/6aa7c67d-a0a5-4928-b16b-9c7991fee7ab";
       fsType = "ext4";
     })
   ];
 
   fileSystems."/boot" = lib.mkMerge [
-    (lib.mkIf (systemName == "pc") {
+    (lib.mkIf isPc {
       device = "/dev/disk/by-uuid/E1B6-9089";
       fsType = "vfat";
     })
-    (lib.mkIf (systemName == "laptop") {
+    (lib.mkIf isLaptop {
       device = "/dev/disk/by-uuid/FF4B-819D";
       fsType = "vfat";
       options = [
@@ -71,20 +78,21 @@
   ];
 
   fileSystems."/home" = lib.mkMerge [
-    (lib.mkIf (systemName == "pc") {
+    (lib.mkIf isPc {
       device = "/dev/disk/by-uuid/d226a8ed-10eb-452e-9284-1ff994a7f179";
       fsType = "btrfs";
     })
   ];
+
   fileSystems."/home/game/Games" = lib.mkMerge [
-    (lib.mkIf (systemName == "pc") {
+    (lib.mkIf isPc {
       device = "/dev/disk/by-uuid/54188f21-d525-4681-a9d4-b798363eef17";
       fsType = "ext4";
     })
   ];
 
 
-  #fileSystems."/server" = lib.mkIf (systemName == "pc") {   # or remove the mkIf if you want it on both
+  #fileSystems."/server" = lib.mkIf isPc {   # or remove the mkIf if you want it on both
   #  device = "//192.168.1.8/mrfluffy";   # adjust the share name if it’s not the home share
   #  fsType = "cifs";
   #  options = let
@@ -107,18 +115,13 @@
   #  ];
   #};
 
-  swapDevices =
-    [ ]
-    ++ (lib.optionals (systemName == "pc") [
-      {
-        device = "/dev/disk/by-uuid/ccf41b96-c45f-47e0-8541-cd865f5d2ec6";
-      }
-    ])
-    ++ (lib.optionals (systemName == "laptop") [
-      {
-        device = "/dev/disk/by-uuid/b416c3bd-861b-4b0c-aa84-6962b2e6a47d";
-      }
-    ]);
+  swapDevices = [ ]
+    ++ lib.optionals isPc [
+      { device = "/dev/disk/by-uuid/ccf41b96-c45f-47e0-8541-cd865f5d2ec6"; }
+    ]
+    ++ lib.optionals isLaptop [
+      { device = "/dev/disk/by-uuid/b416c3bd-861b-4b0c-aa84-6962b2e6a47d"; }
+    ];
 
   # Enables DHCP on each ethernet and wireless interface. In case of scripted networking
   # (the default) this is the recommended approach. When using systemd-networkd it's
@@ -130,10 +133,10 @@
 
   nixpkgs.hostPlatform = lib.mkDefault "x86_64-linux";
   hardware = lib.mkMerge [
-    (lib.mkIf (systemName == "pc") {
+    (lib.mkIf isPc {
       cpu.amd.updateMicrocode = lib.mkDefault config.hardware.enableRedistributableFirmware;
     })
-    (lib.mkIf (systemName == "laptop") {
+    (lib.mkIf isLaptop {
       cpu.intel.updateMicrocode = lib.mkDefault config.hardware.enableRedistributableFirmware;
     })
   ];

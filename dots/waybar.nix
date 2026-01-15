@@ -1,5 +1,6 @@
 {
   config,
+  lib,
   pkgs,
   inputs,
   window_manager,
@@ -16,14 +17,12 @@
 
       #tags button.occupied {
         color: inherit;
-        background-color: #6a548d
+        background-color: #6a548d;
       }
-
-
 
       #tags button.focused {
           color: #f8f8f2;
-          background-color: #aa86e1 ;
+          background-color: #aa86e1;
       }
 
       #tags button.urgent {
@@ -119,17 +118,16 @@
         spacing = 4; # Gaps between modules (4px)
         # Choose the order of the modules
         modules-left =
-          if window_manager == "river" then
-            [
-              "river/tags"
-              "custom/media"
-            ]
-          else if window_manager == "hyprland" then
-            [
-              "hyprland/workspaces"
-            ]
-          else
-            [ ];
+          if window_manager == "river"
+          then [
+            "river/tags"
+            "custom/media"
+          ]
+          else if window_manager == "hyprland"
+          then [
+            "hyprland/workspaces"
+          ]
+          else [ ];
         modules-center = [
         ];
 

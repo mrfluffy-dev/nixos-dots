@@ -61,9 +61,8 @@
     };
     vicinae = {
       url = "github:vicinaehq/vicinae";
-      #inputs.nixpkgs.follows = "nixpkgs";
+      inputs.nixpkgs.follows = "nixpkgs";
     };
-    # ... your existing inputs ...
     jovian = {
       url = "github:Jovian-Experiments/Jovian-NixOS";
       inputs.nixpkgs.follows = "nixpkgs";

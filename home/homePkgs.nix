@@ -51,7 +51,7 @@ in
       profiles.default = {
         extensions = with pkgs.vscode-extensions; [
           platformio.platformio-vscode-ide
-	  ms-vscode.cpptools
+          ms-vscode.cpptools
         ];
 
         # Optional: keep Code from trying to self-update
@@ -125,20 +125,14 @@ in
   services.kdeconnect.enable = true;
 
   home.packages = with pkgs; [
-    ############################
-    # Shells & Terminals
-    ############################
+    # ─── Shells & Terminals ──────────────────────────────────────────────────────
     alacritty
     zsh
 
-    ############################
-    # CLI Shit
-    ############################
+    # ─── CLI Shit ────────────────────────────────────────────────────────────────
     atuin
 
-    ############################
-    # System Utilities
-    ############################
+    # ─── System Utilities ──────────────────────────────────────────────────────────
     app2unit
     brightnessctl
     ddcutil
@@ -150,15 +144,11 @@ in
     xarchiver
     xdg-user-dirs
 
-    ############################
-    # Monitoring & TUI Apps
-    ############################
+    # ─── Monitoring & TUI Apps ───────────────────────────────────────────────────
     btop
     cava
 
-    ############################
-    # Wayland / Desktop Tools
-    ############################
+    # ─── Wayland / Desktop Tools ─────────────────────────────────────────────────
     grim
     hyprpaper
     hyprpicker
@@ -168,48 +158,35 @@ in
     swappy
     wf-recorder
 
-    ############################
-    # Audio / Media Tools
-    ############################
+    # ─── Audio / Media Tools ─────────────────────────────────────────────────────
     openai-whisper
     pamixer
     playerctl
     alsa-utils
 
-    ############################
-    # Browsers & Web
-    ############################
+    # ─── Browsers & Web ────────────────────────────────────────────────────────────
     brave
     firefox
     ladybird
     wgnord
 
-    ############################
-    # Communication & Sharing
-    ############################
+    # ─── Communication & Sharing ─────────────────────────────────────────────────
     #element-desktop
     localsend
     thunderbird
 
-    ############################
-    # Documents & Viewers
-    ############################
-    libreoffice
+    # ─── Documents & Viewers ─────────────────────────────────────────────────────
     libreoffice-fresh
     zathura
 
-    ############################
-    # Media Players & Imaging
-    ############################
+    # ─── Media Players & Imaging ─────────────────────────────────────────────────
     imv
     mpv
     #upscaler
     pear-desktop
     libsixel
 
-    ############################
-    # Development Toolchains
-    ############################
+    # ─── Development Toolchains ──────────────────────────────────────────────────
     gdb
     nodejs_20
     platformio
@@ -222,29 +199,21 @@ in
     #inputs.qs-qml.packages.${pkgs.stdenv.hostPlatform.system}.qml-ts-mode
     #inputs.qs-qml.packages.${pkgs.stdenv.hostPlatform.system}.tree-sitter-qmljs
 
-    ############################
-    # Game Dev / Engines / Creative
-    ############################
+    # ─── Game Dev / Engines / Creative ──────────────────────────────────────────
     blender
     godot_4
     freecad
 
-    ############################
-    # Emulation
-    ############################
+    # ─── Emulation ────────────────────────────────────────────────────────────────
     fuse
     fuse-emulator
     fuse3
 
-    ############################
-    # Android Tools
-    ############################
+    # ─── Android Tools ───────────────────────────────────────────────────────────
     android-tools
     scrcpy
 
-    ############################
-    # Gaming & Launchers
-    ############################
+    # ─── Gaming & Launchers ──────────────────────────────────────────────────────
     dualsensectl
     gamemode
     goverlay
@@ -260,9 +229,7 @@ in
 
     abaddon
 
-    ############################
-    # KDE / File Management
-    ############################
+    # ─── KDE / File Management ───────────────────────────────────────────────────
     kdePackages.qt6ct
     kdePackages.baloo # new
     kdePackages.baloo-widgets # new
@@ -285,15 +252,11 @@ in
     adw-gtk3
     pywalfox-native
 
-    ############################
-    # Experimental (inputs)
-    ############################
+    # ─── Experimental (inputs) ───────────────────────────────────────────────────
     #inputs.ladybird.packages."${pkgs.stdenv.hostPlatform.system}".ladybird
     #inputs.hyprlauncher.packages.${pkgs.stdenv.hostPlatform.system}.default
 
-    ############################
-    # Blockchain (inputs)
-    ############################
+    # ─── Blockchain (inputs) ─────────────────────────────────────────────────────
     #inputs.caelestia-cli.packages.${pkgs.stdenv.hostPlatform.system}.caelestia-cli
     #inputs.caelestia.packages.${pkgs.stdenv.hostPlatform.system}.caelestia-shell
   ];

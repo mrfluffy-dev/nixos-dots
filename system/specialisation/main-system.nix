@@ -9,6 +9,9 @@
 }:
 
 let
+  isLaptop = systemName == "laptop";
+  isPc = systemName == "pc";
+
   oreo = pkgs.callPackage ./personalPKGS/oreo.nix { };
 
   # Window manager toggles
@@ -36,9 +39,7 @@ in
   #};
   #services.displayManager.cosmic-greeter.enable = true;
 
-  ##############################################################################
-  # Desktop / WM
-  ##############################################################################
+  # ─── Desktop / WM ───────────────────────────────────────────────────────────
   programs.river-classic.enable = useRiver;
 
   qt = {
@@ -89,9 +90,7 @@ in
     # };
   };
 
-  ##############################################################################
-  # Security / PolicyKit / PAM
-  ##############################################################################
+  # ─── Security / PolicyKit / PAM ─────────────────────────────────────────────
   security = {
     rtkit.enable = true;
     polkit.enable = true;
@@ -102,13 +101,11 @@ in
     };
   };
 
-  ##############################################################################
-  # Virtualisation
-  ##############################################################################
+  # ─── Virtualisation ─────────────────────────────────────────────────────────
   virtualisation = {
     docker = {
       enable = true;
-      storageDriver = lib.mkIf (systemName == "pc") "btrfs";
+      storageDriver = lib.mkIf isPc "btrfs";
     };
     libvirtd.enable = true;
   };

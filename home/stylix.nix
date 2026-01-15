@@ -1,7 +1,7 @@
 {
-  pkgs,
-  lib,
   config,
+  lib,
+  pkgs,
   ...
 }:
 let
@@ -50,7 +50,7 @@ in
     #  enable = true;
     #  #package = lib.mkForce (pkgs.reversal-icon-theme.override { allColorVariants = true; });
     #  light = "Reversal-black";
-    #  dark  = "Reversal-black-dark";
+    #  dark = "Reversal-black-dark";
     #};
 
     polarity = "dark";
@@ -80,9 +80,9 @@ in
       };
       sizes = {
         applications = 12;
-        desktop     = 12;
-        popups      = 14;
-        terminal    = 16;
+        desktop = 12;
+        popups = 14;
+        terminal = 16;
       };
     };
 

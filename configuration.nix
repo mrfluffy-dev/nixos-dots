@@ -3,14 +3,38 @@
 
 {
   config,
-  pkgs,
   lib,
+  pkgs,
   inputs,
   window_manager,
   systemName,
   ...
 }:
 
+let
+  # Common groups for main users (mrfluffy, work)
+  defaultUserGroups = [
+    "wheel"
+    "networkmanager"
+    "video"
+    "render"
+    "docker"
+    "libvirt"
+    "input"
+    "seat"
+    "dialout"
+  ];
+
+  # Groups for game user (no wheel for security - has empty password)
+  gameUserGroups = [
+    "video"
+    "render"
+    "input"
+    "seat"
+    "networkmanager"
+    "dialout"
+  ];
+in
 {
   imports = [
     ./hardware-configuration.nix
@@ -24,9 +48,7 @@
     #inputs.niri.nixosModules.niri
   ];
 
-  ##############################################################################
-  # Nix settings
-  ##############################################################################
+  # ─── Nix settings ───────────────────────────────────────────────────────────
   nix.settings = {
     experimental-features = [
       "nix-command"
@@ -36,9 +58,7 @@
     auto-optimise-store = true;
   };
 
-  ##############################################################################
-  # Users
-  ##############################################################################
+  # ─── Users ──────────────────────────────────────────────────────────────────
   programs.zsh.enable = true;
   users = {
     users = {
@@ -56,17 +76,7 @@
         isNormalUser = true;
         shell = pkgs.zsh;
         createHome = true;
-        extraGroups = [
-          "wheel"
-          "networkmanager"
-          "video"
-          "render"
-          "docker"
-          "libvirt"
-          "input"
-          "seat"
-"dialout"
-        ];
+        extraGroups = defaultUserGroups;
         packages = with pkgs; [ ];
       };
 
@@ -74,34 +84,17 @@
         isNormalUser = true;
         shell = pkgs.zsh;
         createHome = true;
-        extraGroups = [
-          "wheel"
-          "networkmanager"
-          "video"
-          "render"
-          "docker"
-          "libvirt"
-          "input"
-          "seat"
-"dialout"
-        ];
+        extraGroups = defaultUserGroups;
         packages = with pkgs; [ ];
       };
+
       game = {
         isNormalUser = true;
         description = "Dedicated gaming user (auto-login in Steam specialisation)";
         shell = pkgs.bash;
         createHome = true;
-        password = ""; # no password
-        extraGroups = [
-          "wheel"
-          "video"
-          "render"
-          "input"
-          "seat"
-          "networkmanager"
-          "dialout"
-        ];
+        hashedPassword = ""; # no password - removed wheel group for security
+        extraGroups = gameUserGroups;
         home = "/home/game";
       };
     };
@@ -111,9 +104,7 @@
     ];
 
   };
-  ##############################################################################
-  # Home-Manager
-  ##############################################################################
+  # ─── Home-Manager ───────────────────────────────────────────────────────────
   home-manager = {
     extraSpecialArgs = { inherit inputs window_manager systemName; };
     users = {
@@ -123,9 +114,7 @@
     };
   };
 
-  ##############################################################################
-  # Environment
-  ##############################################################################
+  # ─── Environment ────────────────────────────────────────────────────────────
   environment = {
     sessionVariables = {
       ZDOTDIR = "$HOME/.config/zsh";
@@ -150,17 +139,13 @@
     ];
   };
 
-  ##############################################################################
-  # Nixpkgs policy
-  ##############################################################################
+  # ─── Nixpkgs policy ─────────────────────────────────────────────────────────
   nixpkgs.config = {
     allowUnfree = true;
     permittedInsecurePackages = [ ];
   };
 
-  ##############################################################################
-  # decky
-  ##############################################################################
+  # ─── Decky ──────────────────────────────────────────────────────────────────
   nixpkgs.overlays = [
     inputs.jovian.overlays.default
   ];
@@ -173,9 +158,7 @@
     # extraPythonPackages = ps: with ps; [ some-python-package ];
   };
 
-  ##############################################################################
-  # State version
-  ##############################################################################
+  # ─── State version ──────────────────────────────────────────────────────────
   system.stateVersion = "24.11"; # Did you read the comment?
 
   specialisation = {
@@ -190,9 +173,7 @@
     "00-main-system" = {
       configuration = {
         #boot.loader.systemd-boot.sortKey = lib.mkDefault "00000000000-main";
-        ##############################################################################
-        # Imports
-        ##############################################################################
+        # ─── Imports ─────────────────────────────────────────────────────────────────
         imports = [
           ./system/services.nix
           ./system/nixOSPkgs.nix

@@ -25,9 +25,9 @@ in
     loader = {
       systemd-boot = {
         enable = true;
-extraInstallCommands = ''
-    ${lib.getExe pkgs.gnused} -i 's/default .*/default *-specialisation-00-main-system.conf/' /boot/loader/loader.conf
-  '';
+        extraInstallCommands = ''
+          ${lib.getExe pkgs.gnused} -i 's/default .*/default *-specialisation-00-main-system.conf/' /boot/loader/loader.conf
+        '';
         #sortKey = "z-normal";
       };
       efi.canTouchEfiVariables = true;

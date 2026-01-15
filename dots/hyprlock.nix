@@ -7,6 +7,10 @@
   ...
 }:
 
+let
+  isLaptop = systemName == "laptop";
+  isPc = systemName == "pc";
+in
 {
   services = {
     hypridle = {
@@ -24,19 +28,19 @@
             on-timeout = "loginctl lock-session";
           }
         ]
-        ++ lib.optional (systemName == "laptop") {
+        ++ lib.optional isLaptop {
           timeout = 700;
-          on-timeout = "hyprctl dispatch dpms off";  # Turns off all displays
-          on-resume = "hyprctl dispatch dpms on";   # Turns displays back on
+          on-timeout = "hyprctl dispatch dpms off";
+          on-resume = "hyprctl dispatch dpms on";
         }
-        ++ lib.optional (systemName == "laptop") {
+        ++ lib.optional isLaptop {
           timeout = 800;
           on-timeout = "systemctl suspend-then-hibernate";
         }
-        ++ lib.optional (systemName == "pc") {
-          timeout = 700;  # Adjust timeout as needed (in seconds)
-          on-timeout = "hyprctl dispatch dpms off";  # Turns off all displays
-          on-resume = "hyprctl dispatch dpms on";   # Turns displays back on
+        ++ lib.optional isPc {
+          timeout = 700;
+          on-timeout = "hyprctl dispatch dpms off";
+          on-resume = "hyprctl dispatch dpms on";
         };
       };
     };
