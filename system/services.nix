@@ -105,7 +105,7 @@ in
     package = pkgs.emacs-pgtk;
   };
 
-  #services.flatpak.enable = true;
+  services.flatpak.enable = true;
 
   # Sunshine (only on PC)
   services.sunshine = lib.mkIf isPc {
