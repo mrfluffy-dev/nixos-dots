@@ -86,10 +86,10 @@ in
       };
     };
 
-    cursor = {
-      package = oreo.override { colors = [ "oreo_spark_pink_cursors" ]; };
-      name = "oreo_spark_pink_cursors";
-      size = 32;
-    };
+    #cursor = {
+    #  package = oreo.override { colors = [ "oreo_spark_pink_cursors" ]; };
+    #  name = "oreo_spark_pink_cursors";
+    #  size = 32;
+    #};
   };
 }

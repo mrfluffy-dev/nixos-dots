@@ -14,6 +14,7 @@ let
     name = "default";
     isDefault = true;
   };
+  oreo = pkgs.callPackage ../personalPKGS/oreo.nix { };
 in
 {
   imports = [
@@ -250,6 +251,8 @@ in
     qt6.qtsvg
 
     adw-gtk3
+    (pkgs.callPackage ../personalPKGS/oreo.nix { colors = [ "all" ]; })
+    (pkgs.reversal-icon-theme.override { allColorVariants = true; })
     pywalfox-native
 
     # ─── Experimental (inputs) ───────────────────────────────────────────────────

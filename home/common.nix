@@ -37,13 +37,13 @@
   home.stateVersion = "23.11";
 
   # Common GTK settings
-  gtk = {
-    enable = true;
-    iconTheme = {
-      name = "Reversal-black-dark";
-      package = pkgs.reversal-icon-theme.override { allColorVariants = true; };
-    };
-  };
+  #gtk = {
+  #  enable = true;
+  #  iconTheme = {
+  #    name = "Reversal-black-dark";
+  #    package = pkgs.reversal-icon-theme.override { allColorVariants = true; };
+  #  };
+  #};
 
   # Common packages for all users
   home.packages = with pkgs; [

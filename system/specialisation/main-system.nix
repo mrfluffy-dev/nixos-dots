@@ -44,7 +44,6 @@ in
 
   qt = {
     enable = true;
-    platformTheme = "qt5ct";
   };
 
   xdg.menus.enable = true;

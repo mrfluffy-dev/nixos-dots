@@ -18,10 +18,10 @@
   home.homeDirectory = "/home/mrfluffy";
 
   # User-specific GTK theme
-  gtk.gtk3 = {
-    theme = {
-      name = "adw-gtk3";
-      package = pkgs.adw-gtk3;
-    };
-  };
+  #gtk.gtk3 = {
+  #  theme = {
+  #    name = "adw-gtk3";
+  #    package = pkgs.adw-gtk3;
+  #  };
+  #};
 }
