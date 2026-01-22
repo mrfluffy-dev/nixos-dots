@@ -183,6 +183,7 @@ in
     nil
     nixfmt
     inputs.nix-alien.packages.${pkgs.stdenv.hostPlatform.system}.nix-alien
+    cachix
 
     # --- Wayland / Desktop ---
     foot
