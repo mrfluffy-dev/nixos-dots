@@ -16,7 +16,6 @@
 
       config.common.default = [
         "hyprland;kde"
-        "river"
         "kde"
         "gtk"
       ];

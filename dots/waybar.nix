@@ -10,25 +10,6 @@
   programs.waybar = {
     enable = true;
     style = ''
-      #tags button {
-          padding: 0 5px;
-          color: #f8f8f2;
-      }
-
-      #tags button.occupied {
-        color: inherit;
-        background-color: #6a548d;
-      }
-
-      #tags button.focused {
-          color: #f8f8f2;
-          background-color: #aa86e1;
-      }
-
-      #tags button.urgent {
-        color: #ea6962;
-      }
-
       #mode {
           background: #64727D;
           border-bottom: 3px solid #f8f8f2;
@@ -118,14 +99,13 @@
         spacing = 4; # Gaps between modules (4px)
         # Choose the order of the modules
         modules-left =
-          if window_manager == "river"
-          then [
-            "river/tags"
-            "custom/media"
-          ]
-          else if window_manager == "hyprland"
+          if window_manager == "hyprland"
           then [
             "hyprland/workspaces"
+          ]
+          else if window_manager == "niri"
+          then [
+            "niri/workspaces"
           ]
           else [ ];
         modules-center = [
@@ -179,20 +159,6 @@
           active-only = false;
           sort-by-name = true;
           all-outputs = true;
-        };
-        "river/tags" = {
-          num-tags = 9;
-          tag-labels = [
-            "一"
-            "二"
-            "三"
-            "四"
-            "五"
-            "六"
-            "七"
-            "八"
-            "九"
-          ];
         };
         keyboard-state = {
           numlock = true;

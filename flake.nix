@@ -21,7 +21,7 @@
       url = "github:kaylorben/nixcord";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    #niri.url = "github:sodiboo/niri-flake";
+    niri.url = "github:sodiboo/niri-flake";
     dgop = {
       url = "github:AvengeMedia/dgop";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -78,8 +78,8 @@
           allowUnfree = true;
         };
       };
-      #Avalable options are ["niri" "river" "hyprland" "all"]
-      window_manager = "hyprland";
+      #Avalable options are ["niri" "hyprland" "all"]
+      window_manager = "all";
     in
     {
       nixosConfigurations = {

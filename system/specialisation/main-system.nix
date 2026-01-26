@@ -16,7 +16,6 @@ let
 
   # Window manager toggles
   wmAll = window_manager == "all";
-  useRiver = window_manager == "river" || wmAll;
   useNiri = window_manager == "niri" || wmAll;
   useHypr = window_manager == "hyprland" || wmAll;
 in
@@ -40,8 +39,6 @@ in
   #services.displayManager.cosmic-greeter.enable = true;
 
   # ─── Desktop / WM ───────────────────────────────────────────────────────────
-  programs.river-classic.enable = useRiver;
-
   qt = {
     enable = true;
   };
@@ -52,12 +49,8 @@ in
   environment.etc."/xdg/menus/applications.menu".text =
     builtins.readFile "${pkgs.kdePackages.plasma-workspace}/etc/xdg/menus/plasma-applications.menu";
 
-  # Niri (via overlay)
-  #nixpkgs.overlays = [ inputs.niri.overlays.niri ];
-  #programs.niri = {
-  #  enable = useNiri;
-  #  package = pkgs.niri-stable; # Only needed if not provided by the overlay
-  #};
+  # Niri
+  programs.niri.enable = useNiri;
 
   # Hyprland
   programs.hyprland = {

@@ -66,7 +66,6 @@
       calc = "cpc";
       pdf = "mupdf";
       emacs = "emacs";
-      river = "dbus-update-activation-environment --systemd WAYLAND_DISPLAY XDG_CURRENT_DESKTOP=river && river";
       cp = "xcp";
       wget = "wget --hsts-file=$XDG_DATA_HOME/wget-hsts";
     };

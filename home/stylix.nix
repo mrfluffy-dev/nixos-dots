@@ -31,7 +31,6 @@ in
       #vscode.enable = true;
       lazygit.enable = true;
       #foot.enable = true;
-      #river.enable = true;
       #hyprland.enable = true;
       #waybar.enable = true;
       #nixcord.enable = true;

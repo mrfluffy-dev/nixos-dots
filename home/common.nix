@@ -13,6 +13,7 @@
     inputs.nix-colors.homeManagerModules.default
     inputs.stylix.homeModules.stylix
     inputs.nixcord.homeModules.nixcord
+    inputs.niri.homeModules.niri
 
     # Local modules
     ./sessionVars.nix
@@ -26,8 +27,8 @@
     ../dots/zsh.nix
     ../dots/nixcord.nix
     ../dots/xdg.nix
-    ../dots/river.nix
     ../dots/hyprland.nix
+    ../dots/niri.nix
     ../dots/hyprpaper.nix
     ../dots/caelestia.nix
     ../dots/dankMeterialShell.nix
