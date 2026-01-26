@@ -21,7 +21,7 @@ let
   terminal = "footclient";
   fileManager = "thunar";
   #runner = "${lib.getExe caelestia-cli} shell drawers toggle launcher";
-  runner = "vicinae toggle";
+  runner = "dms ipc call spotlight toggle";
   # runner     = "anyrun";
   browser = "firefox";
   editor = "emacsclient -c";
@@ -41,7 +41,7 @@ in
       # ─── Monitors ────────────────────────────────────────────────────────────────
       source = [
         "./dms/outputs.conf"
-        #"./dms/cursor.conf"
+        "./dms/cursor.conf"
         "./dms/colors.conf"
       ];
 

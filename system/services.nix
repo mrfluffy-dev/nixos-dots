@@ -66,6 +66,7 @@ in
   };
 
   services.blueman.enable = true;
+  services.accounts-daemon.enable = true;
 
   # ─── Printing & Files ───────────────────────────────────────────────────────
   # Enable CUPS to print documents.
