@@ -44,49 +44,6 @@ in
         "./dms/cursor.conf"
         "./dms/colors.conf"
       ];
-
-      # See https://wiki.hyprland.org/Configuring/Monitors/
-      #monitor = lib.mkMerge [
-      #  #(lib.mkIf (systemName == "laptop") [ "eDP-1,1920x1080@59.99700,0x0,1" ])
-      #  (lib.mkIf (systemName == "pc") [
-      #    "HDMI-A-2, disable"
-      #  ])
-      #];
-
-      #monitorv2 =
-      #  [ ]
-      #  ++ lib.optional (systemName == "laptop") {
-      #    output = "eDP-1";
-      #    mode = "1920x1080@59.99700";
-      #    scale = 1;
-      #    position = "0x0";
-      #  }
-      #  ++ lib.optional (systemName == "pc") {
-      #    output = "DP-1";
-      #    mode = "2560x1440@239.97";
-      #    position = "2560x0"; # "1440x750";  # Corrected from 2569x0 for seamless alignment
-      #    scale = 1;
-      #    #supports_wide_color = 1;
-      #    bitdepth = 10;
-      #    cm = "wide";
-      #    supports_hdr = true;
-      #    supports_wide_color = true;
-      #    sdr_min_luminance = 0; # For true black on OLED
-      #    sdr_max_luminance = 275; # Matches typical SDR brightness
-      #    min_luminance = 0;
-      #    max_luminance = 1000; # HDR peak
-      #    max_avg_luminance = 400; # Average frame luminance
-      #    sdrbrightness = 1.2; # Slight boost to avoid washed out look
-      #    sdrsaturation = 1.0;
-      #  }
-      #  ++ lib.optional (systemName == "pc") {
-      #    output = "DP-2";
-      #    mode = "2560x1440@144";
-      #    scale = 1;
-      #    position = "0x0";
-      #    transform = 0;
-      #  };
-
       # ─── Autostart ───────────────────────────────────────────────────────────────
 
       # Autostart necessary processes (like notifications daemons, status bars, etc.)
@@ -101,16 +58,7 @@ in
         "foot -s"
         "systemctl --user import-environment DBUS_SESSION_BUS_ADDRESS WAYLAND_DISPLAY XDG_SESSION_TYPE XDG_CURRENT_DESKTOP XDG_SESSION_DESKTOP QT_QPA_PLATFORMTHEME GTK_THEME"
         "dbus-update-activation-environment --systemd --all"
-      ]
-      ++ lib.optionals (config.home.username == "work") [
-        "thunderbird"
-        "sleep 10 && emacsclient -c --frame-parameters='((name . \"work\"))' $HOME/Documents/work/README.org"
       ];
-      # ++ lib.optional (systemName == "laptop")
-      #   "swaybg -o eDP-1 -i ${../assets/Wallpapers/138.png}"
-      #
-      # ++ lib.optional (systemName == "pc")
-      #   "swaybg -o HDMI-A-1 -i ${../assets/Wallpapers/138.png} -o DP-1 -i ${../assets/Wallpapers/138.png}";
 
       # ─── Plugins ─────────────────────────────────────────────────────────────────
 
@@ -288,6 +236,7 @@ in
         # ",Print, exec, grim -g \"$(slurp)\" - | swappy -f -"
         ",Print, exec, dms screenshot"
         "${mod}, f1, exec, dms ipc call keybinds toggle hyprland"
+        "${mod}, BACKSLASH, exec, dms ipc call notepad toggle"
 
         # Dwindle
         "${mod}, P, pseudo, "
@@ -403,9 +352,6 @@ in
 
         # Fix some dragging issues with XWayland
         "match:class ^$, match:title ^$, match:xwayland 1, match:float 1, match:fullscreen 0, match:pin 0, no_focus on"
-
-        "match:class thunderbird, workspace special:magic silent"
-        "match:class emacs, match:title work, workspace special:magic silent"
       ];
     };
   };

@@ -19,12 +19,18 @@ in
     (modulesPath + "/installer/scan/not-detected.nix")
   ];
 
-  assertions = [{
-    assertion = builtins.elem systemName [ "laptop" "pc" ];
-    message = "systemName must be either 'laptop' or 'pc', got: ${systemName}";
-  }];
+  assertions = [
+    {
+      assertion = builtins.elem systemName [
+        "laptop"
+        "pc"
+      ];
+      message = "systemName must be either 'laptop' or 'pc', got: ${systemName}";
+    }
+  ];
 
-  boot.initrd.availableKernelModules = [ ]
+  boot.initrd.availableKernelModules =
+    [ ]
     ++ lib.optionals isPc [
       "xhci_pci"
       "ahci"
@@ -41,15 +47,20 @@ in
       "sd_mod"
     ];
   boot.initrd.kernelModules = [ ];
-  boot.kernelModules = [ ]
-    ++ lib.optionals isPc [ "kvm-amd" "btusb" ]
+  boot.kernelModules =
+    [ ]
+    ++ lib.optionals isPc [
+      "kvm-amd"
+      "btusb"
+    ]
     ++ lib.optionals isLaptop [ "kvm-intel" ];
   boot.extraModulePackages = [ ];
   boot.kernelParams = [
-  # Most common working combination in 2024/2025
-  "btusb.enable_autosuspend=0"
-  "btusb.reset=1"
-];
+    # Most common working combination in 2024/2025
+    "btusb.enable_autosuspend=0"
+    "btusb.reset=1"
+  ];
+  boot.tmp.useTmpfs = true;
 
   fileSystems."/" = lib.mkMerge [
     (lib.mkIf isPc {
@@ -91,7 +102,6 @@ in
     })
   ];
 
-
   #fileSystems."/server" = lib.mkIf isPc {   # or remove the mkIf if you want it on both
   #  device = "//192.168.1.8/mrfluffy";   # adjust the share name if it’s not the home share
   #  fsType = "cifs";
@@ -115,7 +125,8 @@ in
   #  ];
   #};
 
-  swapDevices = [ ]
+  swapDevices =
+    [ ]
     ++ lib.optionals isPc [
       { device = "/dev/disk/by-uuid/ccf41b96-c45f-47e0-8541-cd865f5d2ec6"; }
     ]
