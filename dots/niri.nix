@@ -8,22 +8,35 @@
 
 let
   isLaptop = systemName == "laptop";
+  isPc = systemName == "pc";
+
+  # Match hyprland definitions
+  mod = "Alt";
+  terminal = "footclient";
+  fileManager = "thunar";
+  runner = "dms ipc call spotlight toggle";
+  browser = "firefox";
+  editor = "emacsclient -c";
 in
 {
   programs.niri = {
     enable = window_manager == "niri" || window_manager == "all";
 
     settings = {
-      # Input configuration
+      # Input configuration (aligned with hyprland)
       input = {
         keyboard = {
-          xkb.layout = "ie";
-          numlock = true;
+          xkb.layout = lib.mkMerge [
+            (lib.mkIf isLaptop "ie")
+            (lib.mkIf isPc "us")
+          ];
+          repeat-rate = 40;
+          repeat-delay = 500;
         };
 
         touchpad = {
           tap = true;
-          natural-scroll = true;
+          natural-scroll = false; # Match hyprland
           dwt = true;
         };
 
@@ -31,13 +44,12 @@ in
           accel-profile = "flat";
         };
 
-        warp-mouse-to-focus.enable = true;
         focus-follows-mouse.enable = true;
       };
 
-      # Layout settings
+      # Layout settings (aligned with hyprland gaps)
       layout = {
-        gaps = 8;
+        gaps = 10; # hyprland: gaps_out = 10
         center-focused-column = "never";
 
         preset-column-widths = [
@@ -49,17 +61,11 @@ in
         default-column-width = { proportion = 1.0 / 2.0; };
 
         focus-ring = {
-          enable = true;
-          width = 2;
-          active.color = "#7fc8ff";
-          inactive.color = "#505050";
+          enable = true; # Hyprland doesn't have separate focus ring
         };
 
         border = {
           enable = true;
-          width = 2;
-          active.color = "#ffc87f";
-          inactive.color = "#505050";
         };
 
         shadow = {
@@ -71,12 +77,15 @@ in
         };
       };
 
-      # Startup programs
+      # Startup programs (aligned with hyprland exec-once)
       spawn-at-startup = [
         { command = [ "xwayland-satellite" ]; }
-        #{ command = [ "waybar" ]; }
-        { command = [ "foot" "--server" ]; }
-        #{ command = [ "swaybg" "-i" "${../assets/Wallpapers/138.png}" "-m" "fill" ]; }
+        { command = [ "${pkgs.kdePackages.polkit-kde-agent-1}/libexec/polkit-kde-authentication-agent-1" ]; }
+        { command = [ "${pkgs.kdePackages.kwallet-pam}/libexec/pam_kwallet_init" ]; }
+        { command = [ "fcitx5" "-d" ]; }
+        { command = [ "foot" "-s" ]; }
+        { command = [ "sh" "-c" "systemctl --user import-environment DBUS_SESSION_BUS_ADDRESS WAYLAND_DISPLAY XDG_SESSION_TYPE XDG_CURRENT_DESKTOP XDG_SESSION_DESKTOP QT_QPA_PLATFORMTHEME GTK_THEME" ]; }
+        { command = [ "dbus-update-activation-environment" "--systemd" "--all" ]; }
       ];
 
       # Prefer server-side decorations
@@ -93,120 +102,119 @@ in
       # Hotkey overlay settings
       hotkey-overlay.skip-at-startup = true;
 
-      # Keybinds
+      # Keybinds (aligned with hyprland)
       binds = {
-        # App launchers
-        "Mod+Return".action.spawn = [ "footclient" ];
-        "Mod+D".action.spawn = [ "anyrun" ];
-        "Mod+E".action.spawn = [ "dolphin" ];
-        "Super+Alt+L".action.spawn = [ "swaylock" ];
+        # App launchers (matching hyprland)
+        "${mod}+Return".action.spawn = [ terminal ];
+        "${mod}+B".action.spawn = [ browser ];
+        "${mod}+F".action.spawn = [ fileManager ];
+        "${mod}+D".action.spawn = [ "sh" "-c" runner ];
+        "${mod}+E".action.spawn = [ "sh" "-c" editor ];
 
-        # Audio control
-        "XF86AudioRaiseVolume".action.spawn = [ "wpctl" "set-volume" "@DEFAULT_AUDIO_SINK@" "0.1+" ];
-        "XF86AudioLowerVolume".action.spawn = [ "wpctl" "set-volume" "@DEFAULT_AUDIO_SINK@" "0.1-" ];
-        "XF86AudioMute".action.spawn = [ "wpctl" "set-mute" "@DEFAULT_AUDIO_SINK@" "toggle" ];
+        # Audio control (using pamixer like hyprland)
+        "XF86AudioRaiseVolume".action.spawn = [ "pamixer" "-i" "5" ];
+        "XF86AudioLowerVolume".action.spawn = [ "pamixer" "-d" "5" ];
+        "XF86AudioMute".action.spawn = [ "pamixer" "--toggle-mute" ];
         "XF86AudioMicMute".action.spawn = [ "wpctl" "set-mute" "@DEFAULT_AUDIO_SOURCE@" "toggle" ];
 
-        # Brightness control (laptop)
-        "XF86MonBrightnessUp".action.spawn = [ "brightnessctl" "--class=backlight" "set" "+10%" ];
-        "XF86MonBrightnessDown".action.spawn = [ "brightnessctl" "--class=backlight" "set" "10%-" ];
+        # Media controls (matching hyprland)
+        "XF86AudioNext".action.spawn = [ "playerctl" "next" ];
+        "XF86AudioPrev".action.spawn = [ "playerctl" "previous" ];
+        "XF86AudioPlay".action.spawn = [ "playerctl" "play-pause" ];
+        "XF86AudioPause".action.spawn = [ "playerctl" "play-pause" ];
 
-        # Window management
-        "Mod+Q".action.close-window = {};
-        "Mod+Shift+E".action.quit = {};
-        "Mod+Shift+Slash".action.show-hotkey-overlay = {};
+        # Brightness control
+        "XF86MonBrightnessUp".action.spawn = [ "sh" "-c" "dms ipc call brightness increment 5" ];
+        "XF86MonBrightnessDown".action.spawn = [ "sh" "-c" "dms ipc call brightness decrement 5" ];
 
-        # Focus navigation (vim-style)
-        "Mod+H".action.focus-column-left = {};
-        "Mod+J".action.focus-window-down = {};
-        "Mod+K".action.focus-window-up = {};
-        "Mod+L".action.focus-column-right = {};
+        # Window management (matching hyprland)
+        "${mod}+Q".action.close-window = {};
+        "${mod}+M".action.quit = {}; # Match hyprland exit
+        "${mod}+V".action.toggle-window-floating = {};
+        "${mod}+T".action.fullscreen-window = {}; # Match hyprland fullscreen
 
-        # Move windows
-        "Mod+Shift+H".action.move-column-left = {};
-        "Mod+Shift+J".action.move-window-down = {};
-        "Mod+Shift+K".action.move-window-up = {};
-        "Mod+Shift+L".action.move-column-right = {};
+        # Screenshots (using dms like hyprland)
+        "Print".action.spawn = [ "dms" "screenshot" ];
+        "${mod}+F1".action.spawn = [ "sh" "-c" "dms ipc call keybinds toggle niri" ];
+        "${mod}+Backslash".action.spawn = [ "sh" "-c" "dms ipc call notepad toggle" ];
+
+        # Focus navigation (vim-style, matching hyprland)
+        "${mod}+H".action.focus-column-left = {};
+        "${mod}+J".action.focus-window-down = {};
+        "${mod}+K".action.focus-window-up = {};
+        "${mod}+L".action.focus-column-right = {};
+
+        # Move windows (matching hyprland)
+        "${mod}+Shift+H".action.move-column-left = {};
+        "${mod}+Shift+J".action.move-window-down = {};
+        "${mod}+Shift+K".action.move-window-up = {};
+        "${mod}+Shift+L".action.move-column-right = {};
 
         # Monitor focus
-        "Mod+Ctrl+H".action.focus-monitor-left = {};
-        "Mod+Ctrl+J".action.focus-monitor-down = {};
-        "Mod+Ctrl+K".action.focus-monitor-up = {};
-        "Mod+Ctrl+L".action.focus-monitor-right = {};
+        "${mod}+Ctrl+H".action.focus-monitor-left = {};
+        "${mod}+Ctrl+J".action.focus-monitor-down = {};
+        "${mod}+Ctrl+K".action.focus-monitor-up = {};
+        "${mod}+Ctrl+L".action.focus-monitor-right = {};
 
         # Move to monitor
-        "Mod+Ctrl+Shift+H".action.move-column-to-monitor-left = {};
-        "Mod+Ctrl+Shift+J".action.move-column-to-monitor-down = {};
-        "Mod+Ctrl+Shift+K".action.move-column-to-monitor-up = {};
-        "Mod+Ctrl+Shift+L".action.move-column-to-monitor-right = {};
+        "${mod}+Ctrl+Shift+H".action.move-column-to-monitor-left = {};
+        "${mod}+Ctrl+Shift+J".action.move-column-to-monitor-down = {};
+        "${mod}+Ctrl+Shift+K".action.move-column-to-monitor-up = {};
+        "${mod}+Ctrl+Shift+L".action.move-column-to-monitor-right = {};
 
-        # Workspace navigation
-        "Mod+U".action.focus-workspace-down = {};
-        "Mod+I".action.focus-workspace-up = {};
-        "Mod+Shift+U".action.move-column-to-workspace-down = {};
-        "Mod+Shift+I".action.move-column-to-workspace-up = {};
+        # Workspace numbers (matching hyprland)
+        "${mod}+1".action.focus-workspace = 1;
+        "${mod}+2".action.focus-workspace = 2;
+        "${mod}+3".action.focus-workspace = 3;
+        "${mod}+4".action.focus-workspace = 4;
+        "${mod}+5".action.focus-workspace = 5;
+        "${mod}+6".action.focus-workspace = 6;
+        "${mod}+7".action.focus-workspace = 7;
+        "${mod}+8".action.focus-workspace = 8;
+        "${mod}+9".action.focus-workspace = 9;
+        "${mod}+0".action.focus-workspace = 10;
 
-        # Workspace numbers
-        "Mod+1".action.focus-workspace = 1;
-        "Mod+2".action.focus-workspace = 2;
-        "Mod+3".action.focus-workspace = 3;
-        "Mod+4".action.focus-workspace = 4;
-        "Mod+5".action.focus-workspace = 5;
-        "Mod+6".action.focus-workspace = 6;
-        "Mod+7".action.focus-workspace = 7;
-        "Mod+8".action.focus-workspace = 8;
-        "Mod+9".action.focus-workspace = 9;
+        "${mod}+Shift+1".action.move-column-to-workspace = 1;
+        "${mod}+Shift+2".action.move-column-to-workspace = 2;
+        "${mod}+Shift+3".action.move-column-to-workspace = 3;
+        "${mod}+Shift+4".action.move-column-to-workspace = 4;
+        "${mod}+Shift+5".action.move-column-to-workspace = 5;
+        "${mod}+Shift+6".action.move-column-to-workspace = 6;
+        "${mod}+Shift+7".action.move-column-to-workspace = 7;
+        "${mod}+Shift+8".action.move-column-to-workspace = 8;
+        "${mod}+Shift+9".action.move-column-to-workspace = 9;
+        "${mod}+Shift+0".action.move-column-to-workspace = 10;
 
-        "Mod+Shift+1".action.move-column-to-workspace = 1;
-        "Mod+Shift+2".action.move-column-to-workspace = 2;
-        "Mod+Shift+3".action.move-column-to-workspace = 3;
-        "Mod+Shift+4".action.move-column-to-workspace = 4;
-        "Mod+Shift+5".action.move-column-to-workspace = 5;
-        "Mod+Shift+6".action.move-column-to-workspace = 6;
-        "Mod+Shift+7".action.move-column-to-workspace = 7;
-        "Mod+Shift+8".action.move-column-to-workspace = 8;
-        "Mod+Shift+9".action.move-column-to-workspace = 9;
+        # Scroll through workspaces (matching hyprland mouse scroll)
+        "${mod}+WheelScrollDown".action.focus-workspace-down = {};
+        "${mod}+WheelScrollUp".action.focus-workspace-up = {};
 
-        # Column management
-        "Mod+Comma".action.consume-window-into-column = {};
-        "Mod+Period".action.expel-window-from-column = {};
-        "Mod+BracketLeft".action.consume-or-expel-window-left = {};
-        "Mod+BracketRight".action.consume-or-expel-window-right = {};
+        # Column management (niri-specific, kept similar)
+        "${mod}+Comma".action.consume-window-into-column = {};
+        "${mod}+Period".action.expel-window-from-column = {};
+        "${mod}+BracketLeft".action.consume-or-expel-window-left = {};
+        "${mod}+BracketRight".action.consume-or-expel-window-right = {};
+        "${mod}+Semicolon".action.focus-column-first = {}; # Similar to promote in master layout
 
         # Window sizing
-        "Mod+F".action.maximize-column = {};
-        "Mod+Shift+F".action.fullscreen-window = {};
-        "Mod+C".action.center-column = {};
+        "${mod}+Minus".action.set-column-width = "-10%";
+        "${mod}+Equal".action.set-column-width = "+10%";
+        "${mod}+Shift+Minus".action.set-window-height = "-10%";
+        "${mod}+Shift+Equal".action.set-window-height = "+10%";
 
-        "Mod+Minus".action.set-column-width = "-10%";
-        "Mod+Equal".action.set-column-width = "+10%";
-        "Mod+Shift+Minus".action.set-window-height = "-10%";
-        "Mod+Shift+Equal".action.set-window-height = "+10%";
-
-        "Mod+R".action.switch-preset-column-width = {};
-        "Mod+Shift+R".action.switch-preset-window-height = {};
+        "${mod}+R".action.switch-preset-column-width = {};
+        "${mod}+Shift+R".action.switch-preset-window-height = {};
+        "${mod}+C".action.center-column = {};
 
         # Floating
-        "Mod+V".action.toggle-window-floating = {};
-        "Mod+Shift+V".action.switch-focus-between-floating-and-tiling = {};
+        "${mod}+Shift+V".action.switch-focus-between-floating-and-tiling = {};
 
         # Tabs
-        "Mod+W".action.toggle-column-tabbed-display = {};
-
-        # Screenshots
-        "Print".action.screenshot = {};
-        "Ctrl+Print".action.screenshot-screen = {};
-        "Alt+Print".action.screenshot-window = {};
+        "${mod}+W".action.toggle-column-tabbed-display = {};
 
         # Misc
-        "Mod+Escape".action.toggle-keyboard-shortcuts-inhibit = {};
-        "Mod+Shift+P".action.power-off-monitors = {};
-
-        # Scroll bindings
-        "Mod+WheelScrollDown".action.focus-workspace-down = {};
-        "Mod+WheelScrollUp".action.focus-workspace-up = {};
-        "Mod+WheelScrollLeft".action.focus-column-left = {};
-        "Mod+WheelScrollRight".action.focus-column-right = {};
+        "${mod}+Escape".action.toggle-keyboard-shortcuts-inhibit = {};
+        "${mod}+Shift+P".action.power-off-monitors = {};
       };
 
       # Window rules
@@ -223,4 +231,17 @@ in
       ];
     };
   };
+
+  # Redirect the generated config to a different file
+  xdg.configFile.niri-config.target = lib.mkForce "niri/generated.kdl";
+
+  # Create the main config that includes everything
+  xdg.configFile."niri/config.kdl".text = ''
+    include "generated.kdl"
+    include "dms/colors.kdl"
+    include "dms/layout.kdl"
+    include "dms/alttab.kdl"
+    include "dms/binds.kdl"
+    include "dms/cursor.kdl"
+  '';
 }
