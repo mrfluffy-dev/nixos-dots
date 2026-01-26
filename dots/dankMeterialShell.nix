@@ -14,7 +14,7 @@
   programs.dank-material-shell = {
     enable = true;
     systemd = {
-      enable = true; # if you prefer starting from your compositor
+      enable = true; 
     };
 
     #settings = {

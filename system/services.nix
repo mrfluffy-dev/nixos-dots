@@ -109,37 +109,37 @@ in
   services.flatpak.enable = true;
 
   # Sunshine (only on PC)
-  services.sunshine = lib.mkIf isPc {
-    enable = false;
-    settings = {
-      sunshine_name = "nixos";
-      port = 47989;
-      output_name = 0;
-    };
-    applications = {
-      apps = [
-        {
-          name = "Steam";
-          env = {
-            PATH = "$(PATH):/run/current-system/sw/bin";
-          };
-          output = "steam.txt";
-          detached = [
-            "setsid /run/current-system/sw/bin/steam steam://open/bigpicture"
-          ];
-          prep-cmd = [
-            {
-              "do" = "";
-              "undo" = "setsid /run/current-system/sw/bin/steam steam://close/bigpicture";
-            }
-          ];
-          image-path = "steam.png";
-        }
-      ];
-    };
-    capSysAdmin = false;
-    openFirewall = true;
-  };
+  #services.sunshine = lib.mkIf isPc {
+  #  enable = false;
+  #  settings = {
+  #    sunshine_name = "nixos";
+  #    port = 47989;
+  #    output_name = 0;
+  #  };
+  #  applications = {
+  #    apps = [
+  #      {
+  #        name = "Steam";
+  #        env = {
+  #          PATH = "$(PATH):/run/current-system/sw/bin";
+  #        };
+  #        output = "steam.txt";
+  #        detached = [
+  #          "setsid /run/current-system/sw/bin/steam steam://open/bigpicture"
+  #        ];
+  #        prep-cmd = [
+  #          {
+  #            "do" = "";
+  #            "undo" = "setsid /run/current-system/sw/bin/steam steam://close/bigpicture";
+  #          }
+  #        ];
+  #        image-path = "steam.png";
+  #      }
+  #    ];
+  #  };
+  #  capSysAdmin = false;
+  #  openFirewall = true;
+  #};
 
   # Ollama (only on PC)
   services.ollama = lib.mkIf isPc {
@@ -158,35 +158,7 @@ in
     };
   };
 
-  # ─── Systemd User Services ──────────────────────────────────────────────────
-  systemd.user.services.steam-run-url-service = {
-    description = "Service to launch Steam URLs via FIFO";
-    wantedBy = [ "default.target" ];
-    serviceConfig = {
-      ExecStart =
-        let
-          script = pkgs.writeShellScript "steam-run-url-service.sh" ''
-            #!/usr/bin/env bash
-            FIFO="/run/user/$(id --user)/steam-run-url.fifo"
-            if [ ! -p "$FIFO" ]; then
-              mkfifo "$FIFO"
-            fi
-            while true; do
-              if read line <"$FIFO"; then
-                steam_env=();
-                if [ "$XDG_SESSION_DESKTOP" = "sway" ] || [ "$XDG_SESSION_DESKTOP" = "Hyprland" ] || [ "$DESKTOP_SESSION" = "sway" ] || [ "$DESKTOP_SESSION" = "Hyprland" ]; then
-                  steam_env+=("QT_QPA_PLATFORM=wayland");
-                fi
-                steam "$line"
-              fi
-            done
-          '';
-        in
-        "${script}";
-      Restart = "always";
-    };
-    path = [ pkgs.steam ];
-  };
+
 
   # ─── Networking & Remote ────────────────────────────────────────────────────
   # services.resolved = {
