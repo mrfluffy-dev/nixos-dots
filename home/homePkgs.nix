@@ -15,17 +15,6 @@ let
     isDefault = true;
   };
 
-  reversal-black = pkgs.reversal-icon-theme.overrideAttrs (old: {
-    installPhase = ''
-      runHook preInstall
-      mkdir -p $out/share/icons
-      # Hardcode the correct upstream invocation for black variant
-      ./install.sh -t black -d $out/share/icons
-      rm -f $out/share/icons/*/{AUTHORS,COPYING}
-      jdupes --quiet --link-soft --recurse $out/share
-      runHook postInstall
-    '';
-  });
 in
 {
   imports = [
@@ -225,8 +214,7 @@ in
 
     adw-gtk3
     (pkgs.callPackage ../personalPKGS/oreo.nix { colors = [ "all" ]; })
-    #(pkgs.reversal-icon-theme.override { colorVariants = ["-black"]; })
-    reversal-black
+    (pkgs.callPackage ../personalPKGS/reversal-icon-theme.nix { colorVariants = [ "all" ]; })
     pywalfox-native
 
     # ─── Experimental (inputs) ───────────────────────────────────────────────────

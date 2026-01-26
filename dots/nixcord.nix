@@ -18,6 +18,9 @@
       #useSystemVencord = false;
     };
     config = {
+      enabledThemes = [
+        "dank-discord.css"
+      ];
       plugins = {
         alwaysTrust = {
           enable = true;
