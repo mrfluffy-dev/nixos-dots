@@ -55,5 +55,10 @@ in
       options v4l2loopback devices=2 video_nr=1,0 card_label="OBS Cam","phone cam" exclusive_caps=1,1
     '';
 
+    tmp = {
+      cleanOnBoot = lib.mkIf isLaptop true;
+      useTmpfs = lib.mkIf isPc true;
+    };
+
   };
 }
