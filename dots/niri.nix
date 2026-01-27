@@ -192,12 +192,12 @@ in
         "XF86MonBrightnessUp".action.spawn = [
           "sh"
           "-c"
-          "dms ipc call brightness increment 5"
+          "dms ipc call brightness increment 5 backlight:intel_backlight"
         ];
         "XF86MonBrightnessDown".action.spawn = [
           "sh"
           "-c"
-          "dms ipc call brightness decrement 5"
+          "dms ipc call brightness decrement 5 backlight:intel_backlight"
         ];
 
         # Window management (matching hyprland)

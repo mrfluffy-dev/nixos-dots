@@ -148,6 +148,7 @@ in
     #upscaler
     pear-desktop
     libsixel
+    jellyfin-desktop
 
     # ─── Development Toolchains ──────────────────────────────────────────────────
     gdb
