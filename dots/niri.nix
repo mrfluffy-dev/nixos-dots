@@ -90,10 +90,6 @@ in
       spawn-at-startup = [
         { command = [ "xwayland-satellite" ]; }
         {
-          command = [ "${pkgs.kdePackages.polkit-kde-agent-1}/libexec/polkit-kde-authentication-agent-1" ];
-        }
-        { command = [ "${pkgs.kdePackages.kwallet-pam}/libexec/pam_kwallet_init" ]; }
-        {
           command = [
             "fcitx5"
             "-d"
@@ -310,6 +306,16 @@ in
 
       # Window rules
       window-rules = [
+        #{
+        #  matches = [
+        #    { app-id = "firefox"; }
+        #    { app-id = "thunar"; }
+        #    { app-id = "vesktop"; }
+        #  ];
+        #  default-column-width = {
+        #    proportion = 0.95;
+        #  };
+        #}
         # Float file dialogs
         {
           matches = [

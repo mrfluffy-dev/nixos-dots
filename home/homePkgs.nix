@@ -194,19 +194,6 @@ in
 
     # ─── KDE / File Management ───────────────────────────────────────────────────
     kdePackages.qt6ct
-    kdePackages.baloo # new
-    kdePackages.baloo-widgets # new
-    kdePackages.dolphin
-    kdePackages.ffmpegthumbs # new
-    kdePackages.kdegraphics-mobipocket # new
-    kdePackages.kdegraphics-thumbnailers # new
-    kdePackages.kdesdk-thumbnailers # new
-    kdePackages.kimageformats # new
-    kdePackages.kio
-    kdePackages.kio-extras
-    # kdePackages.breeze-icons
-    # kdePackages.dolphin-plugins
-    # kdePackages.kde-cli-tools
     # resvg # new
     adwaita-icon-theme
     hicolor-icon-theme

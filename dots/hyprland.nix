@@ -11,7 +11,6 @@ let
   isLaptop = systemName == "laptop";
   isPc = systemName == "pc";
 
-  hypr-package = inputs.hyprland.packages.${pkgs.stdenv.hostPlatform.system}.hyprland;
   hypr-portal =
     inputs.hyprland.packages.${pkgs.stdenv.hostPlatform.system}.xdg-desktop-portal-hyprland;
   hypr-split =
@@ -29,7 +28,7 @@ in
 {
   wayland.windowManager.hyprland = {
     enable = window_manager == "hyprland" || window_manager == "all";
-    package = hypr-package;
+    package = null; # Use the system package from programs.hyprland to avoid duplicate sessions
     portalPackage = hypr-portal;
     plugins = [
       #pkgs.hyprlandPlugins.hyprsplit
@@ -51,9 +50,7 @@ in
       exec-once = [
         # "waybar"
         # "quickshell"
-        #"${pkgs.polkit_gnome}/libexec/polkit-gnome-authentication-agent-1"
-        "${pkgs.kdePackages.polkit-kde-agent-1}/libexec/polkit-kde-authentication-agent-1"
-        "${pkgs.kdePackages.kwallet-pam}/libexec/pam_kwallet_init"
+        "${pkgs.polkit_gnome}/libexec/polkit-gnome-authentication-agent-1"
         "fcitx5 -d"
         "foot -s"
         "systemctl --user import-environment DBUS_SESSION_BUS_ADDRESS WAYLAND_DISPLAY XDG_SESSION_TYPE XDG_CURRENT_DESKTOP XDG_SESSION_DESKTOP QT_QPA_PLATFORMTHEME GTK_THEME"

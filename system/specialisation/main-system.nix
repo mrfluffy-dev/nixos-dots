@@ -91,7 +91,7 @@ in
     pam.services = {
       swaylock = { };
       greetd.enableGnomeKeyring = true;
-      greetd.kwallet.enable = true;
+      login.enableGnomeKeyring = true;
     };
   };
 

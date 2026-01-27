@@ -12,8 +12,6 @@ let
 in
 {
   # ─── Desktop & Input ───────────────────────────────────────────────────────
-  services.xserver.windowManager.fvwm2.gestures = true;
-
   # Enable touchpad support (enabled by default in most desktop managers).
   services.libinput = {
     enable = true;
@@ -50,19 +48,6 @@ in
         "default.clock.rate" = 96000;
         "default.clock.allowed-rates" = [ 44100 48000 96000 ];
       };
-  };
-
-  # ─── Nice Shit ──────────────────────────────────────────────────────────────
-  services.ananicy = {
-    enable = true;
-    package = pkgs.ananicy-cpp;
-    rulesProvider = pkgs.ananicy-cpp;
-    extraRules = [
-      {
-        "name" = "gamescope";
-        "nice" = -20;
-      }
-    ];
   };
 
   services.blueman.enable = true;

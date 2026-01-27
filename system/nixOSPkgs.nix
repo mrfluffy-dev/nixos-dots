@@ -114,11 +114,6 @@ in
     virt-manager.enable = true;
     corectrl.enable = true;
 
-    opengamepadui = {
-      enable = true;
-      gamescopeSession.enable = true;
-    };
-
     steam = {
       enable = true;
       remotePlay.openFirewall = true;
@@ -216,10 +211,8 @@ in
     hunspell
     hunspellDicts.en_US
 
-    # --- KDE Wallet bits ---
-    kdePackages.kwallet
-    kdePackages.kwalletmanager
-    kdePackages.kwallet-pam
+    # --- GNOME Keyring ---
+    gnome-keyring
 
     # --- Apps ---
     git
