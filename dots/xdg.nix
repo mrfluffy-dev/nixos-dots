@@ -14,20 +14,24 @@
     portal = {
       enable = true;
 
-      config.common.default = [
-        "hyprland;kde"
-        "kde"
-        "gtk"
-      ];
+      config = {
+        common.default = [ "gtk" ];
+      } // lib.optionalAttrs (window_manager == "hyprland" || window_manager == "all") {
+        hyprland.default = [ "hyprland" "gtk" ];
+      } // lib.optionalAttrs (window_manager == "niri" || window_manager == "all") {
+        niri.default = [ "gnome" "gtk" ];
+      };
 
       xdgOpenUsePortal = true;
 
-      extraPortals = with pkgs; [
-        xdg-desktop-portal-wlr
-        xdg-desktop-portal-gtk
-        inputs.hyprland.packages.${pkgs.stdenv.hostPlatform.system}.xdg-desktop-portal-hyprland
-        kdePackages.xdg-desktop-portal-kde
-      ];
+      extraPortals = with pkgs;
+        [ xdg-desktop-portal-gtk ]
+        ++ lib.optionals (window_manager == "hyprland" || window_manager == "all") [
+          inputs.hyprland.packages.${pkgs.stdenv.hostPlatform.system}.xdg-desktop-portal-hyprland
+        ]
+        ++ lib.optionals (window_manager == "niri" || window_manager == "all") [
+          xdg-desktop-portal-gnome
+        ];
     };
 
     mime.enable = true;

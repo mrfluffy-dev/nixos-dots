@@ -60,7 +60,7 @@ assets/Wallpapers/     # Wallpaper images
 
 ### Window Manager Selection
 
-Set in `flake.nix` via `window_manager` variable (options: `"hyprland"`, `"river"`, `"niri"`, `"all"`). Currently set to `"hyprland"`. This variable is passed to modules for conditional WM configuration.
+Set in `flake.nix` via `window_manager` variable (options: `"hyprland"`, `"niri"`, `"all"`). Currently set to `"hyprland"`. This variable is passed to modules for conditional WM configuration.
 
 ### Theming
 

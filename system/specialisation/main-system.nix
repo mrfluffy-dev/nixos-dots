@@ -50,7 +50,10 @@ in
     builtins.readFile "${pkgs.kdePackages.plasma-workspace}/etc/xdg/menus/plasma-applications.menu";
 
   # Niri
-  programs.niri.enable = useNiri;
+  programs.niri = {
+    enable = useNiri;
+    #package = inputs.niri.packages.${pkgs.stdenv.hostPlatform.system}.niri-stable;
+  };
 
   # Hyprland
   programs.hyprland = {

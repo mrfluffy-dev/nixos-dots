@@ -44,7 +44,6 @@
 ;; change `org-directory'. It must be set before org loads!
 (setq org-directory "~/org/")
 
-(require 'direnv)
 
 
 ;; Whenever you reconfigure a package, make sure to wrap your config in an

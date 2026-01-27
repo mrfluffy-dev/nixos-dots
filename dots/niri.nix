@@ -50,15 +50,16 @@ in
       # Layout settings (aligned with hyprland gaps)
       layout = {
         gaps = 10; # hyprland: gaps_out = 10
-        center-focused-column = "never";
+        center-focused-column = "on-overflow";
 
         preset-column-widths = [
           { proportion = 1.0 / 3.0; }
           { proportion = 1.0 / 2.0; }
           { proportion = 2.0 / 3.0; }
+          { proportion = 0.9; }
         ];
 
-        default-column-width = { proportion = 1.0 / 2.0; };
+        default-column-width = { proportion = 0.9; };
 
         focus-ring = {
           enable = true; # Hyprland doesn't have separate focus ring
