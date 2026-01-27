@@ -314,8 +314,8 @@ in
         # ",XF86MonBrightnessDown, exec, light -U 5"
 
         # Brightness
-        ",XF86MonBrightnessUp, global, dms ipc call brightness increment 5"
-        ",XF86MonBrightnessDown, global, dms ipc call brightness decrement 5"
+        ",XF86MonBrightnessUp, exec, dms ipc call brightness increment 5  backlight:intel_backlight"
+        ",XF86MonBrightnessDown, exec, dms ipc call brightness decrement 5  backlight:intel_backlight"
       ];
 
       bindl = [
