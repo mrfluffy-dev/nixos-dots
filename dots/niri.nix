@@ -189,16 +189,8 @@ in
         ];
 
         # Brightness control
-        "XF86MonBrightnessUp".action.spawn = [
-          "sh"
-          "-c"
-          "dms ipc call brightness increment 5"
-        ];
-        "XF86MonBrightnessDown".action.spawn = [
-          "sh"
-          "-c"
-          "dms ipc call brightness decrement 5"
-        ];
+        "XF86MonBrightnessUp".action.spawn = [ "dms" "ipc" "call" "brightness" "increment" "5" ];
+        "XF86MonBrightnessDown".action.spawn = [ "dms" "ipc" "call" "brightness" "decrement" "5" ];
 
         # Window management (matching hyprland)
         "${mod}+Q".action.close-window = { };
