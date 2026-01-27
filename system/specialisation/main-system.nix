@@ -52,7 +52,6 @@ in
   # Niri
   programs.niri = {
     enable = useNiri;
-    #package = inputs.niri.packages.${pkgs.stdenv.hostPlatform.system}.niri-stable;
   };
 
   # Hyprland

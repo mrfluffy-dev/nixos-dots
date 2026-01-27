@@ -44,13 +44,16 @@ in
           accel-profile = "flat";
         };
 
-        focus-follows-mouse.enable = true;
+        focus-follows-mouse = {
+          enable = true;
+          max-scroll-amount = "0%"; # Don't scroll/center on hover, only on click
+        };
       };
 
       # Layout settings (aligned with hyprland gaps)
       layout = {
         gaps = 10; # hyprland: gaps_out = 10
-        center-focused-column = "on-overflow";
+        center-focused-column = "always";
 
         preset-column-widths = [
           { proportion = 1.0 / 3.0; }
@@ -59,7 +62,7 @@ in
           { proportion = 0.9; }
         ];
 
-        default-column-width = { proportion = 0.9; };
+        default-column-width = { proportion = 0.95; };
 
         focus-ring = {
           enable = true; # Hyprland doesn't have separate focus ring
@@ -139,11 +142,11 @@ in
         "${mod}+F1".action.spawn = [ "sh" "-c" "dms ipc call keybinds toggle niri" ];
         "${mod}+Backslash".action.spawn = [ "sh" "-c" "dms ipc call notepad toggle" ];
 
-        # Focus navigation (vim-style, matching hyprland)
-        "${mod}+H".action.focus-column-left = {};
-        "${mod}+J".action.focus-window-down = {};
-        "${mod}+K".action.focus-window-up = {};
-        "${mod}+L".action.focus-column-right = {};
+        # Focus navigation (vim-style, with workspace wraparound for j/k)
+        "${mod}+H".action.focus-column-or-monitor-left = {};
+        "${mod}+J".action.focus-window-or-workspace-down = {};
+        "${mod}+K".action.focus-window-or-workspace-up = {};
+        "${mod}+L".action.focus-column-or-monitor-right = {};
 
         # Move windows (matching hyprland)
         "${mod}+Shift+H".action.move-column-left = {};
@@ -213,6 +216,9 @@ in
         # Tabs
         "${mod}+W".action.toggle-column-tabbed-display = {};
 
+        # Window overview (alt-tab replacement)
+        "${mod}+Tab".action.toggle-overview = {};
+
         # Misc
         "${mod}+Escape".action.toggle-keyboard-shortcuts-inhibit = {};
         "${mod}+Shift+P".action.power-off-monitors = {};
@@ -239,6 +245,7 @@ in
   # Create the main config that includes everything
   xdg.configFile."niri/config.kdl".text = ''
     include "generated.kdl"
+    include "dms/outputs.kdl"
     include "dms/colors.kdl"
     include "dms/layout.kdl"
     include "dms/alttab.kdl"
