@@ -127,6 +127,9 @@ in
       enable = true;
       libraries = with pkgs; [
         gcc15.cc.lib
+        icu
+        sdl3-image
+        libpng
         # add libraries here if needed
         # alsa-lib
         # libGL
