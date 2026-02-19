@@ -134,7 +134,7 @@ in
     wgnord
 
     # ─── Communication & Sharing ─────────────────────────────────────────────────
-    #element-desktop
+    element-desktop
     localsend
     thunderbird
 
