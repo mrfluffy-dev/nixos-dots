@@ -77,7 +77,6 @@
     '';
 
     envExtra = ''
-      ${lib.getExe pkgs.macchina}
       nixdev() {
         if [[ -z "$1" ]]; then
           echo "Usage: nixdev <language>"

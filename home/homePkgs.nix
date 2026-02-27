@@ -159,6 +159,7 @@ in
     zed-editor
     android-studio-full
     claude-code
+    opencode
     # Langugage tooling from inputs
     #inputs.qs-qml.packages.${pkgs.stdenv.hostPlatform.system}.qml-ts-mode
     #inputs.qs-qml.packages.${pkgs.stdenv.hostPlatform.system}.tree-sitter-qmljs
@@ -202,10 +203,10 @@ in
 
     adw-gtk3
     (pkgs.callPackage ../personalPKGS/oreo.nix { colors = [ "all" ]; })
-    #(pkgs.callPackage ../personalPKGS/reversal-icon-theme.nix { colorVariants = [ "all" ]; })
-    (pkgs.reversal-icon-theme.override {
-      allColorVariants = true;
-    })
+    (pkgs.callPackage ../personalPKGS/reversal-icon-theme.nix { colorVariants = [ "all" ]; })
+    #(pkgs.reversal-icon-theme.override {
+    #  allColorVariants = true;
+    #})
 
     pywalfox-native
 

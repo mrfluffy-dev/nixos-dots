@@ -129,17 +129,12 @@ in
   # Ollama (only on PC)
   services.ollama = lib.mkIf isPc {
     enable = true;
-    package = pkgs.ollama-rocm;
+    package = pkgs.ollama-vulkan;
     port = 11434;
-    host = "127.0.0.1"; # Bind to localhost only for security
+    host = "0.0.0.0"; # Bind to localhost only for security
     rocmOverrideGfx = "11.0.0";
     environmentVariables = {
-      OLLAMA_DEBUG = "1";
-      OLLAMA_MMAP = "0";
-      OLLAMA_NUM_CTX = "40000";
-      OLLAMA_NUM_GPU = "20";
-      OLLAMA_FLASH_ATTENTION = "true";
-      OLLAMA_KV_CACHE_TYPE = "f16";
+      OLLAMA_NUM_CTX = "4000000000";
     };
   };
 
