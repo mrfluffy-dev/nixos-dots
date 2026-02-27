@@ -68,7 +68,7 @@ in
       fsType = "btrfs";
     })
     (lib.mkIf isLaptop {
-      device = "/dev/disk/by-uuid/6aa7c67d-a0a5-4928-b16b-9c7991fee7ab";
+      device = "/dev/disk/by-uuid/60ef2e23-4b8b-41cd-896d-e6bad07905f8";
       fsType = "ext4";
     })
   ];
@@ -79,7 +79,7 @@ in
       fsType = "vfat";
     })
     (lib.mkIf isLaptop {
-      device = "/dev/disk/by-uuid/FF4B-819D";
+      device = "/dev/disk/by-uuid/FD33-308F";
       fsType = "vfat";
       options = [
         "fmask=0077"
@@ -131,7 +131,7 @@ in
       { device = "/dev/disk/by-uuid/ccf41b96-c45f-47e0-8541-cd865f5d2ec6"; }
     ]
     ++ lib.optionals isLaptop [
-      { device = "/dev/disk/by-uuid/b416c3bd-861b-4b0c-aa84-6962b2e6a47d"; }
+      { device = "/dev/disk/by-uuid/bc708cba-d240-4730-8de2-6ebc5ff5b278"; }
     ];
 
   # Enables DHCP on each ethernet and wireless interface. In case of scripted networking
