@@ -149,6 +149,7 @@ in
     pear-desktop
     libsixel
     jellyfin-desktop
+    (pkgs.callPackage ../personalPKGS/world-monitor.nix { })
 
     # ─── Development Toolchains ──────────────────────────────────────────────────
     gdb
