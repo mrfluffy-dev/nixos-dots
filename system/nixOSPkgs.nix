@@ -208,7 +208,7 @@ in
     jdk11
     ladspaPlugins
     libtool
-    python311
+    python3
 
     # --- Spellcheck / Fonts ---
     hunspell
