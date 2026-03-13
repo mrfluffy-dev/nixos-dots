@@ -188,7 +188,6 @@ in
     })
     prismlauncher
     protonup-qt
-    wineWowPackages.stable
     mangayomi
     rink
     protontricks

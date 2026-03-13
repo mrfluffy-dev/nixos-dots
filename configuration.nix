@@ -161,6 +161,18 @@ in
   # ─── Decky ──────────────────────────────────────────────────────────────────
   nixpkgs.overlays = [
     inputs.jovian.overlays.default
+    #(final: prev: {
+    #  ollama-vulkan = prev.ollama-vulkan.overrideAttrs (old: {
+    #    version = "0.17.5";
+    #    src = prev.fetchFromGitHub {
+    #      owner = "ollama";
+    #      repo = "ollama";
+    #      tag = "v0.17.5";
+    #      hash = "sha256-MPcLs9O7GZoPLnpGq3LQU13j6Nhhb4InoeXLts6yncU=";
+    #    };
+    #    vendorHash = "sha256-Lc1Ktdqtv2VhJQssk8K1UOimeEjVNvDWePE9WkamCos=";
+    #  });
+    #})
   ];
   jovian.decky-loader = {
     enable = true;

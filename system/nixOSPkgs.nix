@@ -138,9 +138,6 @@ in
       ];
     };
 
-    # Backlight tool
-    light.enable = true;
-
     # NetworkManager applet
     nm-applet = {
       enable = false;
