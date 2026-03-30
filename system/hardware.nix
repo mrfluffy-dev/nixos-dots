@@ -65,6 +65,9 @@ in
     };
   };
 
+  # ── Battery ──────────────────────────────────────────────────────────────────
+  hardware.asus.battery.chargeUpto = lib.mkIf isLaptop 80;
+
   # ── Tablets ─────────────────────────────────────────────────────────────────
   hardware.opentabletdriver = {
     enable = true;

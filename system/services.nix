@@ -76,10 +76,11 @@ in
     HandleLidSwitchDocked = "suspend-then-hibernate";
   };
 
-  systemd.sleep.extraConfig = lib.mkIf isLaptop ''
-    HibernateDelaySec=120min
-    SuspendState=mem
-  '';
+  systemd.sleep.settings.Sleep = lib.mkIf isLaptop {
+    HibernateDelaySec = "120min";
+    SuspendState = "mem";
+  };
+
 
   # ─── Developer Tools & Services ─────────────────────────────────────────────
   # direnv speedup

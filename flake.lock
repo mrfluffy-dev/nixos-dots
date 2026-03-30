@@ -1012,6 +1012,21 @@
         "type": "github"
       }
     },
+    "nixos-hardware": {
+      "locked": {
+        "lastModified": 1774422943,
+        "narHash": "sha256-o1xgNumjljdBBfOrcQX95hhKGFOJQYNZqpF3EfaScMk=",
+        "owner": "NixOS",
+        "repo": "nixos-hardware",
+        "rev": "632e4bfc21c01e5be900d0d8255a5368a5d6082f",
+        "type": "github"
+      },
+      "original": {
+        "owner": "NixOS",
+        "repo": "nixos-hardware",
+        "type": "github"
+      }
+    },
     "nixpkgs": {
       "locked": {
         "lastModified": 1772773019,
@@ -1339,6 +1354,7 @@
         "nix-colors": "nix-colors",
         "nix-index-database": "nix-index-database_2",
         "nixcord": "nixcord",
+        "nixos-hardware": "nixos-hardware",
         "nixpkgs": "nixpkgs_5",
         "qs-qml": "qs-qml",
         "quickshell": "quickshell_4",

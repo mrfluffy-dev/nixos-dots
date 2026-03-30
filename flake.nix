@@ -62,6 +62,7 @@
       url = "github:Jovian-Experiments/Jovian-NixOS";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    nixos-hardware.url = "github:NixOS/nixos-hardware";
   };
   outputs =
     {
@@ -92,6 +93,7 @@
             ./configuration.nix
             inputs.home-manager.nixosModules.default
             inputs.nix-index-database.nixosModules.nix-index
+            inputs.nixos-hardware.nixosModules.asus-battery
           ];
         };
         mrfluffyPC = nixpkgs.lib.nixosSystem {
@@ -103,6 +105,7 @@
             ./configuration.nix
             inputs.home-manager.nixosModules.default
             inputs.nix-index-database.nixosModules.nix-index
+            inputs.nixos-hardware.nixosModules.asus-battery
           ];
         };
       };
