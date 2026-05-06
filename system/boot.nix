@@ -10,7 +10,7 @@ let
   isLaptop = systemName == "laptop";
   isPc = systemName == "pc";
 
-  initrdBaseModules = [ "btusb" ];
+  initrdBaseModules = [ ];
   initrdLPModules = [ "kvm" ]; # for laptop & pc
 
   kernelBaseModules = [ "v4l2loopback" ];

@@ -161,6 +161,7 @@ in
     android-studio-full
     claude-code
     opencode
+    grok-cli
     # Langugage tooling from inputs
     #inputs.qs-qml.packages.${pkgs.stdenv.hostPlatform.system}.qml-ts-mode
     #inputs.qs-qml.packages.${pkgs.stdenv.hostPlatform.system}.tree-sitter-qmljs
@@ -168,7 +169,7 @@ in
     # ─── Game Dev / Engines / Creative ──────────────────────────────────────────
     blender
     godot_4
-    freecad
+    #freecad
 
     # ─── Emulation ────────────────────────────────────────────────────────────────
     fuse
