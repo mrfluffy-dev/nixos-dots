@@ -58,6 +58,10 @@
       url = "github:Duckonaut/split-monitor-workspaces";
       inputs.hyprland.follows = "hyprland";
     };
+    hymission = {
+      url = "github:gfhdhytghd/hymission";
+      flake = false;
+    };
     jovian = {
       url = "github:Jovian-Experiments/Jovian-NixOS";
       inputs.nixpkgs.follows = "nixpkgs";

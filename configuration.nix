@@ -155,7 +155,9 @@ in
   # ─── Nixpkgs policy ─────────────────────────────────────────────────────────
   nixpkgs.config = {
     allowUnfree = true;
-    permittedInsecurePackages = [ ];
+    permittedInsecurePackages = [
+      "electron-39.8.10"
+    ];
   };
 
   # ─── Decky ──────────────────────────────────────────────────────────────────

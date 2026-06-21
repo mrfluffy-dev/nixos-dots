@@ -154,8 +154,10 @@ in
   services.openssh.enable = true;
 
   # ─── Virtualization ─────────────────────────────────────────────────────────
-  virtualisation.libvirtd.enable = true;
-
+virtualisation.libvirtd = {
+  enable = true;
+  qemu.vhostUserPackages = with pkgs; [ virtiofsd ];
+};
   # ─── Udev Rules ─────────────────────────────────────────────────────────────
   services.udev.packages = [
     pkgs.platformio-core

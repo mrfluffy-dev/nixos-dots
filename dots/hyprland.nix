@@ -15,7 +15,29 @@ let
     inputs.hyprland.packages.${pkgs.stdenv.hostPlatform.system}.xdg-desktop-portal-hyprland;
   hypr-split =
     inputs.hyprland-hyprsplit.packages.${pkgs.stdenv.hostPlatform.system}.split-monitor-workspaces;
-  #hyprscrolling = inputs.hyprland-plugins.packages.${pkgs.stdenv.hostPlatform.system}.hyprscrolling;
+
+  hypr-pkg = inputs.hyprland.packages.${pkgs.stdenv.hostPlatform.system}.hyprland;
+  hymission = hypr-pkg.stdenv.mkDerivation {
+    pname = "hymission";
+    version = "0.3.3-unstable-${inputs.hymission.shortRev or "dirty"}";
+    src = inputs.hymission;
+
+    nativeBuildInputs = with pkgs; [
+      meson
+      ninja
+      pkg-config
+    ];
+    buildInputs = [ hypr-pkg ] ++ hypr-pkg.buildInputs;
+
+    meta = {
+      description = "Mission Control-style overview plugin for Hyprland";
+      homepage = "https://github.com/gfhdhytghd/hymission";
+      license = lib.licenses.gpl3Only;
+      platforms = lib.platforms.linux;
+    };
+  };
+  # hyprscrolling was upstreamed into Hyprland core in 0.54 as the "scrolling" layout.
+  # No plugin is needed; configure via the top-level `scrolling { ... }` block.
   mod = "Alt";
   terminal = "footclient";
   fileManager = "thunar";
@@ -24,332 +46,328 @@ let
   # runner     = "anyrun";
   browser = "firefox";
   editor = "emacsclient -c";
+
+  enabled = window_manager == "hyprland" || window_manager == "all";
+  kbLayout = if isLaptop then "ie" else "us";
 in
 {
   wayland.windowManager.hyprland = {
-    enable = window_manager == "hyprland" || window_manager == "all";
+    enable = enabled;
     package = null; # Use the system package from programs.hyprland to avoid duplicate sessions
     portalPackage = hypr-portal;
-    plugins = [
-      #pkgs.hyprlandPlugins.hyprsplit
-      hypr-split
-      #hyprscrolling
-    ];
+  };
 
-    settings = {
-      # ─── Monitors ────────────────────────────────────────────────────────────────
-      source = [
-        "./dms/outputs.conf"
-        "./dms/cursor.conf"
-        "./dms/colors.conf"
-      ];
-      # ─── Autostart ───────────────────────────────────────────────────────────────
+  # ─── Hyprland 0.55+ Lua config ────────────────────────────────────────────────
+  # Loaded in preference to hyprland.conf when Hyprland >= 0.55 is in use.
+  # On older Hyprland this file is ignored and the `settings` block above is used.
+  xdg.configFile."hypr/hyprland.lua" = lib.mkIf enabled {
+    text = ''
+      -- Generated from dots/hyprland.nix.
 
-      # Autostart necessary processes (like notifications daemons, status bars, etc.)
-      # Or execute your favorite apps at launch like this:
-      exec-once = [
-        # "waybar"
-        # "quickshell"
-        "${pkgs.polkit_gnome}/libexec/polkit-gnome-authentication-agent-1"
-        "fcitx5 -d"
-        "foot -s"
-        "systemctl --user import-environment DBUS_SESSION_BUS_ADDRESS WAYLAND_DISPLAY XDG_SESSION_TYPE XDG_CURRENT_DESKTOP XDG_SESSION_DESKTOP QT_QPA_PLATFORMTHEME GTK_THEME"
-        "dbus-update-activation-environment --systemd --all"
-      ];
+      ----------------------------------------------------------------------------
+      -- DMS-generated config (cursor + outputs own monitors and cursor theme).
+      -- Remove a require to take over that file's settings yourself.
+      ----------------------------------------------------------------------------
+      require("dms.cursor")
+      require("dms.colors")
+      require("dms.outputs")
 
-      # ─── Plugins ─────────────────────────────────────────────────────────────────
+      ----------------------------------------------------------------------------
+      -- Plugins + autostart
+      ----------------------------------------------------------------------------
+      hl.on("hyprland.start", function()
+        hl.exec_cmd("sh -c 'hyprctl plugin load ${hypr-split}/lib/libsplit-monitor-workspaces.so'")
+        -- Load hymission, then apply its config keys. We chain the keyword
+        -- calls onto the load with `&&` in a single shell invocation so the
+        -- config is applied only after the plugin has registered its keys
+        -- (otherwise we'd race against the async load and get "unknown config
+        -- key" errors).
+        -- hl.exec_cmd("sh -c 'hyprctl plugin load ${hymission}/lib/libhymission.so && hyprctl keyword plugin:hymission:niri_mode 1 && hyprctl keyword plugin:hymission:workspace_strip_anchor left'")
 
-      plugin = {
-        split-monitor-workspaces = {
-          count = 10;
-          penable_persistent_workspaces = 1;
-        };
-        hyprscrolling = {
-          column_width = 0.9;
-          follow_focus = false;
-          fullscreen_on_one_column = true;
-        };
-      };
+        hl.exec_cmd("${pkgs.polkit_gnome}/libexec/polkit-gnome-authentication-agent-1")
+        hl.exec_cmd("fcitx5 -d")
+        hl.exec_cmd("foot -s")
+        hl.exec_cmd("systemctl --user import-environment DBUS_SESSION_BUS_ADDRESS WAYLAND_DISPLAY XDG_SESSION_TYPE XDG_CURRENT_DESKTOP XDG_SESSION_DESKTOP QT_QPA_PLATFORMTHEME GTK_THEME XCURSOR_THEME XCURSOR_SIZE")
+        hl.exec_cmd("dbus-update-activation-environment --systemd --all")
+      end)
 
-      # ─── Environment ─────────────────────────────────────────────────────────────
+      ----------------------------------------------------------------------------
+      -- Look and feel
+      ----------------------------------------------------------------------------
+      hl.config({
+        general = {
+          gaps_in          = 5,
+          gaps_out         = 10,
+          border_size      = 2,
+          resize_on_border = false,
+          allow_tearing    = false,
+          layout           = "scrolling",
+        },
 
-      env = [
-        "XCURSOR_SIZE, 24"
-        "HYPRCURSOR_SIZE, 24"
-      ];
+        render = {
+          cm_enabled        = true,
+          cm_auto_hdr       = 1,
+          send_content_type = true,
+        },
 
-      # ─── General / Render / Decoration / Animations ─────────────────────────────
+        decoration = {
+          rounding         = 0,
+          rounding_power   = 0,
+          active_opacity   = 1.0,
+          inactive_opacity = 1.0,
 
-      # https://wiki.hyprland.org/Configuring/Variables/
-      # https://wiki.hyprland.org/Configuring/Variables/#general
-      general = {
-        gaps_in = 5;
-        gaps_out = 10;
-        border_size = 2;
-        # "col.active_border"   = "rgba(33ccffee) rgba(00ff99ee) 45deg";
-        # "col.inactive_border" = "rgba(595959aa)";
-        resize_on_border = false; # enable resizing windows by clicking and dragging on borders and gaps
-        allow_tearing = false; # see https://wiki.hyprland.org/Configuring/Tearing/ before enabling
-        layout = "master";
-      };
+          shadow = {
+            enabled      = true,
+            range        = 4,
+            render_power = 3,
+          },
 
-      render = {
-        cm_enabled = true; # turn on the CM pipeline (requires Hyprland restart)
-        cm_fs_passthrough = 2; # passthrough only for HDR content (safer than 1)
-        cm_auto_hdr = 1; # auto-switch monitor to HDR for fullscreen apps
-        send_content_type = true; # helps auto HDR on some displays
-        # cm_fs_passthrough = 1;    # optional: keep your existing line; you can replace with 2 as above
-      };
+          blur = {
+            enabled  = false,
+            size     = 3,
+            passes   = 1,
+            vibrancy = 0.1696,
+          },
+        },
 
-      # https://wiki.hyprland.org/Configuring/Variables/#decoration
-      decoration = {
-        rounding = 0;
-        rounding_power = 0;
-        active_opacity = 1.0;
-        inactive_opacity = 1.0;
+        animations = {
+          enabled = true,
+        },
 
-        shadow = {
-          enabled = true;
-          range = 4;
-          render_power = 3;
-          # color      = "rgba(1a1a1aee)";
-        };
+        dwindle = {
+          preserve_split = true,
+          force_split    = 2,
+        },
 
-        # https://wiki.hyprland.org/Configuring/Variables/#blur
-        blur = {
-          enabled = false;
-          size = 3;
-          passes = 1;
-          vibrancy = 0.1696;
-        };
-      };
+        master = {
+          new_status = "master",
+          mfact      = 0.5,
+          new_on_top = true,
+        },
 
-      animations = {
-        enabled = "yes, please :)";
+        -- Built-in scrolling layout (since Hyprland 0.54).
+        scrolling = {
+          column_width             = 0.9,
+          follow_focus             = true,
+          focus_fit_method         = 0, -- 0 = center the focused column, 1 = fit
+          fullscreen_on_one_column = true,
+        },
 
-        # Default animations, see https://wiki.hyprland.org/Configuring/Animations/ for more
-        bezier = [
-          "easeOutQuint,0.23,1,0.32,1"
-          "easeInOutCubic,0.65,0.05,0.36,1"
-          "linear,0,0,1,1"
-          "almostLinear,0.5,0.5,0.75,1.0"
-          "quick,0.15,0,0.1,1"
-        ];
+        misc = {
+          force_default_wallpaper = -1,
+          disable_hyprland_logo   = true,
+          enable_swallow          = true,
+          swallow_regex           = "footclient",
+        },
 
-        animation = [
-          "global, 1, 10, default"
-          "border, 1, 5.39, easeOutQuint"
-          "windows, 1, 4.79, easeOutQuint"
-          "windowsIn, 1, 4.1, easeOutQuint, popin 87%"
-          "windowsOut, 1, 1.49, linear, popin 87%"
-          "fadeIn, 1, 1.73, almostLinear"
-          "fadeOut, 1, 1.46, almostLinear"
-          "fade, 1, 3.03, quick"
-          "layers, 1, 3.81, easeOutQuint"
-          "layersIn, 1, 4, easeOutQuint, fade"
-          "layersOut, 1, 1.5, linear, fade"
-          "fadeLayersIn, 1, 1.79, almostLinear"
-          "fadeLayersOut, 1, 1.39, almostLinear"
-          "workspaces, 1, 1.94, almostLinear, fade"
-          "workspacesIn, 1, 1.21, almostLinear, fade"
-          "workspacesOut, 1, 1.94, almostLinear, fade"
-        ];
-      };
+        input = {
+          kb_layout    = "${kbLayout}",
+          repeat_rate  = 40,
+          repeat_delay = 500,
+          follow_mouse = 1,
+          sensitivity  = 0,
+          touchpad = {
+            natural_scroll = false,
+          },
+        },
 
-      # ─── Layouts ─────────────────────────────────────────────────────────────────
+        gestures = {
+          scrolling = {
+            -- Don't snap the cursor to the newly focused window after a
+            -- 3-finger scroll_move gesture. Keep warps for keybind focus
+            -- changes / popups (those use cursor:no_warps, left at default).
+            move_snap_cursor = false,
+          },
+        },
 
-      # See https://wiki.hyprland.org/Configuring/Dwindle-Layout/ for more
-      dwindle = {
-        pseudotile = true; # Master switch for pseudotiling. Enabling is bound to mainMod + P in the keybinds
-        preserve_split = true; # You probably want this
-        force_split = 2;
-      };
+        -- split-monitor-workspaces config is omitted on purpose: its defaults
+        -- already are { count = 10, enable_persistent_workspaces = 1 }, and
+        -- because the plugin is loaded via the `hyprland.start` hook below
+        -- (asynchronously, after this hl.config call runs), setting these
+        -- keys here would fire "unknown config key" errors at parse time.
+        -- Override with `hyprctl keyword plugin:split-monitor-workspaces:<key> <val>`
+        -- at runtime if you ever need to change them.
+      })
 
-      # See https://wiki.hyprland.org/Configuring/Master-Layout/ for more
-      master = {
-        new_status = "master";
-        mfact = 0.5;
-        new_on_top = true;
-      };
+      ----------------------------------------------------------------------------
+      -- Animation curves + leaves
+      ----------------------------------------------------------------------------
+      hl.curve("easeOutQuint",   { type = "bezier", points = { {0.23, 1},    {0.32, 1} } })
+      hl.curve("easeInOutCubic", { type = "bezier", points = { {0.65, 0.05}, {0.36, 1} } })
+      hl.curve("linear",         { type = "bezier", points = { {0, 0},       {1, 1} } })
+      hl.curve("almostLinear",   { type = "bezier", points = { {0.5, 0.5},   {0.75, 1} } })
+      hl.curve("quick",          { type = "bezier", points = { {0.15, 0},    {0.1, 1} } })
 
-      # ─── Misc / Input / Gestures / Devices ───────────────────────────────────────
+      hl.animation({ leaf = "global",        enabled = true, speed = 10,   bezier = "default" })
+      hl.animation({ leaf = "border",        enabled = true, speed = 5.39, bezier = "easeOutQuint" })
+      hl.animation({ leaf = "windows",       enabled = true, speed = 4.79, bezier = "easeOutQuint" })
+      hl.animation({ leaf = "windowsIn",     enabled = true, speed = 4.1,  bezier = "easeOutQuint", style = "popin 87%" })
+      hl.animation({ leaf = "windowsOut",    enabled = true, speed = 1.49, bezier = "linear",       style = "popin 87%" })
+      hl.animation({ leaf = "fadeIn",        enabled = true, speed = 1.73, bezier = "almostLinear" })
+      hl.animation({ leaf = "fadeOut",       enabled = true, speed = 1.46, bezier = "almostLinear" })
+      hl.animation({ leaf = "fade",          enabled = true, speed = 3.03, bezier = "quick" })
+      hl.animation({ leaf = "layers",        enabled = true, speed = 3.81, bezier = "easeOutQuint" })
+      hl.animation({ leaf = "layersIn",      enabled = true, speed = 4,    bezier = "easeOutQuint", style = "fade" })
+      hl.animation({ leaf = "layersOut",     enabled = true, speed = 1.5,  bezier = "linear",       style = "fade" })
+      hl.animation({ leaf = "fadeLayersIn",  enabled = true, speed = 1.79, bezier = "almostLinear" })
+      hl.animation({ leaf = "fadeLayersOut", enabled = true, speed = 1.39, bezier = "almostLinear" })
+      hl.animation({ leaf = "workspaces",    enabled = true, speed = 1.94, bezier = "almostLinear", style = "slidevert" })
+      hl.animation({ leaf = "workspacesIn",  enabled = true, speed = 1.21, bezier = "almostLinear", style = "slidevert" })
+      hl.animation({ leaf = "workspacesOut", enabled = true, speed = 1.94, bezier = "almostLinear", style = "slidevert" })
 
-      # https://wiki.hyprland.org/Configuring/Variables/#misc
-      misc = {
-        force_default_wallpaper = -1; # Set to 0 or 1 to disable the anime mascot wallpapers
-        disable_hyprland_logo = true; # If true disables the random hyprland logo / anime girl background. :(
-        enable_swallow = true;
-        swallow_regex = "footclient";
-      };
+      ----------------------------------------------------------------------------
+      -- Trackpad gestures (niri-style)
+      --   3-finger horizontal swipe = scroll the scrolling-layout tape
+      --   4-finger horizontal swipe = switch workspaces
+      ----------------------------------------------------------------------------
+      hl.gesture({ fingers = 3, direction = "horizontal", action = "scroll_move" })
+      hl.gesture({ fingers = 3, direction = "vertical", action = "workspace" })
 
-      # https://wiki.hyprland.org/Configuring/Variables/#input
-      input = {
-        kb_layout = lib.mkMerge [
-          (lib.mkIf isLaptop "ie")
-          (lib.mkIf isPc "us")
-        ];
-        repeat_rate = 40;
-        repeat_delay = 500;
-        # kb_variant  =
-        # kb_model    =
-        # kb_options  =
-        # kb_rules    =
-        follow_mouse = 1;
-        sensitivity = 0; # -1.0 - 1.0, 0 means no modification.
+      ----------------------------------------------------------------------------
+      -- Devices
+      ----------------------------------------------------------------------------
+      hl.device({ name = "epic-mouse-v1", sensitivity = -0.5 })
 
-        touchpad = {
-          natural_scroll = false;
-        };
-      };
+      ----------------------------------------------------------------------------
+      -- Keybindings
+      ----------------------------------------------------------------------------
+      local mod = "ALT"
 
-      # https://wiki.hyprland.org/Configuring/Variables/#gestures
-      # gestures = {
-      #   workspace_swipe = true;
-      #   workspace_swipe_cancel_ratio = 0.15;
-      # };
+      -- bind(modkey, modifier, key, action, opts?)
+      --   Any of modkey / modifier may be "" to omit (e.g. XF86 keys have no mod).
+      --   opts is the optional table forwarded to hl.bind (locked, repeating, mouse, ...).
+      function bind(modkey, modifier, key, action, opts)
+        local parts = {}
+        if modkey   and modkey   ~= "" then parts[#parts + 1] = modkey   end
+        if modifier and modifier ~= "" then parts[#parts + 1] = modifier end
+        if key      and key      ~= "" then parts[#parts + 1] = key      end
+        local combo = table.concat(parts, " + ")
+        if opts then
+          hl.bind(combo, action, opts)
+        else
+          hl.bind(combo, action)
+        end
+      end
 
-      # Example per-device config
-      # See https://wiki.hyprland.org/Configuring/Keywords/#per-device-input-configs
-      device = {
-        name = "epic-mouse-v1";
-        sensitivity = -0.5;
-      };
+      local binds = {
+        -- Launcher / apps
+        { mod, "", "Return", hl.dsp.exec_cmd("${terminal}")    },
+        { mod, "", "B",      hl.dsp.exec_cmd("${browser}")     },
+        { mod, "", "F",      hl.dsp.exec_cmd("${fileManager}") },
+        { mod, "", "D",      hl.dsp.exec_cmd("${runner}")      },
+        { mod, "", "E",      hl.dsp.exec_cmd("${editor}")      },
 
-      # ─── Binds ───────────────────────────────────────────────────────────────────
+        -- Session / window controls
+        { mod, "", "Q",         hl.dsp.window.close() },
+        { mod, "", "M",         hl.dsp.exit() },
+        { mod, "", "V",         hl.dsp.window.float({ action = "toggle" }) },
+        { mod, "", "T",         hl.dsp.window.fullscreen() },
+        { "",  "", "Print",     hl.dsp.exec_cmd("dms screenshot") },
+        { mod, "", "F1",        hl.dsp.exec_cmd("dms ipc call keybinds toggle hyprland") },
+        { mod, "", "BACKSLASH", hl.dsp.exec_cmd("dms ipc call notepad toggle") },
 
-      bind = [
-        # Launcher / apps
-        "${mod}, Return, exec, ${terminal}"
-        "${mod}, B, exec, ${browser}"
-        "${mod}, F, exec, ${fileManager}"
-        "${mod}, D, exec, ${runner}"
-        "${mod}, E, exec, ${editor}"
+        -- Dwindle pseudotile
+        { mod, "", "P", hl.dsp.window.pseudo() },
 
-        # Session / window controls
-        "${mod}, Q, killactive,"
-        "${mod}, M, exit,"
-        "${mod}, V, togglefloating,"
-        "${mod}, T, fullscreen"
-        # ",Print, exec, grim -g \"$(slurp)\" - | swappy -f -"
-        ",Print, exec, dms screenshot"
-        "${mod}, f1, exec, dms ipc call keybinds toggle hyprland"
-        "${mod}, BACKSLASH, exec, dms ipc call notepad toggle"
+        -- Focus
+        { mod, "", "H", hl.dsp.focus({ direction = "left"  }) },
+        { mod, "", "L", hl.dsp.focus({ direction = "right" }) },
+        { mod, "", "K", hl.dsp.focus({ direction = "up"    }) },
+        { mod, "", "J", hl.dsp.focus({ direction = "down"  }) },
 
-        # Dwindle
-        "${mod}, P, pseudo, "
+        -- Move window
+        { mod, "SHIFT", "H", hl.dsp.window.move({ direction = "left"  }) },
+        { mod, "SHIFT", "L", hl.dsp.window.move({ direction = "right" }) },
+        { mod, "SHIFT", "K", hl.dsp.window.move({ direction = "up"    }) },
+        { mod, "SHIFT", "J", hl.dsp.window.move({ direction = "down"  }) },
 
-        # Focus (arrows)
-        "${mod}, H, movefocus, l"
-        "${mod}, L, movefocus, r"
-        "${mod}, K, movefocus, u"
-        "${mod}, J, movefocus, d"
+        -- Promote (works for both master + scrolling)
+        { mod, "", "semicolon", hl.dsp.layout("promote") },
 
-        # Column movement (hyprscrolling)
-        #"${mod}, h, layoutmsg, move -col"
-        #"${mod}, L, layoutmsg, move +col"
+        -- Scrolling-layout column movement
+        { mod, "", "period", hl.dsp.layout("move +col") },
+        { mod, "", "comma",  hl.dsp.layout("move -col") },
 
-        # Move window
-        "${mod} SHIFT, H, movewindow, l"
-        "${mod} SHIFT, L, movewindow, r"
-        "${mod} SHIFT, K, movewindow, u"
-        "${mod} SHIFT, J, movewindow, d"
-        #"${mod} SHIFT, L, layoutmsg, movewindowto r"
-        #"${mod} SHIFT, H, layoutmsg, movewindowto l"
-        #"${mod} SHIFT, K, layoutmsg, movewindowto u"
-        #"${mod} SHIFT, J, layoutmsg, movewindowto d"
-        "${mod}, semicolon, layoutmsg, promote"
+        -- Special workspace (scratchpad)
+        { mod, "",      "SLASH", hl.dsp.workspace.toggle_special("magic") },
+        { mod, "SHIFT", "SLASH", hl.dsp.window.move({ workspace = "special:magic" }) },
 
-        #hyperscrolling stuff
-        "${mod}, period, layoutmsg, move +col"
-        "${mod}, comma, layoutmsg, move -col"
+        -- Scroll workspaces with mod + wheel
+        { mod, "", "mouse_down", hl.dsp.focus({ workspace = "e+1" }) },
+        { mod, "", "mouse_up",   hl.dsp.focus({ workspace = "e-1" }) },
 
-        # Workspaces (switch)
-        "${mod}, 1, split-workspace, 1 "
-        "${mod}, 2, split-workspace, 2 "
-        "${mod}, 3, split-workspace, 3 "
-        "${mod}, 4, split-workspace, 4 "
-        "${mod}, 5, split-workspace, 5 "
-        "${mod}, 6, split-workspace, 6 "
-        "${mod}, 7, split-workspace, 7 "
-        "${mod}, 8, split-workspace, 8 "
-        "${mod}, 9, split-workspace, 9 "
-        "${mod}, 0, split-workspace, 10"
+        -- 8BitDo big red B button
+        { mod, "SHIFT", "F1", hl.dsp.exec_cmd("scrcpy --video-source=camera -m3000 --camera-facing=back --v4l2-sink=/dev/video1 --no-video-playback --no-audio") },
 
-        # Workspaces (move active window)
-        "${mod} SHIFT, 1, split-movetoworkspacesilent, 1 "
-        "${mod} SHIFT, 2, split-movetoworkspacesilent, 2 "
-        "${mod} SHIFT, 3, split-movetoworkspacesilent, 3 "
-        "${mod} SHIFT, 4, split-movetoworkspacesilent, 4 "
-        "${mod} SHIFT, 5, split-movetoworkspacesilent, 5 "
-        "${mod} SHIFT, 6, split-movetoworkspacesilent, 6 "
-        "${mod} SHIFT, 7, split-movetoworkspacesilent, 7 "
-        "${mod} SHIFT, 8, split-movetoworkspacesilent, 8 "
-        "${mod} SHIFT, 9, split-movetoworkspacesilent, 9 "
-        "${mod} SHIFT, 0, split-movetoworkspacesilent, 10"
+        -- Mouse drag / resize
+        { mod, "", "mouse:272", hl.dsp.window.drag(),   { mouse = true } },
+        { mod, "", "mouse:273", hl.dsp.window.resize(), { mouse = true } },
 
-        # Special workspace (scratchpad)
-        "${mod}, SLASH, togglespecialworkspace, magic"
-        "${mod} SHIFT, SLASH, movetoworkspace, special:magic"
+        -- Volume / brightness (locked + repeating)
+        { "", "", "XF86AudioRaiseVolume",  hl.dsp.exec_cmd("pamixer -i 5"),                                                    { locked = true, repeating = true } },
+        { "", "", "XF86AudioLowerVolume",  hl.dsp.exec_cmd("pamixer -d 5"),                                                    { locked = true, repeating = true } },
+        { "", "", "XF86AudioMute",         hl.dsp.exec_cmd("pamixer --toggle-mute"),                                           { locked = true } },
+        { "", "", "XF86AudioMicMute",      hl.dsp.exec_cmd("wpctl set-mute @DEFAULT_AUDIO_SOURCE@ toggle"),                    { locked = true } },
+        { "", "", "XF86MonBrightnessUp",   hl.dsp.exec_cmd("dms ipc call brightness increment 5 backlight:intel_backlight"),   { locked = true, repeating = true } },
+        { "", "", "XF86MonBrightnessDown", hl.dsp.exec_cmd("dms ipc call brightness decrement 5 backlight:intel_backlight"),   { locked = true, repeating = true } },
 
-        # Scroll through existing workspaces with mainMod + scroll
-        "${mod}, mouse_down, workspace, e+1"
-        "${mod}, mouse_up, workspace, e-1"
+        -- Media (locked)
+        { "", "", "XF86AudioNext",  hl.dsp.exec_cmd("playerctl next"),       { locked = true } },
+        { "", "", "XF86AudioPause", hl.dsp.exec_cmd("playerctl play-pause"), { locked = true } },
+        { "", "", "XF86AudioPlay",  hl.dsp.exec_cmd("playerctl play-pause"), { locked = true } },
+        { "", "", "XF86AudioPrev",  hl.dsp.exec_cmd("playerctl previous"),   { locked = true } },
+      }
 
-        # 8BitDo keyboard big red b Button
-        "${mod} SHIFT, F1, exec, scrcpy --video-source=camera -m3000 --camera-facing=back --v4l2-sink=/dev/video1 --no-video-playback --no-audio"
-      ];
+      for _, b in ipairs(binds) do
+        bind(b[1], b[2], b[3], b[4], b[5])
+      end
 
-      bindm = [
-        # Move/resize windows with mainMod + LMB/RMB and dragging
-        "${mod}, mouse:272, movewindow"
-        "${mod}, mouse:273, resizewindow"
-      ];
+      -- Workspaces (split-monitor-workspaces from Duckonaut).
+      -- The plugin is loaded asynchronously in the `hyprland.start` hook above,
+      -- so we cannot capture `hl.plugin.split_monitor_workspaces` at parse time.
+      -- Wrap each bind in a function so the lookup happens at key-press time.
+      for i = 1, 10 do
+        local n   = i              -- capture loop variable
+        local key = tostring(n % 10) -- 10 maps to key 0
+        bind(mod, "",      key, function() return hl.plugin.split_monitor_workspaces.workspace(n) end)
+        bind(mod, "SHIFT", key, function() return hl.plugin.split_monitor_workspaces.move_to_workspace_silent(n) end)
+      end
 
-      bindel = [
-        ",XF86AudioRaiseVolume, exec, pamixer -i 5"
-        ",XF86AudioLowerVolume, exec, pamixer -d 5"
-        ",XF86AudioMute, exec, pamixer --toggle-mute"
-        ",XF86AudioMicMute, exec, wpctl set-mute @DEFAULT_AUDIO_SOURCE@ toggle"
-        # ",XF86MonBrightnessUp, exec, light -A 5"
-        # ",XF86MonBrightnessDown, exec, light -U 5"
 
-        # Brightness
-        ",XF86MonBrightnessUp, exec, dms ipc call brightness increment 5  backlight:intel_backlight"
-        ",XF86MonBrightnessDown, exec, dms ipc call brightness decrement 5  backlight:intel_backlight"
-      ];
 
-      bindl = [
-        ", XF86AudioNext, exec, playerctl next"
-        ", XF86AudioPause, exec, playerctl play-pause"
-        ", XF86AudioPlay, exec, playerctl play-pause "
-        ", XF86AudioPrev, exec, playerctl previous   "
-      ];
+      ----------------------------------------------------------------------------
+      -- Window rules
+      ----------------------------------------------------------------------------
+      hl.window_rule({
+        name           = "suppress-maximize-events",
+        match          = { class = ".*" },
+        suppress_event = "maximize",
+      })
 
-      binds = [ ];
+      hl.window_rule({
+        name  = "fix-xwayland-drags",
+        match = {
+          class      = "^$",
+          title      = "^$",
+          xwayland   = true,
+          float      = true,
+          fullscreen = false,
+          pin        = false,
+        },
+        no_focus = true,
+      })
 
-      # ─── Rules (windows / workspaces) ────────────────────────────────────────────
+      hl.window_rule({
+        name   = "screen-share-picker-float",
+        match  = { title = "^(Select what to share)$" },
+        float  = true,
+      })
 
-      # See https://wiki.hyprland.org/Configuring/Window-Rules/ for more
-      # See https://wiki.hyprland.org/Configuring/Workspace-Rules/ for workspace rules
-
-      # Example windowrule
-      # windowrule = float,class:^(kitty)$,title:^(kitty)$
-
-      # Smart gaps / No gaps when only
-      # workspace = w[tv1], gapsout:0, gapsin:0
-      # workspace = f[1], gapsout:0, gapsin:0
-      # windowrule = bordersize 0, floating:0, onworkspace:w[tv1]
-      # windowrule = rounding 0, floating:0, onworkspace:w[tv1]
-      # windowrule = bordersize 0, floating:0, onworkspace:f[1]
-      # windowrule = rounding 0, floating:0, onworkspace:f[1]
-
-      windowrule = [
-        # Ignore maximize requests from apps. You'll probably like this.
-        "match:class .*, suppress_event maximize"
-
-        # Fix some dragging issues with XWayland
-        "match:class ^$, match:title ^$, match:xwayland 1, match:float 1, match:fullscreen 0, match:pin 0, no_focus on"
-      ];
-    };
+      hl.window_rule({
+        name   = "screen-share-picker-center",
+        match  = { title = "^(Select what to share)$" },
+        center = true,
+      })
+    '';
   };
 }

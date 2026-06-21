@@ -58,6 +58,7 @@ in
   programs.hyprland = {
     enable = useHypr;
     package = inputs.hyprland.packages.${pkgs.stdenv.hostPlatform.system}.hyprland;
+    withUWSM = useHypr;
   };
   #services.desktopManager.cosmic = {
   #  enable = true;

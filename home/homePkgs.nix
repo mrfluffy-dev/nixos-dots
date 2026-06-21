@@ -77,6 +77,9 @@ in
       allowUnfree = true;
       android_sdk.accept_license = true;
       permittedInsecurePackages = [
+        "electron-39.8.10"
+        "nodejs-slim-20.20.2"
+        "nodejs-20.20.2"
         "freeimage-unstable-2021-11-01"
         "qtwebengine-5.15.19"
       ];
@@ -192,6 +195,7 @@ in
     mangayomi
     rink
     protontricks
+    wineWow64Packages.stable
 
     abaddon
 

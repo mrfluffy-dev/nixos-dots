@@ -160,6 +160,7 @@ in
   environment.systemPackages = with pkgs; [
     # --- Editors & Shell UX ---
     bat
+    emacs-lsp-booster
     neovim
     vim
     zoxide
@@ -221,6 +222,7 @@ in
 
     # --- File System Stuff ---
     cifs-utils
+    ntfs3g
 
   ];
 }

@@ -16,15 +16,40 @@
 
       config = {
         common.default = [ "gtk" ];
-      } // lib.optionalAttrs (window_manager == "hyprland" || window_manager == "all") {
-        hyprland.default = [ "hyprland" "gtk" ];
-      } // lib.optionalAttrs (window_manager == "niri" || window_manager == "all") {
-        niri.default = [ "gnome" "gtk" ];
+
+        hyprland.default = [
+          "hyprland"
+          "gtk"
+        ];
+
+        niri = {
+          default = [
+            "gnome"
+            "gtk"
+          ];
+          "org.freedesktop.impl.portal.ScreenCast" = [
+            "gnome"
+            "gtk"
+          ];
+          "org.freedesktop.impl.portal.Screenshot" = [
+            "gnome"
+            "gtk"
+          ];
+          "org.freedesktop.portal.ScreenCast" = [
+            "gnome"
+            "gtk"
+          ];
+          "org.freedesktop.portal.Screenshot" = [
+            "gnome"
+            "gtk"
+          ];
+        };
       };
 
       xdgOpenUsePortal = true;
 
-      extraPortals = with pkgs;
+      extraPortals =
+        with pkgs;
         [ xdg-desktop-portal-gtk ]
         ++ lib.optionals (window_manager == "hyprland" || window_manager == "all") [
           inputs.hyprland.packages.${pkgs.stdenv.hostPlatform.system}.xdg-desktop-portal-hyprland
@@ -47,7 +72,8 @@
           player = [ "mpv.desktop" ];
           viewer = [ "imv-dir.desktop" ];
           reader = [ "org.pwmt.zathura.desktop" ];
-        in {
+        in
+        {
           # Documents
           "application/pdf" = reader;
           "application/epub" = reader;

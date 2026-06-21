@@ -13,7 +13,7 @@
         font = "${config.stylix.fonts.monospace.name}:size=${toString config.stylix.fonts.sizes.terminal}";
         include = "/home/${config.home.username}/.config/foot/dank-colors.ini";
       };
-      colors = {
+      colors-dark = {
         alpha = lib.mkForce (0.9);
       };
     };
